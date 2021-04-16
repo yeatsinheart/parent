@@ -1,7 +1,7 @@
 package com.lottory.utils;
 
 import java.math.BigInteger;
-import java.util.Arrays;
+import java.util.*;
 
 public class All {
     // 1。提前列举所有开奖结果，落库获取ID
@@ -12,14 +12,71 @@ public class All {
     public static void main(String[] args) {
         // 假设成密码锁的个数
         int chooseNum = 7;
-        Object[] a = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};  // 初始数组
         // 每一圈上的所有数字
-        a=new Object[49];
+        Object[] a = new Object[49];
         //arrangementSelect(a, chooseNum);
         //combinationSelect(a, chooseNum);
-        System.out.println(String.format("A(%d, %d) = %d", a.length, chooseNum, arrangement(new BigInteger(""+a.length), new BigInteger(""+chooseNum))));
-        System.out.println(String.format("C(%d, %d)= %d", a.length, chooseNum, combination(new BigInteger(""+a.length), new BigInteger(""+chooseNum))));
+        System.out.println(String.format("A(%d, %d) = %d", a.length, chooseNum, arrangement(a.length, chooseNum)));
+        System.out.println(String.format("C(%d, %d)= %d", a.length, chooseNum, combination(a.length, chooseNum)));
+        List t = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+        List ar = new ArrayList();
+        for (Object asdf : t) {
+            ar.add(asdf);
+        }
+        Object[] ob = getcode(ar, 5, true);
+        System.out.println(Arrays.toString(ob));
+        String[] x1 = {"1", "2"};
+        String[] x2 = {"1", "2", "3"};
+        String[] x3 = {"1", "2", "3"};
+        List carr = new ArrayList();
+        carr.add(x1);
+        carr.add(x2);
+        carr.add(x3);
+        String[] target = new String[carr.size()];
+        getcode(target, carr, 0, false);
+    }
 
+
+    // 多组不同数量的得到的排列
+    public static void getcode(String[] target, List<String[]> arr, int arrreadindex, boolean repeatable) {
+        if (arrreadindex == arr.size()) {
+            System.out.println(Arrays.toString(target));
+        } else {
+            String[] now = arr.get(arrreadindex);
+            for (int b = 0; b < now.length; b++) {
+                String ob = now[b];
+                boolean exist = false;
+                for (int j = 0; j < arrreadindex; j++) {
+                    if (ob.equals(target[j]) && !repeatable) {  // 若已存在，则不能重复选
+                        exist = true;
+                        break;
+                    }
+                }
+                if (!exist) {
+                    target[arrreadindex] = ob;
+                    int tmpindex = arrreadindex + 1;
+                    getcode(target, arr, tmpindex, repeatable);
+                }
+
+            }
+        }
+    }
+
+    /**
+     * 随机获取一个号码
+     */
+    public static Object[] getcode(List arr, int num, boolean repeatable) {
+        Object[] target = new Object[num];
+        for (int i = 0; i < num; i++) {
+            Random random = new Random();
+            int nowum = arr.size();
+            int index = random.nextInt(nowum);
+            target[i] = arr.get(index);
+            if (!repeatable) {
+                arr.remove(index);
+            }
+        }
+        return target;
     }
 
     /**
@@ -27,30 +84,35 @@ public class All {
      */
     public static BigInteger one = new BigInteger("1");
     public static BigInteger zero = new BigInteger("0");
+
     public static BigInteger factorial(BigInteger n) {
-        return (n .compareTo(one) >0) ? n .multiply(factorial(n .subtract(one)))  : one;
+        return (n.compareTo(one) > 0) ? n.multiply(factorial(n.subtract(one))) : one;
     }
 
     /**
      * 计算排列数：A(n, m) = n!/(n-m)!  -- 从n个数中取出m个数进行排列 ,需要考虑数的顺序 (如果n个数进行排列，有n!种情况)
      */
-    public static BigInteger arrangement(BigInteger n, BigInteger m) {
-        return (n .compareTo(m) >-1) ? factorial(n) .divide(factorial(n .subtract(m)) ) : zero;
+    public static BigInteger arrangement(int n, int m) {
+        BigInteger x = new BigInteger("" + n);
+        BigInteger y = new BigInteger("" + m);
+        return (n >= m) ? factorial(x).divide(factorial(x.subtract(y))) : zero;
     }
 
     /**
      * 计算组合数：C(n, m) = n!/((n-m)! * m!)  --  从n个数中取出m个数进行排列 ,不考虑数的顺序 （如 1234 和 4321 属于一种组合，都包含1，2，3，4这四个数）
      */
-    public static BigInteger combination(BigInteger n, BigInteger m) {
-        return (n .compareTo(m) >-1) ? factorial(n) .divide ((factorial(n.subtract(m) ) .multiply(factorial(m)))) : zero;
+    public static BigInteger combination(int n, int m) {
+        BigInteger x = new BigInteger("" + n);
+        BigInteger y = new BigInteger("" + m);
+        return (x.compareTo(y) > -1) ? factorial(x).divide((factorial(x.subtract(y)).multiply(factorial(x)))) : zero;
     }
 
     /**
      * 排列：从数组a中选择n个数进行排列
      */
-    public static void arrangementSelect(Object[] a, BigInteger n) {
-        arrangementSort(a, new Object[n.intValue()], 0);
-        System.out.println(String.format("A(%d, %d) = %d", a.length, n, arrangement(new BigInteger(""+a.length), n)));
+    public static void arrangementSelect(Object[] a, int n) {
+        arrangementSort(a, new Object[n], 0, true);
+        System.out.println(String.format("A(%d, %d) = %d", a.length, n, arrangement(a.length, n)));
     }
 
     /**
@@ -60,7 +122,7 @@ public class All {
      * @param result：排列数组初始状态
      * @param resultIndex：比较的起始索引
      */
-    public static void arrangementSort(Object[] a, Object[] result, int resultIndex) {
+    public static void arrangementSort(Object[] a, Object[] result, int resultIndex, boolean repeatable) {
         int result_length = result.length;
         if (resultIndex >= result_length) {
             System.out.println(Arrays.toString(result));  // 输出排列结果
@@ -70,16 +132,15 @@ public class All {
         for (int i = 0; i < a.length; i++) {
             // 判断待选的数是否存在于排列的结果中
             boolean exist = false;
-
-            /*for (int j = 0; j < resultIndex; j++) {
-                if (a[i] == result[j]) {  // 若已存在，则不能重复选
+            for (int j = 0; j < resultIndex; j++) {
+                if (a[i] == result[j] && !repeatable) {  // 若已存在，则不能重复选
                     exist = true;
                     break;
                 }
-            }*/
+            }
             if (!exist) {  // 若不存在，则可以选择
                 result[resultIndex] = a[i];
-                arrangementSort(a, result, resultIndex + 1);
+                arrangementSort(a, result, resultIndex + 1, repeatable);
             }
         }
     }
@@ -87,10 +148,10 @@ public class All {
     /**
      * 组合：从数组a中选择n个数进行组合
      */
-    public static void combinationSelect(Object[] a, BigInteger n) {
-        Object[] b = new Object[n.intValue()];
+    public static void combinationSelect(Object[] a, int n) {
+        Object[] b = new Object[n];
         combinationSort(a, 0, b, 0);
-        System.out.println(String.format("C(%d, %d)= %d", a.length, n, combination(new BigInteger(""+a.length), n)));
+        System.out.println(String.format("C(%d, %d)= %d", a.length, n, combination(a.length, n)));
 
     }
 
