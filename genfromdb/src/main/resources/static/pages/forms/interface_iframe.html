@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 2 | General Form Elements</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <!-- Pace -->
+    <link rel="stylesheet" href="../../plugins/pace-master/themes/blue/pace-theme-flash.css">
+    <script type="text/javascript" src="../../plugins/pace-master/pace.min.js"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../dist/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../../dist/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="../../dist/css/skins/all-skins.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        新建接口
+        <small>Preview</small>
+    </h1>
+    <!--<ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li><a href="#">Forms</a></li>
+      <li class="active">General Elements</li>
+    </ol>-->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <!-- left column -->
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md">
+            <!-- Horizontal Form -->
+            <!-- /.box -->
+            <!-- general form elements disabled -->
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form role="form">
+                        <!-- input states -->
+                        <div class="form-group has-success">
+                            <label class="control-label" for="platform"><i class="fa fa-check"></i> 平台</label>
+                            <select class="form-control" id="platform">
+                                <option>请选择平台</option>
+                                <option>神奇的地球</option>
+                                <option>神奇的宇宙</option>
+                                <option>神奇的世界</option>
+                            </select>
+                            <span class="help-block">项目归属于哪个平台</span>
+                        </div>
+                        <div class="form-group has-warning">
+                            <label class="control-label" for="project"><i class="fa fa-bell-o"></i> 项目</label>
+                            <select class="form-control" id="project">
+                                <option>请选择项目</option>
+                                <option>神奇的地球</option>
+                                <option>神奇的宇宙</option>
+                                <option>神奇的世界</option>
+                            </select>
+                            <span class="help-block">项目归属于哪个项目</span>
+                        </div>
+                        <div class="form-group has-error">
+                            <label class="control-label" for="module"><i class="fa fa-bell-o"></i> 模块</label>
+                            <select class="form-control" id="module">
+                                <option>请选择模块</option>
+                                <option>神奇的地球</option>
+                                <option>神奇的宇宙</option>
+                                <option>神奇的世界</option>
+                            </select>
+                            <span class="help-block">项目归属于哪个模块</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="biz">业务</label>
+                            <select class="form-control" id="biz">
+                                <option>请选择业务</option>
+                                <option>神奇的地球</option>
+                                <option>神奇的宇宙</option>
+                                <option>神奇的世界</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>接口</label>
+                            <input type="text" class="form-control" placeholder="接口名 ...">
+                        </div>
+                        <div class="form-group">
+                            <label>接口地址</label>
+                            <input type="text" class="form-control" placeholder="接口地址 ...">
+                        </div>
+                        <!-- textarea -->
+                        <div class="form-group">
+                            <label>描述</label>
+                            <textarea class="form-control" rows="3" placeholder="接口说明 ..."></textarea>
+                        </div>
+
+                        <button type="button" class="btn btn-primary btn-lg btn-block">SUBMIT</button>
+                        <!-- <div class="form-group">
+                           <label>Text Disabled</label>
+                           <input type="text" class="form-control" placeholder="Enter ..." disabled>
+                         </div>
+                         <div class="form-group">
+                           <label>Textarea Disabled</label>
+                           <textarea class="form-control" rows="3" placeholder="Enter ..." disabled></textarea>
+                         </div>
+                         &lt;!&ndash; checkbox &ndash;&gt;
+                         <div class="form-group">
+                           <div class="checkbox">
+                             <label>
+                               <input type="checkbox">
+                               Checkbox 1
+                             </label>
+                           </div>
+
+                           <div class="checkbox">
+                             <label>
+                               <input type="checkbox">
+                               Checkbox 2
+                             </label>
+                           </div>
+
+                           <div class="checkbox">
+                             <label>
+                               <input type="checkbox" disabled>
+                               Checkbox disabled
+                             </label>
+                           </div>
+                         </div>
+
+                         &lt;!&ndash; radio &ndash;&gt;
+                         <div class="form-group">
+                           <div class="radio">
+                             <label>
+                               <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                               Option one is this and that&mdash;be sure to include why it's great
+                             </label>
+                           </div>
+                           <div class="radio">
+                             <label>
+                               <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                               Option two can be something else and selecting it will deselect option one
+                             </label>
+                           </div>
+                           <div class="radio">
+                             <label>
+                               <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
+                               Option three is disabled
+                             </label>
+                           </div>
+                         </div>
+
+                         &lt;!&ndash; select &ndash;&gt;
+                         <div class="form-group">
+                           <label>Select</label>
+                           <select class="form-control">
+                             <option>option 1</option>
+                             <option>option 2</option>
+                             <option>option 3</option>
+                             <option>option 4</option>
+                             <option>option 5</option>
+                           </select>
+                         </div>
+                         <div class="form-group">
+                           <label>Select Disabled</label>
+                           <select class="form-control" disabled>
+                             <option>option 1</option>
+                             <option>option 2</option>
+                             <option>option 3</option>
+                             <option>option 4</option>
+                             <option>option 5</option>
+                           </select>
+                         </div>
+
+                         &lt;!&ndash; Select multiple&ndash;&gt;
+                         <div class="form-group">
+                           <label>Select Multiple</label>
+                           <select multiple class="form-control">
+                             <option>option 1</option>
+                             <option>option 2</option>
+                             <option>option 3</option>
+                             <option>option 4</option>
+                             <option>option 5</option>
+                           </select>
+                         </div>
+                         <div class="form-group">
+                           <label>Select Multiple Disabled</label>
+                           <select multiple class="form-control" disabled>
+                             <option>option 1</option>
+                             <option>option 2</option>
+                             <option>option 3</option>
+                             <option>option 4</option>
+                             <option>option 5</option>
+                           </select>
+                         </div>-->
+
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!--/.col (right) -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<!-- jQuery 2.2.3 -->
+<script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../../plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+</body>
+</html>
