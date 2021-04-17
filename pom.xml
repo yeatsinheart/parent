@@ -21,6 +21,7 @@
         <module>db</module>
         <module>redis</module>
         <module>nacos</module>
+        <module>maven</module>
     </modules>
 
     <properties>

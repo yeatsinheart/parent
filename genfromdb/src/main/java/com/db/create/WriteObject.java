@@ -39,15 +39,15 @@ public class WriteObject {
     }
 
     static {
-        modelList.add(new CreateInfo(PROJECT,"entity", PACKAGE_TEST + ".entity", getPath(PROJECT,"service")+JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT,"entity", PACKAGE_TEST + ".entity", getPath(PROJECT,"db")+JAVA_FILE, JAVA_FILE_SUFFIX));
         modelList.add(new CreateInfo(PROJECT,"dto", PACKAGE_TEST + ".dto", getPath(PROJECT,"api")+JAVA_FILE, JAVA_FILE_SUFFIX));
         //modelList.add(new CreateInfo("root", PACKAGE_TEST + ".root", JAVA_FILE, JAVA_FILE_SUFFIX));
        // modelList.add(new CreateInfo("create", PACKAGE_TEST + ".create", JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT,"mapper", PACKAGE_TEST + ".mapper", getPath(PROJECT,"service")+JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT,"mapper", PACKAGE_TEST + ".mapper", getPath(PROJECT,"db")+JAVA_FILE, JAVA_FILE_SUFFIX));
         //modelList.add(new CreateInfo("controller", PACKAGE_TEST + ".controller", JAVA_FILE, JAVA_FILE_SUFFIX));
         modelList.add(new CreateInfo(PROJECT,"service", PACKAGE_TEST + ".service", getPath(PROJECT,"service")+JAVA_FILE, JAVA_FILE_SUFFIX));
         modelList.add(new CreateInfo(PROJECT,"serviceImpl", PACKAGE_TEST + ".service.impl", getPath(PROJECT,"service")+JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT,"mapper.xml", NO_PACKAGE, getPath(PROJECT,"service")+MAPPER_FILE, NO_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT,"mapper.xml", NO_PACKAGE, getPath(PROJECT,"db")+MAPPER_FILE, NO_FILE_SUFFIX));
     }
 
     public static void main(String[] args) {

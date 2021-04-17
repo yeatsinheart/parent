@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Slf4j
@@ -28,7 +29,7 @@ public class RequestHandler {
         paramsByteBuf.readBytes(req);
         String reqStr = null;
         try {
-            reqStr = new String(req, "utf-8");
+            reqStr = new String(req, StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException e) {
             log.warn("UnsupportedEncodingException:{}", e);
         }

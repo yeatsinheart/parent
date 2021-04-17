@@ -13,6 +13,7 @@ import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class TCPClient {
@@ -27,7 +28,7 @@ public class TCPClient {
             ByteBuf buf = (ByteBuf)msg;
             byte[] req = new byte[buf.readableBytes()];
             buf.readBytes(req);
-            String body = new String(req,"UTF-8");
+            String body = new String(req, StandardCharsets.UTF_8.name());
             System.out.println("receive response:" + body);
 
             log.info("返回咯🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉");

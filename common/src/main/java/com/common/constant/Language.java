@@ -32,7 +32,7 @@ public enum  Language {
 
     public static String getFileCodeByCode(String code) {
         Language[] languageEnums = Language.values();
-        for (var i = 0; i < languageEnums.length; i++) {
+        for (int i = 0; i < languageEnums.length; i++) {
             if (languageEnums[i].code.equals(code)) {
                 return languageEnums[i].code;
             }

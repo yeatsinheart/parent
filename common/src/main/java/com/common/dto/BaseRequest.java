@@ -69,7 +69,7 @@ public class BaseRequest implements Serializable {
      */
     private Integer pageSize = 10;
 
-    private Long opTime =LocalDateTimeUtil.getNowUTCSsTimestamp();
+    private Long opTime =LocalDateTimeUtil.timestamp13();
 
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);

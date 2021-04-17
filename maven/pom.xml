@@ -9,11 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>user</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>user-api</module>
-        <module>user-service</module>
-        <module>user-db</module>
-    </modules>
+    <artifactId>maven</artifactId>
+<dependencies>
+    <dependency>
+        <groupId>com.casino</groupId>
+        <artifactId>common</artifactId>
+        <version>${project.version}</version>
+    </dependency>
+</dependencies>
+
 </project>

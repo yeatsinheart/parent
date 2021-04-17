@@ -17,14 +17,13 @@
 package com.common.utils;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 public class Charset {
-    public final static String ENCODE_CHARSET = "UTF-8";
-    public final static String DECODE_CHARSET = "UTF-8";
 
     public static String getString(byte[] b, int len) {
         try {
-            return new String(b, 0, len, DECODE_CHARSET);
+            return new String(b, 0, len, StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException e) {
             return new String(b, 0, len);
         }
@@ -32,7 +31,7 @@ public class Charset {
 
     public static String getString(byte[] b, int start, int len) {
         try {
-            return new String(b, start, len, DECODE_CHARSET);
+            return new String(b, start, len, StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException e) {
             return new String(b, start, len);
         }
@@ -41,7 +40,7 @@ public class Charset {
     public static byte[] getBytes(String str) {
         if (str != null) {
             try {
-                return str.getBytes(ENCODE_CHARSET);
+                return str.getBytes(StandardCharsets.UTF_8.name());
             } catch (UnsupportedEncodingException e) {
                 return str.getBytes();
             }

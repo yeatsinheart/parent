@@ -1,5 +1,7 @@
 package com.common.utils;
 
+import com.common.secret.Base64Util;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.util.Base64Utils;
 
 import javax.imageio.ImageIO;
@@ -35,7 +37,8 @@ public class ImageCodeGenerator {
      * @return
      */
     public static String generateVerifyCode(int verifySize) {
-        return generateVerifyCode(verifySize, VERIFY_CODES);
+        String code = generateVerifyCode(verifySize, VERIFY_CODES);
+        return code;
     }
 
     /**
@@ -58,39 +61,7 @@ public class ImageCodeGenerator {
         return verifyCode.toString();
     }
 
-    /**
-     * 生成随机验证码文件,并返回验证码值
-     *
-     * @param w
-     * @param h
-     * @param outputFile
-     * @param verifySize
-     * @return
-     * @throws IOException
-     */
-    public static String outputVerifyImage(int w, int h, File outputFile, int verifySize)
-            throws IOException {
-        String verifyCode = generateVerifyCode(verifySize);
-        outputImage(w, h, outputFile, verifyCode);
-        return verifyCode;
-    }
 
-    /**
-     * 输出随机验证码图片流,并返回验证码值
-     *
-     * @param w
-     * @param h
-     * @param os
-     * @param verifySize
-     * @return
-     * @throws IOException
-     */
-    public static String outputVerifyImage(int w, int h, OutputStream os, int verifySize)
-            throws IOException {
-        String verifyCode = generateVerifyCode(verifySize);
-        outputImage(w, h, os, verifyCode);
-        return verifyCode;
-    }
 
     /**
      * 生成指定验证码图像文件
@@ -101,7 +72,7 @@ public class ImageCodeGenerator {
      * @param code
      * @throws IOException
      */
-    public static void outputImage(int w, int h, File outputFile, String code) throws IOException {
+    public static void writeImage(int w, int h, File outputFile, String code) throws IOException {
         if (outputFile == null) {
             return;
         }
@@ -113,22 +84,25 @@ public class ImageCodeGenerator {
             outputFile.createNewFile();
             FileOutputStream fos = new FileOutputStream(outputFile);
             outputImage(w, h, fos, code);
+            //输出流
             fos.close();
         } catch (IOException e) {
             throw e;
         }
     }
-
+    public static void outputImage(int w, int h,FileOutputStream os,  String code) throws IOException {
+        BufferedImage img =  getImage(w, h, code);
+        ImageIO.write(img, "jpg", os);
+    }
     /**
-     * 输出指定验证码图片流
+     * 获取指定验证码图片流
      *
      * @param w
      * @param h
-     * @param os
      * @param code
      * @throws IOException
      */
-    public static void outputImage(int w, int h, OutputStream os, String code) throws IOException {
+    public static BufferedImage getImage(int w, int h,  String code) throws IOException {
         int verifySize = code.length();
         BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         Random rand = new Random();
@@ -189,7 +163,8 @@ public class ImageCodeGenerator {
         }
 
         g2.dispose();
-        ImageIO.write(image, "jpg", os);
+        return image;
+        //ImageIO.write(image, "jpg", os);
     }
 
     private static Color getRandColor(int fc, int bc) {
@@ -266,19 +241,6 @@ public class ImageCodeGenerator {
         }
     }
 
-    /**
-     * 生成图片
-     *
-     * @param size
-     * @return
-     * @throws IOException
-     */
-    public static String createImage(Integer size, Integer width, Integer height) throws IOException {
-        String verifyCode = ImageCodeGenerator.generateVerifyCode(size);
-        File file = new File(ImageCodeGenerator.filePath, verifyCode + ".jpg");
-        ImageCodeGenerator.outputImage(width, height, file, verifyCode);
-        return verifyCode;
-    }
 
     // 图片转化成base64字符串
     public static String getImageToBase64(String imgFile) {
@@ -333,11 +295,19 @@ public class ImageCodeGenerator {
 
     public static void main(String[] args) throws IOException {
         File dir = new File("D:/aaaimg");
-        int w = 65, h = 28;
+        int w = 80, h = 40;
         for (int i = 0; i < 50; i++) {
+            long start = System.currentTimeMillis();
             String verifyCode = generateVerifyCode(4);
-            File file = new File(dir, verifyCode + ".jpg");
-            outputImage(w, h, file, verifyCode);
+           // File file = new File(dir, verifyCode + ".jpg");
+            //writeImage(w, h, file, verifyCode);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            ImageIO.write(getImage(w,h,verifyCode), "jpeg", stream);
+            String img = Base64Util.img(stream.toByteArray());
+            long end = System.currentTimeMillis();
+            System.out.println(end-start);
+            System.out.println(img.length());
+            System.out.println(img);
         }
     }
 
