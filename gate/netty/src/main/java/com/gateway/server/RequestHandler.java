@@ -1,8 +1,6 @@
 package com.gateway.server;
 
 import com.common.dto.BaseRequest;
-import com.common.utils.XssUtil;
-import com.db.service.Service;
 import com.gateway.router.Router;
 import com.gateway.server.parameter.ParamUtil;
 import com.google.gson.Gson;
@@ -11,7 +9,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +21,7 @@ import java.util.Map;
 public class RequestHandler {
     @Autowired
     Map<String, Router> routerMap;
-    @DubboReference(group="test1")
-    private Service test;
+
     // 统一处理tcp udp 的ByteBuf请求信息
     public String dispatch(ChannelHandlerContext ctx, ByteBuf paramsByteBuf) {
         byte[] req = new byte[paramsByteBuf.readableBytes()];
@@ -40,7 +36,7 @@ public class RequestHandler {
             log.info("收到空信息");
             return null;
         }
-        reqStr=reqStr.replaceAll("\r","").replaceAll("\n","");
+        reqStr = reqStr.replaceAll("\r", "").replaceAll("\n", "");
         log.info("ByteBuf请求{}", reqStr);
         String router = "udp/tcp_route";
         if (StringUtils.isEmpty(router)) {
@@ -58,7 +54,7 @@ public class RequestHandler {
     // 统一处理 http 的FullHttpRequest请求信息
     public String dispatch(ChannelHandlerContext ctx, FullHttpRequest paramsHttp) {
         String uri = ParamUtil.getUri(paramsHttp);
-        log.info("访问uri{}",uri);
+        log.info("访问uri{}", uri);
         if (uri.equals("/favicon.ico")) {
             return null;
         }
@@ -73,7 +69,6 @@ public class RequestHandler {
 
     // 统一请求处理入口
     public String dispatch(ChannelHandlerContext ctx, String route, String paramsString) {
-        test.test();
         if (StringUtils.isEmpty(paramsString)) {
             log.info("收到空信息,直接结束对话，还是保持session？");
             return null;

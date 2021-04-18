@@ -41,7 +41,7 @@ import java.util.List;
 public class UDPServerChannel extends AbstractNioMessageChannel implements ServerSocketChannel {
     private final ChannelMetadata METADATA = new ChannelMetadata(true);
     private final UDPServerChannelConfig config;
-    protected final LinkedHashMap<InetSocketAddress, UDPChannel> channels = new LinkedHashMap<InetSocketAddress, UDPChannel>();
+    protected final LinkedHashMap<InetSocketAddress, UDPChannel> channels = new LinkedHashMap<>();
 
     public UDPServerChannel() throws IOException {
         this(SelectorProvider.provider().openDatagramChannel(StandardProtocolFamily.INET));
@@ -87,7 +87,6 @@ public class UDPServerChannel extends AbstractNioMessageChannel implements Serve
      *
      * @return true表示已已启动监听，否则未启动
      * @see DatagramChannel#isOpen()
-     * @see DatagramSocket#isBound()
      */
     @Override
     public boolean isActive() {
@@ -114,21 +113,18 @@ public class UDPServerChannel extends AbstractNioMessageChannel implements Serve
     }
 
     public void removeChannel(final Channel channel) {
-        eventLoop().submit(new Runnable() {
-            @Override
-            public void run() {
-                InetSocketAddress remote = (InetSocketAddress) channel.remoteAddress();
-                if (channels.get(remote) == channel) {
-                    channels.remove(remote);
-                }
+        eventLoop().submit(() -> {
+            InetSocketAddress remote = (InetSocketAddress) channel.remoteAddress();
+            if (channels.get(remote) == channel) {
+                channels.remove(remote);
             }
         });
     }
 
     @Override
-    protected int doReadMessages(List<Object> list) throws Exception {
+    protected int doReadMessages(List<Object> list) {
         DatagramChannel javaChannel = javaChannel();
-        RecvByteBufAllocator.Handle allocatorHandle = unsafe().recvBufAllocHandle();
+        RecvByteBufAllocator.ExtendedHandle allocatorHandle = (RecvByteBufAllocator.ExtendedHandle) unsafe().recvBufAllocHandle();
         ByteBuf buffer = allocatorHandle.allocate(config.getAllocator());
         allocatorHandle.attemptedBytesRead(buffer.writableBytes());
 
@@ -190,17 +186,17 @@ public class UDPServerChannel extends AbstractNioMessageChannel implements Serve
     }
 
     @Override
-    protected boolean doConnect(SocketAddress addr1, SocketAddress addr2) throws Exception {
+    protected boolean doConnect(SocketAddress addr1, SocketAddress addr2) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    protected void doFinishConnect() throws Exception {
+    protected void doFinishConnect() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    protected void doDisconnect() throws Exception {
+    protected void doDisconnect() {
         throw new UnsupportedOperationException();
     }
 }

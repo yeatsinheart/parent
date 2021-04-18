@@ -16,26 +16,29 @@ import java.io.File;
 public class MavenProjectCreater {
 
     public static void main(String[] args) {
-        newMultyModule("ademo");
+        String projectPath = System.getProperty("user.dir") + File.separator + "business";
+        String project = "ademo";
+        String parent = "business";
+        String parentPackage = "code";
+        newMultyModule(parent,parentPackage,projectPath + File.separator + project, project);
     }
 
 
-    public static void newMultyModule(String project) {
-        FileUtil.remove(project);
-        File file = new File(project);
-        ParentPom.init(file.getAbsolutePath(),project);
+    public static void newMultyModule(String parent,String parentPackage,String basePath, String project) {
+        FileUtil.remove(basePath);
+        ParentPom.init(parent,parentPackage,basePath, project);
 
-        ApiPom.init(file.getAbsolutePath()+File.separator+project+"-api",project);
-        ApiFile.init(file.getAbsolutePath()+File.separator+project+"-api",project);
+        ApiPom.init(parentPackage,basePath + File.separator + project + "-api", project);
+        ApiFile.init(basePath + File.separator + project + "-api", project);
 
-        ServicePom.init(file.getAbsolutePath()+File.separator+project+"-service",project);
-        ServiceFile.init(file.getAbsolutePath()+File.separator+project+"-service",project);
+        ServicePom.init(parentPackage,basePath + File.separator + project + "-service", project);
+        ServiceFile.init(basePath + File.separator + project + "-service", project);
 
-        WebPom.init(file.getAbsolutePath()+File.separator+project+"-web",project);
-        WebFile.init(file.getAbsolutePath()+File.separator+project+"-web",project);
+        WebPom.init(parentPackage,basePath + File.separator + project + "-web", project);
+        WebFile.init(basePath + File.separator + project + "-web", project);
 
-        DbPom.init(file.getAbsolutePath()+File.separator+project+"-db",project);
-        DbFile.init(file.getAbsolutePath()+File.separator+project+"-db",project);
+        DbPom.init(parentPackage,basePath + File.separator + project + "-db", project);
+        DbFile.init(basePath + File.separator + project + "-db", project);
     }
 
 }

@@ -11,7 +11,9 @@ public class DbFile {
     public static void init(String projectpath,String project){
         
         //初始化文件夹结构
-        String base = projectpath+File.separator+"src"+ File.separator+"main";
+        String src = projectpath+File.separator+"src";
+        FileUtil.mkdir(src+File.separator+"test"+File.separator+"java"+File.separator+level+File.separator+project);
+        String base = src+ File.separator+"main";
 
         String basePackage=base+File.separator+"java"+File.separator+level+File.separator+project;
         String starter=basePackage+File.separator+ StringUtil.firstUpper(project)+StringUtil.firstUpper(level)+"DbApplication.java";

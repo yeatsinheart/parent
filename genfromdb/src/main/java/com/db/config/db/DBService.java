@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class DBService {
-    private ConcurrentHashMap<String, SqlSessionFactory> dataBaseConnectMap = new ConcurrentHashMap();
+    private ConcurrentHashMap<String, SqlSessionFactory> dataBaseConnectMap = new ConcurrentHashMap<>();
 
     /**
      * 本地获取所有数据表
@@ -29,8 +29,7 @@ public class DBService {
         SqlSessionTemplate template = new SqlSessionTemplate(sqlSessionFactory);
         DBMapper tableMapper = template.getMapper(DBMapper.class);
         String sql = baseSql.getTableSql(tables);
-        List<Table> tableList = tableMapper.getAllTables(sql);
-        return tableList;
+        return tableMapper.getAllTables(sql);
     }
 
     /**
@@ -41,12 +40,11 @@ public class DBService {
         SqlSessionFactory sqlSessionFactory = getDbConnection(dbinfo);
         SqlSessionTemplate template = new SqlSessionTemplate(sqlSessionFactory);
         DBMapper tableMapper = template.getMapper(DBMapper.class);
-        List<Column> columnList = tableMapper.getAllColumns(baseSql.getColumnSql(tableName));
+        return tableMapper.getAllColumns(baseSql.getColumnSql(tableName));
         //提交事务
        /* template.commit();
         //关闭session
         template.close();*/
-        return columnList;
     }
 
     /**

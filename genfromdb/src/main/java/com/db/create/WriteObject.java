@@ -6,13 +6,16 @@ import com.db.config.db.DBService;
 import com.db.config.db.Table;
 import com.db.create.freemarker.Freemarker;
 import com.db.create.handle.toObject.TableHandle;
+import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.*;
 
 public class WriteObject {
     static List<CreateInfo> modelList = new ArrayList();
 
+    static String BASEPATH ="business";
     static String PROJECT ="gamming";
     static String SOURCE_FILE = "src/main/";
     static String RESOURCE_FILE = SOURCE_FILE + "/resources/";
@@ -35,6 +38,9 @@ public class WriteObject {
     // 是否本地缓存
     static boolean LOCALCACHEABLE=true;
     public static String getPath(String project,String level){
+        if(!StringUtils.isEmpty(BASEPATH)){
+            project=BASEPATH+ File.separator+project;
+        }
         return System.getProperty("user.dir")+"/"+project+"/"+project+"-"+level+"/";
     }
 
