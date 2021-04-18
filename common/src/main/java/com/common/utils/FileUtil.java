@@ -18,7 +18,12 @@ public class FileUtil {
         }
         return false;
     }
-
+    // 创建目录
+    public static boolean mkdir(String path) {
+        File directory = new File(path);
+        parent(directory);
+        return directory.mkdirs();
+    }
     // 创建文件
     public static File create(String path) {
         File file = null;
