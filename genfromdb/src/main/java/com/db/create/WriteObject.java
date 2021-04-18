@@ -18,7 +18,7 @@ public class WriteObject {
     static String RESOURCE_FILE = SOURCE_FILE + "/resources/";
     static String MAPPER_FILE = RESOURCE_FILE + "/mapper/";
     static String JAVA_FILE = SOURCE_FILE + "/java/";
-    static String MODEL = "com/auto/database/create/freemarker/gmbw/";
+    static String MODEL = "com/auto/database/create/freemarker/selfframe/";
     static String MODEL_FILE = System.getProperty("user.dir")+"/database/"+JAVA_FILE + MODEL;
     static String JAVA_FILE_SUFFIX = ".java";
     static String NO_FILE_SUFFIX = "";
@@ -39,14 +39,14 @@ public class WriteObject {
     }
 
     static {
-        modelList.add(new CreateInfo(PROJECT,"entity", PACKAGE_TEST + ".entity", getPath(PROJECT,"db")+JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT,"dto", PACKAGE_TEST + ".dto", getPath(PROJECT,"api")+JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT,"entity",   "db."+PROJECT+".entity", getPath(PROJECT,"db")+JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT,"dto", "api."+PROJECT + ".dto", getPath(PROJECT,"api")+JAVA_FILE, JAVA_FILE_SUFFIX));
         //modelList.add(new CreateInfo("root", PACKAGE_TEST + ".root", JAVA_FILE, JAVA_FILE_SUFFIX));
        // modelList.add(new CreateInfo("create", PACKAGE_TEST + ".create", JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT,"mapper", PACKAGE_TEST + ".mapper", getPath(PROJECT,"db")+JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT,"mapper", "db."+PROJECT + ".mapper", getPath(PROJECT,"db")+JAVA_FILE, JAVA_FILE_SUFFIX));
         //modelList.add(new CreateInfo("controller", PACKAGE_TEST + ".controller", JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT,"service", PACKAGE_TEST + ".service", getPath(PROJECT,"service")+JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT,"serviceImpl", PACKAGE_TEST + ".service.impl", getPath(PROJECT,"service")+JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT,"service", "api."+PROJECT + ".services", getPath(PROJECT,"api")+JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT,"serviceImpl", "service."+PROJECT + ".services.impls", getPath(PROJECT,"service")+JAVA_FILE, JAVA_FILE_SUFFIX));
         modelList.add(new CreateInfo(PROJECT,"mapper.xml", NO_PACKAGE, getPath(PROJECT,"db")+MAPPER_FILE, NO_FILE_SUFFIX));
     }
 
