@@ -1,7 +1,6 @@
-package com.redis;
+package com.common.redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import redis.clients.jedis.JedisPubSub;
 import redis.clients.jedis.params.SetParams;
 

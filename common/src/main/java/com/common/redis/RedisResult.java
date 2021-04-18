@@ -1,4 +1,4 @@
-package com.redis;
+package com.common.redis;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

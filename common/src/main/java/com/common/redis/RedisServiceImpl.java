@@ -1,4 +1,4 @@
-package com.redis;
+package com.common.redis;
 
 import com.alibaba.fastjson.JSON;
 import com.common.utils.LocalDateTimeUtil;

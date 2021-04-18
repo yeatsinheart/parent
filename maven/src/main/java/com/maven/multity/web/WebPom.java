@@ -46,11 +46,6 @@ public class WebPom {
                 "           <artifactId>springdoc-openapi-webflux-core</artifactId>\n" +
                 "           <version>1.5.7</version>\n" +
                 "       </dependency>\n"+
-                "       <dependency>\n" +
-                "           <groupId>com.casino</groupId>\n" +
-                "           <artifactId>"+project+"-api</artifactId>\n" +
-                "           <version>${project.version}</version>\n" +
-                "       </dependency>\n" +
                 "   </dependencies>\n" +
                 "</project>";
     }
