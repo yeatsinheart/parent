@@ -1,9 +1,8 @@
-package com.gateway.server;
+package com.gateway.server.handler;
 
 import com.gateway.server.parameter.WebSocketRequestDTO;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
@@ -20,8 +19,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @ChannelHandler.Sharable
 @Service
-public class HttpDispatcher extends SimpleChannelInboundHandler<Object> {
-
+public class HttpDispatcher extends AbstractRequestHandler<Object> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof FullHttpRequest) {
@@ -37,9 +35,6 @@ public class HttpDispatcher extends SimpleChannelInboundHandler<Object> {
             } else {
                 //Http请求处理器
                 ctx.fireChannelRead(request.retain());
-                if (request.refCnt() != 1) {
-                    log.error("http,引用计数不正常{}", request.refCnt());
-                }
             }
         } else if (msg instanceof WebSocketFrame) {
             WebSocketFrame frame = (WebSocketFrame) msg;
@@ -77,6 +72,7 @@ public class HttpDispatcher extends SimpleChannelInboundHandler<Object> {
         return false;
     }
 
+
     @NoArgsConstructor
     @Data
     @EqualsAndHashCode(callSuper = false)
@@ -86,11 +82,5 @@ public class HttpDispatcher extends SimpleChannelInboundHandler<Object> {
         public FileUploadRequestVo(FullHttpRequest request) {
             this.request = request;
         }
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.error("{}", cause);
-        ctx.close();
     }
 }

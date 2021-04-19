@@ -32,6 +32,11 @@ public class ServicePom {
                 "           <version>${project.version}</version>\n" +
                 "        </dependency>\n" +
                 "        <dependency>\n" +
+                "            <groupId>code</groupId>\n" +
+                "            <artifactId>dubbo</artifactId>\n" +
+                "            <version>${project.version}</version>\n" +
+                "        </dependency>\n" +
+                "        <dependency>\n" +
                 "           <groupId>"+parentPackage+"</groupId>\n" +
                 "           <artifactId>"+project+"-db</artifactId>\n" +
                 "           <version>${project.version}</version>\n" +

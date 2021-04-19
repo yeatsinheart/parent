@@ -1,6 +1,7 @@
 package com.gateway.server;
 
 import com.common.utils.NamingThreadFactory;
+import com.gateway.server.handler.HttpDispatcher;
 import com.gateway.server.handler.HttpHandler;
 import com.gateway.server.handler.TCPHandler;
 import com.gateway.server.handler.WebSocketHandler;
@@ -106,10 +107,10 @@ public class TCPNettyServer {
 
 @Slf4j
 class TCPDispatcher extends ByteToMessageDecoder {
-    private HttpDispatcher httpDispatcher;
-    private TCPHandler tcpHandler;
-    private HttpHandler httpHandler;
-    private WebSocketHandler webSocketHandler;
+    private final HttpDispatcher httpDispatcher;
+    private final TCPHandler tcpHandler;
+    private final HttpHandler httpHandler;
+    private final WebSocketHandler webSocketHandler;
 
     public TCPDispatcher(HttpDispatcher httpDispatcher, HttpHandler http, WebSocketHandler webSocket, TCPHandler tcp) {
         this.httpDispatcher = httpDispatcher;

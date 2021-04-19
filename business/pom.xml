@@ -10,5 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <artifactId>business</artifactId>
-
+    <modules>
+        <module>game</module>
+    </modules>
 </project>

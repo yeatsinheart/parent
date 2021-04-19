@@ -1,21 +1,23 @@
 package com.gateway.server.handler;
 
-import com.common.utils.XssUtil;
+import com.common.constant.Language;
+import com.common.result.ResultGenerator;
+import com.gateway.server.RequestHandler;
+import com.gateway.server.SessionHolder;
 import com.gateway.server.parameter.ParamUtil;
 import com.gateway.server.parameter.WebSocketMsgStringDTO;
 import com.gateway.server.parameter.WebSocketRequestDTO;
-import io.netty.buffer.ByteBuf;
+import com.google.gson.Gson;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.websocketx.*;
-import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -23,24 +25,14 @@ import java.util.Map;
 @Slf4j
 @ChannelHandler.Sharable
 @Component("websocket")
-public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketRequestDTO> {
+public class WebSocketHandler extends AbstractRequestHandler<WebSocketRequestDTO> {
 
-    private WebSocketServerHandshakerFactory wsFactory =
+    private final WebSocketServerHandshakerFactory wsFactory =
             new WebSocketServerHandshakerFactory(null, null, true, 65536 * 5);
-    //属性名称：握手处理器
-    private static final AttributeKey<WebSocketServerHandshaker> HAND_SHAKE_ATTR = AttributeKey.valueOf("HAND_SHAKE");
-    //属性名称：websocket自定义id
-    private static final AttributeKey<String> USER = AttributeKey.valueOf("USER");
 
-    @Override
-    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-        super.channelUnregistered(ctx);
-    }
 
-    @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        //删除信道--sessionID
-    }
+    @Autowired
+    RequestHandler requestHandler;
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, WebSocketRequestDTO request) throws Exception {
@@ -58,9 +50,8 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketReque
     private void handleShake(ChannelHandlerContext ctx, FullHttpRequest request) {
         // 根据host获取到对应的appId
         String host = request.headers().get(HttpHeaderNames.REFERER);
-
         Map<String, String> params = ParamUtil.getRequestParams(request);
-
+        String uri = ParamUtil.getUri(request);
         if (StringUtils.isEmpty("握手信息")) {
             WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
             ctx.close();
@@ -72,7 +63,10 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketReque
             ctx.close();
         } else {
             handshaker.handshake(ctx.channel(), request);
-            ctx.channel().attr(HAND_SHAKE_ATTR).set(handshaker);
+            ctx.channel().attr(SessionHolder.HAND_SHAKE_ATTR).set(handshaker);
+            ctx.channel().attr(SessionHolder.URI).set(uri);
+            ctx.channel().attr(SessionHolder.USER).set(params.get("token"));
+            SessionHolder.setIP(ctx.channel());
             //topicListener.addListenerInfo(ctx.channel(), user.getAppId(), user.getUserId(), user.getUserName());
         }
     }
@@ -80,9 +74,8 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketReque
     //处理websocket数据
     private void handleFrame(ChannelHandlerContext ctx, WebSocketFrame frame) {
         // 判断是否关闭链路的指令
-        WebSocketFrame response = null;
         if (frame instanceof CloseWebSocketFrame) {
-            WebSocketServerHandshaker handshaker = ctx.channel().attr(HAND_SHAKE_ATTR).get();
+            WebSocketServerHandshaker handshaker = ctx.channel().attr(SessionHolder.HAND_SHAKE_ATTR).get();
             if (handshaker == null) {
                 Flush.flushFinishWebSocket(ctx.channel(), Unpooled.EMPTY_BUFFER);
             }
@@ -92,12 +85,18 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketReque
         } else if (frame instanceof TextWebSocketFrame) {
             WebSocketMsgStringDTO msg = null;
             Channel channel = ctx.channel();
-            TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
-            TextWebSocketFrame responseFrame = new TextWebSocketFrame("{\"sender\":\"notify\",\"data\":\"无法加入\"}");
-            Flush.flushWebSocket(channel, responseFrame);
+            //TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
+            //String request = textFrame.text();
+            String response = requestHandler.websocket(ctx, frame.content());
+            //TextWebSocketFrame responseFrame = new TextWebSocketFrame("{\"sender\":\"notify\",\"data\":\"无法加入\"}");
+            if (StringUtils.isNotEmpty(response)) {
+                Flush.flushWebSocket(channel, response);
+            } else {
+                Flush.flushWebSocket(channel, new Gson().toJson(ResultGenerator.genFailResult(Language.中文.getCode())));
+            }
 
         } else if (frame instanceof BinaryWebSocketFrame) {
-            ByteBuf binaryFrame = frame.content();
+            /*ByteBuf binaryFrame = frame.content();
             binaryFrame.markReaderIndex();
             int flag = binaryFrame.readInt();
             int strLength = binaryFrame.readInt();
@@ -113,16 +112,10 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketReque
                 TextWebSocketFrame responseFrame = new TextWebSocketFrame("{\"sender\":\"notify\",\"data\":\"消息内容异常，请核对后再发送\"}");
                 Flush.flushWebSocket(ctx.channel(), responseFrame);
                 return;
-            }
+            }*/
 
 
         }
     }
 
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        /*super.exceptionCaught(ctx, cause);*/
-        log.error("{}", cause);
-        ctx.close();
-    }
 }

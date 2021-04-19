@@ -25,7 +25,7 @@ public class TCPClient {
                 String value = ((ByteBuf) msg).toString(Charset.defaultCharset());
                 System.out.println("服务器端返回的数据:" + value);
             }
-            ByteBuf buf = (ByteBuf)msg;
+            ByteBuf buf = (ByteBuf) msg;
             byte[] req = new byte[buf.readableBytes()];
             buf.readBytes(req);
             String body = new String(req, StandardCharsets.UTF_8.name());
@@ -40,6 +40,7 @@ public class TCPClient {
     }
 
     public static ChannelFuture future;
+
     public static void main(String[] args) throws InterruptedException {
         // 首先，netty通过ServerBootstrap启动服务端
         Bootstrap client = new Bootstrap();
@@ -72,7 +73,7 @@ public class TCPClient {
         future.channel().writeAndFlush(object.toJSONString());
 
         for (int i = 0; i < 5; i++) {
-           // Thread.sleep(1000);
+            // Thread.sleep(1000);
             String msg = "ssss" + i;
             future.channel().writeAndFlush(msg);
         }

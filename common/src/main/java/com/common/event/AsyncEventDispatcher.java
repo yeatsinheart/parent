@@ -16,7 +16,6 @@ public class AsyncEventDispatcher {
     //数据库分页扫描所有处理中的intention
     //遍历每一条intention进行处理
     public void asyncScan() {
-
         AsyncEventIntention intention = new AsyncEventIntention();
         AsyncEventHandler handler = handlerMap.get(intention.getTag());
         handler.asyncProcess(intention);

@@ -1,5 +1,6 @@
 package com.gateway.server.handler;
 
+import com.gateway.server.SessionHolder;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -37,7 +38,7 @@ public class Flush {
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.copiedBuffer(result, CharsetUtil.UTF_8));
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
         setCros(response);
-        log.info("HTTP响应{}", result);
+        log.info("{}HTTP响应{}", SessionHolder.getsession(ctx.channel()) ,result);
         ctx.writeAndFlush(response);
         ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
     }
@@ -49,7 +50,9 @@ public class Flush {
     public static void flushWebSocket(Channel channel, Object result) {
         channel.writeAndFlush(result);
     }
+
     public static void flushBytes(Channel channel, byte[] result) {
+        log.info("{}", SessionHolder.getsession(channel) );
         ByteBuf buf = Unpooled.buffer();
         buf.writeBytes(result);
         channel.writeAndFlush(buf);

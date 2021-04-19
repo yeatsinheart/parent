@@ -16,7 +16,7 @@ public class DbFile {
         String base = src+ File.separator+"main";
 
         String basePackage=base+File.separator+"java"+File.separator+level+File.separator+project;
-        String starter=basePackage+File.separator+ StringUtil.firstUpper(project)+StringUtil.firstUpper(level)+"DbApplication.java";
+        String starter=basePackage+File.separator+ StringUtil.firstUpper(project)+StringUtil.firstUpper(level)+"Application.java";
         FileUtil.write(starter,starter(project),true);
 
         String entities=basePackage+File.separator+"entities";

@@ -1,15 +1,14 @@
 package com.gateway.router.impl;
 
-import com.common.dto.BaseRequest;
+import com.gateway.router.Router;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import com.gateway.router.Router;
 
 @Slf4j
-@Component("router_default")
+@Component("gateway_route_default")
 public class DefaultRouter implements Router {
     @Override
-    public String handle(BaseRequest request) {
+    public String handle(String request) {
         return "router_default";
     }
 }

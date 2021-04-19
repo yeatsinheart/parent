@@ -1,6 +1,5 @@
 package com.gateway.server;
 
-import com.common.dto.BaseRequest;
 import com.gateway.router.Router;
 import com.gateway.server.parameter.ParamUtil;
 import com.google.gson.Gson;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -21,9 +21,10 @@ import java.util.Map;
 public class RequestHandler {
     @Autowired
     Map<String, Router> routerMap;
+    @Autowired
+    RequestHandler requestHandler;
 
-    // 统一处理tcp udp 的ByteBuf请求信息
-    public String dispatch(ChannelHandlerContext ctx, ByteBuf paramsByteBuf) {
+    private String doByteBuf(ByteBuf paramsByteBuf) {
         byte[] req = new byte[paramsByteBuf.readableBytes()];
         paramsByteBuf.readBytes(req);
         String reqStr = null;
@@ -32,19 +33,52 @@ public class RequestHandler {
         } catch (UnsupportedEncodingException e) {
             log.warn("UnsupportedEncodingException:{}", e);
         }
+        return reqStr;
+    }
+
+    public String websocket(ChannelHandlerContext ctx, ByteBuf paramsByteBuf) {
+        String reqStr = doByteBuf(paramsByteBuf);
         if (StringUtils.isEmpty(reqStr)) {
-            log.info("收到空信息");
+            log.info("websocket收到空信息");
             return null;
         }
-        reqStr = reqStr.replaceAll("\r", "").replaceAll("\n", "");
-        log.info("ByteBuf请求{}", reqStr);
-        String router = "udp/tcp_route";
+        String router = ctx.channel().attr(SessionHolder.URI).get();
         if (StringUtils.isEmpty(router)) {
             return null;
         }
-        log.info(router);
         try {
-            return dispatch(ctx, router, reqStr);
+            return requestHandler.dispatch(ctx, router, reqStr);
+        } catch (Exception e) {
+            log.error("websocket请求逻辑中出错{}", e);
+        }
+        return null;
+    }
+
+    // 统一处理tcp udp 的ByteBuf请求信息  tcp udp websocket 内容应该都一致。。
+    public String byteBuf(ChannelHandlerContext ctx, ByteBuf paramsByteBuf) {
+        String reqStr = doByteBuf(paramsByteBuf);
+        if (StringUtils.isEmpty(reqStr)) {
+            log.info("ByteBuf请求收到空信息");
+            return null;
+        }
+        //reqStr = reqStr.replaceAll("\r", "").replaceAll("\n", "");
+        log.info("ByteBuf请求{}", reqStr);
+        // todo 请求的路由处理
+
+
+        HashMap<String, String> request = new HashMap<>();
+        try {
+            request = new Gson().fromJson(reqStr, HashMap.class);
+        } catch (Exception e) {
+            log.warn("ByteBuf请求不是json");
+            return null;
+        }
+        String router = "/";
+        if (StringUtils.isEmpty(router)) {
+            return null;
+        }
+        try {
+            return requestHandler.dispatch(ctx, router, reqStr);
         } catch (Exception e) {
             log.error("ByteBuf请求逻辑中出错{}", e);
         }
@@ -52,15 +86,14 @@ public class RequestHandler {
     }
 
     // 统一处理 http 的FullHttpRequest请求信息
-    public String dispatch(ChannelHandlerContext ctx, FullHttpRequest paramsHttp) {
+    public String http(ChannelHandlerContext ctx, FullHttpRequest paramsHttp) {
         String uri = ParamUtil.getUri(paramsHttp);
-        log.info("访问uri{}", uri);
         if (uri.equals("/favicon.ico")) {
             return null;
         }
         Map<String, String> map = ParamUtil.getRequestParams(paramsHttp);
         try {
-            return dispatch(ctx, uri, new Gson().toJson(map));
+            return requestHandler.dispatch(ctx, uri, new Gson().toJson(map));
         } catch (Exception e) {
             log.error("Http请求逻辑中出错{}", e);
         }
@@ -73,28 +106,12 @@ public class RequestHandler {
             log.info("收到空信息,直接结束对话，还是保持session？");
             return null;
         }
+        log.info("收到消息" + paramsString);
         // Xss 攻击
         // sql 注入
-        BaseRequest request;
+        Router router = routerMap.getOrDefault("gateway_route_" + route, routerMap.get("gateway_route_default"));
         try {
-            request = (new Gson()).fromJson(paramsString, BaseRequest.class);
-        } catch (Exception e) {
-            log.info("未知类型:{}", paramsString);
-            return null;
-        }
-        if (null == request) {
-            log.warn("未知数据类型的用户消息");
-            return null;
-        }
-        log.info("收到消息" + paramsString);
-        return todo(ctx, route, request);
-    }
-
-    public String todo(ChannelHandlerContext ctx, String route, BaseRequest request) {
-        log.info(new Gson().toJson(routerMap));
-        Router router = routerMap.getOrDefault("route_" + route, routerMap.get("router_default"));
-        try {
-            return router.handle(request);
+            return router.handle(paramsString);
         } catch (Exception e) {
             log.error("请求逻辑中出错{}", e);
         }

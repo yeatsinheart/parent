@@ -9,6 +9,7 @@ public class Api {
     private String app;
     private String service;
     private String method;
+    private String op;
     private String params;
     private String params_example;
     private String test_response;

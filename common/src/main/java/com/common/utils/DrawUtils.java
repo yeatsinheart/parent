@@ -1,9 +1,12 @@
-package com.lottory.utils;
+package com.common.utils;
 
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
-public class All {
+public class DrawUtils {
     // 1。提前列举所有开奖结果，落库获取ID
     // 2。提前具体玩法的所有投注可能，落库获取ID，并提供判断开奖结果是否符合预期的方法
     // 3。遍历开奖结果，调用是否符合预期若符合，则在开奖结果添加相对应玩法字段，值为是否中奖
@@ -175,6 +178,5 @@ public class All {
             combinationSort(a, i + 1, result, r_index + 1);
         }
     }
-
 
 }
