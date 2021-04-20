@@ -16,6 +16,8 @@
         <module>mysql</module>
         <module>nacos</module>
         <module>redis</module>
+        <module>webflux</module>
+        <module>common</module>
     </modules>
 
 

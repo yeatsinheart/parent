@@ -39,7 +39,7 @@ public class DbPom {
                 "            <artifactId>mysql</artifactId>\n" +
                 "            <version>${project.version}</version>\n" +
                 "        </dependency>\n" +
-                "    </dependencies>" +
+                "    </dependencies>\n" +
                 "    <build>\n" +
                 "        <plugins>\n" +
                 "            <plugin>\n" +

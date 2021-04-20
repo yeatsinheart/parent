@@ -105,19 +105,13 @@ public class WebFile {
                 "    @GetMapping(\"/test\")\n" +
                 "    public String test(String i) {\n" +
                 "        return testService.test(i);\n" +
-                "    }" +
+                "    }\n" +
                 "    @GetMapping(\"/hello\")\n" +
                 "    public Mono<String> hello(final Model model) {\n" +
                 "        model.addAttribute(\"name\", \"泥瓦匠\");\n" +
                 "        model.addAttribute(\"city\", \"浙江温岭\");\n" +
                 "        String path = \"hello\";\n" +
                 "        return Mono.create(monoSink -> monoSink.success(path));\n" +
-                "    }" +
-                "    @GetMapping(\"/page/list\")\n" +
-                "    public String listPage(final Model model) {\n" +
-                "        final Flux<City> cityFluxList = cityHandler.findAllCity();\n" +
-                "        model.addAttribute(\"cityList\", cityFluxList);\n" +
-                "        return CITY_LIST_PATH_NAME;\n" +
                 "    }\n" +
                 "}\n";
     }

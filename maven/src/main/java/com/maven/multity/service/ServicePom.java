@@ -48,7 +48,7 @@ public class ServicePom {
                 "           <artifactId>"+project+"-api</artifactId>\n" +
                 "           <version>${project.version}</version>\n" +
                 "        </dependency>\n" +
-                "    </dependencies>" +
+                "    </dependencies>\n" +
                 "    <build>\n" +
                 "        <plugins>\n" +
                 "            <plugin>\n" +

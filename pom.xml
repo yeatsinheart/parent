@@ -18,6 +18,8 @@
         <module>gate</module>
 
         <module>business</module>
+        <module>gen</module>
+        <module>webflux</module>
     </modules>
     <dependencies>
         <dependency>

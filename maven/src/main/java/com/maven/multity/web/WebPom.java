@@ -46,7 +46,7 @@ public class WebPom {
                 "           <groupId>org.springdoc</groupId>\n" +
                 "           <artifactId>springdoc-openapi-webflux-core</artifactId>\n" +
                 "           <version>1.5.7</version>\n" +
-                "       </dependency>" +
+                "       </dependency>\n" +
                 "       <dependency>\n" +
                 "           <groupId>org.springframework.boot</groupId>\n" +
                 "           <artifactId>spring-boot-starter-thymeleaf</artifactId>\n" +
