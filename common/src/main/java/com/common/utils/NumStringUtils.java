@@ -5,6 +5,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -78,6 +81,7 @@ public class NumStringUtils {
             num = num / lowerCaseChar.length();
         }
         int length = sb.length();
+        System.out.println(length);
         for (int i = 0; i < len - length; i++) {
             sb.insert(0, "0");
         }
@@ -274,4 +278,35 @@ public class NumStringUtils {
         }
         return decimal.setScale(2, BigDecimal.ROUND_UP).toString();
     }
+
+    public static void main(String[] args) {
+        System.out.println(numToSixUpperString(LocalDateTimeUtil.timestamp10()));
+    }
+    /**
+     * @Description: 生成随机的交易流水号
+     * @params prefix 前缀
+     *//*
+    @Override
+    public String getTradeNo(String prefix) {
+        LocalDateTime localDateTime =  LocalDateTime.now(ZoneOffset.UTC);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+        StringBuilder tradeNo = new StringBuilder();
+        tradeNo.append(prefix);
+        tradeNo.append(dateTimeFormatter.format(localDateTime));
+        tradeNo.append(NumStringUtils.numToSixUpperString(generateIncr("trade_sequence")));
+        return tradeNo.toString();
+    }
+
+    *//**
+     * @Description: 生成随机的交易流水号
+     *//*
+    @Override
+    public String getTradeNoAllNum() {
+        LocalDateTime localDateTime =  LocalDateTime.now(ZoneOffset.UTC);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        StringBuilder tradeNo = new StringBuilder();
+        tradeNo.append(dateTimeFormatter.format(localDateTime));
+        tradeNo.append(generateIncr("trade_sequence"));
+        return tradeNo.toString();
+    }*/
 }
