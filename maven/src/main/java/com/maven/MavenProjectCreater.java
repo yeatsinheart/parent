@@ -31,7 +31,7 @@ public class MavenProjectCreater {
                 "report",
                 ""
         );
-        ps=Arrays.asList("demo");
+        ps=Arrays.asList("gen");
         String finalBasePath = basePath;
         String finalBusiness = business;
         ps.forEach(s -> {

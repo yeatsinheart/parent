@@ -51,7 +51,7 @@ public class WebPom {
                 "           <groupId>org.springframework.boot</groupId>\n" +
                 "           <artifactId>spring-boot-starter-thymeleaf</artifactId>\n" +
                 "       </dependency>\n" +
-                "   </dependencies>" +
+                "   </dependencies>\n" +
                 "   <build>\n" +
                 "        <plugins>\n" +
                 "            <plugin>\n" +
