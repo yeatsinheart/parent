@@ -23,6 +23,7 @@ public class ParentPom {
                 "    <modelVersion>4.0.0</modelVersion>\n" +
                 "\n" +
                 "    <artifactId>"+project+"</artifactId>\n" +
+                "    <version>1.0-SNAPSHOT</version>\n" +
                 "    <packaging>pom</packaging>\n" +
                 "    <modules>\n" +
                 "        <module>"+project+"-web</module>\n" +

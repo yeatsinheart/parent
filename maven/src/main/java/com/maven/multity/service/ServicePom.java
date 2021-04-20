@@ -25,6 +25,7 @@ public class ServicePom {
                 "    <modelVersion>4.0.0</modelVersion>\n" +
                 "\n" +
                 "    <artifactId>"+project+"-"+level+"</artifactId>\n" +
+                "    <version>1.0-SNAPSHOT</version>\n" +
                 "    <dependencies>\n" +
                 "        <dependency>\n" +
                 "            <groupId>code</groupId>\n" +
@@ -47,7 +48,29 @@ public class ServicePom {
                 "           <artifactId>"+project+"-api</artifactId>\n" +
                 "           <version>${project.version}</version>\n" +
                 "        </dependency>\n" +
-                "    </dependencies>\n" +
+                "    </dependencies>" +
+                "    <build>\n" +
+                "        <plugins>\n" +
+                "            <plugin>\n" +
+                "                <groupId>org.springframework.boot</groupId>\n" +
+                "                <artifactId>spring-boot-maven-plugin</artifactId>\n" +
+                "                <version>2.4.4</version>\n" +
+                "                <configuration>\n" +
+                "                    <fork>\n" +
+                "                        true\n" +
+                "                    </fork>\n" +
+                "                    <includeSystemScope>true</includeSystemScope>\n" +
+                "                </configuration>\n" +
+                "                <executions>\n" +
+                "                    <execution>\n" +
+                "                        <goals>\n" +
+                "                            <goal>repackage</goal>\n" +
+                "                        </goals>\n" +
+                "                    </execution>\n" +
+                "                </executions>\n" +
+                "            </plugin>\n" +
+                "        </plugins>\n" +
+                "    </build>\n" +
                 "</project>";
     }
 }

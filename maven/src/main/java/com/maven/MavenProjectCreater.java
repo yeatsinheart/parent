@@ -22,11 +22,23 @@ public class MavenProjectCreater {
         String business = "business";
         String basePath = System.getProperty("user.dir") + File.separator + business;
         //模块
-        List<String> ps = Arrays.asList("testb");
+        List<String> ps = Arrays.asList(
+                "admin",
+                "center","user",
+                "order","money",
+                "pay","webcast",
+                "chat",
+                "report",
+                ""
+                );
         ps.forEach(s -> {
             String realPath = basePath + File.separator + s;
             newMultyModule(business, realPath, s);
         });
+        List<String> gs = Arrays.asList(
+                "draw","chat",
+                ""
+        );
 
     }
 

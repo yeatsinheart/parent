@@ -25,6 +25,7 @@ public class WebPom {
                 "    <modelVersion>4.0.0</modelVersion>\n" +
                 "\n" +
                 "    <artifactId>"+project+"-"+level+"</artifactId>\n" +
+                "    <version>1.0-SNAPSHOT</version>\n" +
                 "<!--https://hellopz.com/2020/07/27/webflux-%E4%B8%AD%E4%BD%BF%E7%94%A8-swagger/ -->\n" +
                 "    <dependencies>\n" +
                 "       <dependency>\n" +
@@ -46,7 +47,29 @@ public class WebPom {
                 "           <artifactId>springdoc-openapi-webflux-core</artifactId>\n" +
                 "           <version>1.5.7</version>\n" +
                 "       </dependency>\n" +
-                "   </dependencies>\n" +
+                "   </dependencies>" +
+                "   <build>\n" +
+                "        <plugins>\n" +
+                "            <plugin>\n" +
+                "                <groupId>org.springframework.boot</groupId>\n" +
+                "                <artifactId>spring-boot-maven-plugin</artifactId>\n" +
+                "                <version>2.4.4</version>\n" +
+                "                <configuration>\n" +
+                "                    <fork>\n" +
+                "                        true\n" +
+                "                    </fork>\n" +
+                "                    <includeSystemScope>true</includeSystemScope>\n" +
+                "                </configuration>\n" +
+                "                <executions>\n" +
+                "                    <execution>\n" +
+                "                        <goals>\n" +
+                "                            <goal>repackage</goal>\n" +
+                "                        </goals>\n" +
+                "                    </execution>\n" +
+                "                </executions>\n" +
+                "            </plugin>\n" +
+                "        </plugins>\n" +
+                "    </build>\n" +
                 "</project>";
     }
 }

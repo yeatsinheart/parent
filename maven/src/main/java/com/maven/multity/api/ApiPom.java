@@ -25,6 +25,7 @@ public class ApiPom {
                 "    <modelVersion>4.0.0</modelVersion>\n" +
                 "\n" +
                 "    <artifactId>"+project+"-"+level+"</artifactId>\n" +
+                "    <version>1.0-SNAPSHOT</version>\n" +
                 "</project>";
     }
 }
