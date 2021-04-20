@@ -12,14 +12,12 @@
         <module>common</module>
         <module>maven</module>
         <module>genfromdb</module>
+        <module>component</module>
 
         <module>router</module>
         <module>gate</module>
 
-        <module>dubbo</module>
         <module>business</module>
-
-        <module>nacos</module>
     </modules>
     <dependencies>
         <dependency>

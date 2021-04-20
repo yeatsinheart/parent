@@ -1,7 +1,6 @@
 package com.common.secret;
 
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.util.Base64Utils;
 
 public class Base64Util {
     //base64 解码

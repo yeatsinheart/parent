@@ -3,7 +3,7 @@ spring.output.ansi.enabled=always
 #logging.level.root=debug
 logging.pattern.console=%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint}%clr(${LOG_LEVEL_PATTERN:%5p}) %clr(${PID}){magenta}%clr([%t]){faint} %clr(%-40.40logger{39}){cyan}[line:%line]%clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}
 
-#开启配置预加载功能
+# 开启配置预加载功能
 nacos.config.bootstrap.enable=true
 # 主配置服务器地址
 nacos.config.server-addr=192.168.31.140:8848
@@ -21,12 +21,8 @@ nacos.config.config-long-poll-timeout=46000
 # 主配置 开启注册监听器预加载配置服务（除非特殊业务需求，否则不推荐打开该参数）
 nacos.config.enable-remote-sync-config=true
 
-# Dubbo Protocol
-dubbo.protocol.name=dubbo
-## Random port
-dubbo.protocol.port=-1
-## Dubbo Registry
-dubbo.registry.address=nacos://192.168.31.140:8848
-dubbo.scan.base-packages=service.user.services.impls
+
+
+
 
 

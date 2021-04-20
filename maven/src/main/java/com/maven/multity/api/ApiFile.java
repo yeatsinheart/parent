@@ -17,9 +17,18 @@ public class ApiFile {
         String dtos=basePackage+File.separator+"dtos";
         String constants=basePackage+File.separator+"constants";
         String services=basePackage+File.separator+"services";
+        String testService=services+File.separator+"TestService.java";
         FileUtil.mkdir(dtos);
         FileUtil.mkdir(constants);
-        FileUtil.mkdir(services);
+        FileUtil.write(testService,testService(project),true);
+
+    }
+    public static String testService(String project){
+        return "package "+level+"."+project+".services;\n" +
+                "\n" +
+                "public interface TestService {\n" +
+                "    String test(String test);\n" +
+                "}\n";
 
     }
 }

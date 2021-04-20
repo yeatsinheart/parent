@@ -1,7 +1,5 @@
 package com.maven.multity.parent;
 
-import com.common.utils.FileUtil;
-
 import java.io.File;
 
 public class ParentFile {

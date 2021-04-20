@@ -12,34 +12,38 @@ import com.maven.multity.web.WebFile;
 import com.maven.multity.web.WebPom;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 public class MavenProjectCreater {
 
     public static void main(String[] args) {
-        String project = "user";
-       // String projectPath = System.getProperty("user.dir") + File.separator + "business"+ File.separator + "game";
-        String projectPath = System.getProperty("user.dir") + File.separator + "business";
-        String parent = "business";
-        String parentPackage = "code";
-        String realPath = projectPath + File.separator + project;
-        newMultyModule(parent, parentPackage, realPath, project);
+        //业务线
+        String business = "business";
+        String basePath = System.getProperty("user.dir") + File.separator + business;
+        //模块
+        List<String> ps = Arrays.asList("testb");
+        ps.forEach(s -> {
+            String realPath = basePath + File.separator + s;
+            newMultyModule(business, realPath, s);
+        });
+
     }
 
-    public static void newMultyModule(String parent, String parentPackage, String basePath, String project) {
+    public static void newMultyModule(String business, String basePath, String project) {
         FileUtil.remove(basePath);
-        ParentPom.init(parent, parentPackage, basePath, project);
+        ParentPom.init(business, basePath, project);
 
-        ApiPom.init(parentPackage, basePath + File.separator + project + "-api", project);
+        ApiPom.init(business, basePath + File.separator + project + "-api", project);
         ApiFile.init(basePath + File.separator + project + "-api", project);
 
-        ServicePom.init(parentPackage, basePath + File.separator + project + "-service", project);
+        ServicePom.init(business, basePath + File.separator + project + "-service", project);
         ServiceFile.init(basePath + File.separator + project + "-service", project);
 
-        WebPom.init(parentPackage, basePath + File.separator + project + "-web", project);
+        WebPom.init(business, basePath + File.separator + project + "-web", project);
         WebFile.init(basePath + File.separator + project + "-web", project);
 
-        DbPom.init(parentPackage, basePath + File.separator + project + "-db", project);
+        DbPom.init(business, basePath + File.separator + project + "-db", project);
         DbFile.init(basePath + File.separator + project + "-db", project);
     }
 

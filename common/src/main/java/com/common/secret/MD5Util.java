@@ -1,10 +1,6 @@
 package com.common.secret;
 
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
-
 import java.security.MessageDigest;
-import java.util.*;
 
 public class MD5Util {
     public static String md5(String string) {

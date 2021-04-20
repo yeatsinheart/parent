@@ -6,7 +6,6 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @description: this is a 数据库表信息
