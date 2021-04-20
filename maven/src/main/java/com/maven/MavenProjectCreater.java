@@ -23,22 +23,27 @@ public class MavenProjectCreater {
         String basePath = System.getProperty("user.dir") + File.separator + business;
         //模块
         List<String> ps = Arrays.asList(
-                "admin",
-                "center","user",
-                "order","money",
-                "pay","webcast",
+                "admin", "site",
+                "center", "user", "risk",
+                "order", "money", "cost",
+                "pay", "webcast",
                 "chat",
                 "report",
                 ""
-                );
-        ps.forEach(s -> {
-            String realPath = basePath + File.separator + s;
-            newMultyModule(business, realPath, s);
-        });
-        List<String> gs = Arrays.asList(
-                "draw","chat",
-                ""
         );
+        ps=Arrays.asList("demo");
+        String finalBasePath = basePath;
+        String finalBusiness = business;
+        ps.forEach(s -> {
+            String realPath = finalBasePath + File.separator + s;
+            newMultyModule(finalBusiness, realPath, s);
+        });
+       /* business = "game";
+        basePath = System.getProperty("user.dir") + File.separator + business;
+        List<String> gs = Arrays.asList(
+                "lottery", "pork",
+                ""
+        );*/
 
     }
 
