@@ -57,9 +57,9 @@ public class MavenProjectCreater {
 
         WebPom.init(business, basePath + File.separator + project + "-web", project);
         WebFile.init(basePath + File.separator + project + "-web", project);
-
+/*
         DbPom.init(business, basePath + File.separator + project + "-db", project);
-        DbFile.init(basePath + File.separator + project + "-db", project);
+        DbFile.init(basePath + File.separator + project + "-db", project);*/
     }
 
 }
