@@ -23,6 +23,8 @@ import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipOutputStream;
 
@@ -39,10 +41,15 @@ public class TestController {
         String path = "hello";
         return Mono.create(monoSink -> monoSink.success(path));
     }
+    @GetMapping("/db")
+    public Mono<String> db(final Model model) {
+        String path = "db";
+        return Mono.create(monoSink -> monoSink.success(path));
+    }
 
     // 获取数据库信息
     //localhost:8080/db?db=mysql&url=47.242.219.77:3306/chzx_chat&user=root&pwd=IQdtJcwVuspR0WT6&project=testdemo&uuid=1s
-    @GetMapping("/db")
+    @GetMapping("/down")
     public Mono<Void> db(String db, String url, String user, String pwd, String table, String project, String uuid, ServerHttpResponse response) {
         //被压缩的文件夹
         String tmp=uuid;
@@ -51,10 +58,14 @@ public class TestController {
         if (StringUtils.isAllBlank(sourceFile)) {
             return Mono.empty();
         }
+        List<String> tableQuery = new ArrayList<>();
+        if(!StringUtils.isAllEmpty(table)){
+            tableQuery= Arrays.asList(table.split(","));
+        }
         SqlSessionFactory sqlSessionFactory = MysqlUtil.connect(db, url, user, pwd);
-        List<Table> tables = dbService.getAllTables(sqlSessionFactory, db, url, user, pwd, null);
+        List<Table> tables = dbService.getAllTables(sqlSessionFactory,  tableQuery);
         for (Table table1 : tables) {
-            table1.setColumnList(dbService.getAllColumns(sqlSessionFactory, db, url, user, pwd, table1.getName()));
+            table1.setColumnList(dbService.getAllColumns(sqlSessionFactory,  table1.getName()));
             FileGenUtil.gen(table1, project, sourceFile);
             //重定向到下载位置
         }

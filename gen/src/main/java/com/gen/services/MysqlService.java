@@ -17,7 +17,7 @@ public class MysqlService {
     /**
      * 本地获取所有数据表
      */
-    public List<Table> getAllTables(SqlSessionFactory sqlSessionFactory,String db, String ipportdatase, String user, String pwd, List<String> tables) {
+    public List<Table> getAllTables(SqlSessionFactory sqlSessionFactory, List<String> tables) {
         SqlSessionTemplate template = new SqlSessionTemplate(sqlSessionFactory);
         DBMapper tableMapper = template.getMapper(DBMapper.class);
         String sql = MysqlUtil.getTableSql(tables);
@@ -28,7 +28,7 @@ public class MysqlService {
     /**
      * 本地获取所有数据表字段
      */
-    public List<Column> getAllColumns(SqlSessionFactory sqlSessionFactory,String db, String ipportdatase, String user, String pwd, String tableName) {
+    public List<Column> getAllColumns(SqlSessionFactory sqlSessionFactory, String tableName) {
 
         SqlSessionTemplate template = new SqlSessionTemplate(sqlSessionFactory);
         DBMapper tableMapper = template.getMapper(DBMapper.class);

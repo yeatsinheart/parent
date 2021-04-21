@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Mysql</title>
+</head>
+<body>
+<h1>表代码下载</h1>
+<input id="url" value="47.242.219.77:3306/chzx_chat" style="width: 300px" placeholder="ip:port/database">
+<input id="user" value="root">
+<input id="pwd" value="IQdtJcwVuspR0WT6" style="width: 150px" placeholder="password">
+<input id="ts" value="" placeholder="table1,table2">
+<input id="project" value="testdemo"  placeholder="project">
+<input id="uuid" value="">
+<button onclick="download()">下载</button>
+<!--localhost:8080/db?db=mysql&url=-->
+</body>
+<script>
+    function uuid(len, radix) {
+        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+        var uuid = [], i;
+        radix = radix || chars.length;
+        if (len) {
+            // Compact form
+            for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
+        } else {
+            // rfc4122, version 4 form
+            var r;
+            // rfc4122 requires these characters
+            uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+            uuid[14] = '4';
+            // Fill in random data.  At i==19 set the high bits of clock sequence as
+            // per rfc4122, sec. 4.1.5
+            for (i = 0; i < 36; i++) {
+                if (!uuid[i]) {
+                    r = 0 | Math.random()*16;
+                    uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+                }
+            }
+        }
+        return uuid.join('');
+    }
+    function download(){
+        let dburl= document.getElementById('url').value;
+        let dbuser= document.getElementById('user').value;
+        let dbpwd= document.getElementById('pwd').value;
+        let tables= document.getElementById('ts').value;
+        let project= document.getElementById('project').value;
+        window.open("/down?url="+dburl+
+            "&user="+dbuser+
+            "&pwd="+dbpwd+
+            "&table="+tables+
+            "&project="+project+
+            "&uuid="+uuid(15)
+        );
+    }
+</script>
+</html>

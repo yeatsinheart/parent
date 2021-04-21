@@ -94,9 +94,9 @@ public class WebFile {
                 "import org.springframework.ui.Model;\n" +
                 "import reactor.core.publisher.Mono;\n" +
                 "import org.springframework.web.bind.annotation.GetMapping;\n" +
-                "import org.springframework.web.bind.annotation.RestController;\n" +
+                "import org.springframework.web.bind.annotation.Controller;\n" +
                 "\n" +
-                "@RestController\n" +
+                "@Controller\n" +
                 "public class TestController {\n" +
                 "    @SuppressWarnings(\"SpringJavaInjectionPointsAutowiringInspection\")\n" +
                 "    @DubboReference\n" +
