@@ -20,7 +20,8 @@ public class MavenProjectCreater {
     public static void main(String[] args) {
         //业务线
         String business = "business";
-        String basePath = System.getProperty("user.dir") + File.separator + business;
+        // System.getProperty("user.dir") + File.separator +
+        String basePath = business;
         //模块
         List<String> ps = Arrays.asList(
                 "admin", "site",
