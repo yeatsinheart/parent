@@ -33,8 +33,10 @@ public class WebFile {
         FileUtil.write(resources,resource(project),true);
         String helloHtml = baseResource+File.separator+"templates"+File.separator+"hello.html";
         String cityList = baseResource+File.separator+"templates"+File.separator+"cityList.html";
+        String staticFile = baseResource+File.separator+"static"+File.separator+"index.html";
         FileUtil.write(helloHtml,helloHtml(project),true);
         FileUtil.write(cityList,cityList(project),true);
+        FileUtil.write(staticFile,"",true);
     }
     public static String cityList(String project){
         return "<!DOCTYPE html>\n" +
@@ -139,7 +141,7 @@ public class WebFile {
                 "nacos.config.config-long-poll-timeout=46000\n" +
                 "# 主配置 开启注册监听器预加载配置服务（除非特殊业务需求，否则不推荐打开该参数）\n" +
                 "nacos.config.enable-remote-sync-config=true\n" +
-                ""
+                "spring.resources.static-locations=classpath:/static/"
                 ;
     }
     public static String starter(String project){

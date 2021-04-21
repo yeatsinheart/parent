@@ -17,6 +17,7 @@
         <module>gate</module>
 
         <module>business</module>
+        <module>pages</module>
     </modules>
     <dependencies>
         <dependency>

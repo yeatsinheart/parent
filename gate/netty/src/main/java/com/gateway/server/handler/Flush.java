@@ -22,6 +22,10 @@ public class Flush {
         response.headers().set(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         response.headers().set(ACCESS_CONTROL_ALLOW_HEADERS, "Origin, X-Requested-With, Content-Type, Accept,client,content-type");
         response.headers().set(ACCESS_CONTROL_ALLOW_METHODS, "GET,POST");
+        //设置cookie
+        //设置Secure;HttpOnly
+        //response.headers().set(SET_COOKIE, "JSESSIONID=" + sessionid + ";Secure;HttpOnly")
+        response.headers().set(X_FRAME_OPTIONS, "SAMEORIGIN");//设置x-frame-options
     }
 
     public static void badHttpRequest(ChannelHandlerContext ctx, Object result) {

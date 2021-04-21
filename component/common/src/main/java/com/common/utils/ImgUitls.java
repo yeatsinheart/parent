@@ -1,6 +1,5 @@
 package com.common.utils;
 
-import com.common.secret.Base64Util;
 import org.springframework.util.Base64Utils;
 
 import javax.imageio.ImageIO;
@@ -11,97 +10,64 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Random;
 
-public class ImageCodeGenerator {
-
-    // 使用到Algerian字体，系统里没有的话需要安装字体，字体只显示大写，去掉了1,0,i,o几个容易混淆的字符
-    public static final String VERIFY_CODES = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+public class ImgUitls {
     private static Random random = new Random();
 
-    public static String filePath = "";
-
-    static {
+    // 图片转化成base64字符串
+    public static String getImageToBase64(String imgFile) {
+        //imgFile = "C:/Users/Administrator/Desktop/12.png";// 待处理的图片
+        InputStream in = null;
+        byte[] data = null;
+        // 读取图片字节数组
         try {
-            File directory = new File("");//参数为空
-            String courseFile = directory.getCanonicalPath();
-            filePath = courseFile + "/temp";
+            in = new FileInputStream(imgFile);
+            data = new byte[in.available()];
+            in.read(data);
+            in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * 使用系统默认字符源生成验证码
-     *
-     * @param verifySize 验证码长度
-     * @return
-     */
-    public static String generateVerifyCode(int verifySize) {
-        String code = generateVerifyCode(verifySize, VERIFY_CODES);
-        return code;
-    }
-
-    /**
-     * 使用指定源生成验证码
-     *
-     * @param verifySize 验证码长度
-     * @param sources    验证码字符源
-     * @return
-     */
-    public static String generateVerifyCode(int verifySize, String sources) {
-        if (sources == null || sources.length() == 0) {
-            sources = VERIFY_CODES;
-        }
-        int codesLen = sources.length();
-        Random rand = new Random(System.currentTimeMillis());
-        StringBuilder verifyCode = new StringBuilder(verifySize);
-        for (int i = 0; i < verifySize; i++) {
-            verifyCode.append(sources.charAt(rand.nextInt(codesLen - 1)));
-        }
-        return verifyCode.toString();
+        // 对字节数组Base64编码
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("data:image/jpeg;base64,")
+                .append(Base64Utils.encodeToString(data));
+        return buffer.toString();// 返回Base64编码过的字节数组字符串
     }
 
 
-
-    /**
-     * 生成指定验证码图像文件
-     *
-     * @param w
-     * @param h
-     * @param outputFile
-     * @param code
-     * @throws IOException
-     */
-    public static void writeImage(int w, int h, File outputFile, String code) throws IOException {
-        if (outputFile == null) {
-            return;
-        }
-        File dir = outputFile.getParentFile();
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
+    // base64字符串转化成图片
+    public static boolean base64ToImage(String imgStr) { // 对字节数组字符串进行Base64解码并生成图片
+        if (imgStr == null) // 图像数据为空
+            return false;
         try {
-            outputFile.createNewFile();
-            FileOutputStream fos = new FileOutputStream(outputFile);
-            outputImage(w, h, fos, code);
-            //输出流
-            fos.close();
-        } catch (IOException e) {
-            throw e;
+            // Base64解码
+            byte[] b = Base64Utils.decodeFromString(imgStr);
+            for (int i = 0; i < b.length; ++i) {
+                if (b[i] < 0) {// 调整异常数据
+                    b[i] += 256;
+                }
+            }
+            // 生成jpeg图片
+            String imgFilePath = "C:/Users/Administrator/Desktop/test.png";// 新生成的图片
+            OutputStream out = new FileOutputStream(imgFilePath);
+            out.write(b);
+            out.flush();
+            out.close();
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
-    public static void outputImage(int w, int h,FileOutputStream os,  String code) throws IOException {
-        BufferedImage img =  getImage(w, h, code);
-        ImageIO.write(img, "jpg", os);
-    }
+
     /**
-     * 获取指定验证码图片流
+     * 获取指定字符的图片 BufferedImage
      *
      * @param w
      * @param h
      * @param code
      * @throws IOException
      */
-    public static BufferedImage getImage(int w, int h,  String code) throws IOException {
+    public static BufferedImage genBufferedImage(int w, int h, String code) throws IOException {
         int verifySize = code.length();
         BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         Random rand = new Random();
@@ -163,7 +129,15 @@ public class ImageCodeGenerator {
 
         g2.dispose();
         return image;
-        //ImageIO.write(image, "jpg", os);
+    }
+
+    // 保存为本地图片
+    public static File createImageFile(BufferedImage img, String filePath) throws IOException {
+        File file = FileUtil.create(filePath);
+        FileOutputStream fos = new FileOutputStream(file);
+        ImageIO.write(img, "jpg", fos);
+        fos.close();
+        return file;
     }
 
     private static Color getRandColor(int fc, int bc) {
@@ -201,9 +175,7 @@ public class ImageCodeGenerator {
     }
 
     private static void shearX(Graphics g, int w1, int h1, Color color) {
-
         int period = random.nextInt(2);
-
         boolean borderGap = true;
         int frames = 1;
         int phase = random.nextInt(2);
@@ -222,9 +194,7 @@ public class ImageCodeGenerator {
     }
 
     private static void shearY(Graphics g, int w1, int h1, Color color) {
-
         int period = random.nextInt(40) + 10; // 50;
-
         boolean borderGap = true;
         int frames = 20;
         int phase = 7;
@@ -239,76 +209,4 @@ public class ImageCodeGenerator {
             }
         }
     }
-
-
-    // 图片转化成base64字符串
-    public static String getImageToBase64(String imgFile) {
-        //imgFile = "C:/Users/Administrator/Desktop/12.png";// 待处理的图片
-        InputStream in = null;
-        byte[] data = null;
-        // 读取图片字节数组
-        try {
-            in = new FileInputStream(imgFile);
-            data = new byte[in.available()];
-            in.read(data);
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // 对字节数组Base64编码
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("data:image/jpeg;base64,")
-                .append(Base64Utils.encodeToString(data));
-        return buffer.toString();// 返回Base64编码过的字节数组字符串
-    }
-
-    public static void clearImage(String path) {
-        File file = new File(path);
-        file.delete();// 删除
-    }
-
-
-    // base64字符串转化成图片
-    public static boolean base64ToImage(String imgStr) { // 对字节数组字符串进行Base64解码并生成图片
-        if (imgStr == null) // 图像数据为空
-            return false;
-        try {
-            // Base64解码
-            byte[] b = Base64Utils.decodeFromString(imgStr);
-            for (int i = 0; i < b.length; ++i) {
-                if (b[i] < 0) {// 调整异常数据
-                    b[i] += 256;
-                }
-            }
-            // 生成jpeg图片
-            String imgFilePath = "C:/Users/Administrator/Desktop/test.png";// 新生成的图片
-            OutputStream out = new FileOutputStream(imgFilePath);
-            out.write(b);
-            out.flush();
-            out.close();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static void main(String[] args) throws IOException {
-        File dir = new File("D:/aaaimg");
-        int w = 80, h = 40;
-        for (int i = 0; i < 50; i++) {
-            long start = System.currentTimeMillis();
-            String verifyCode = generateVerifyCode(4);
-           // File file = new File(dir, verifyCode + ".jpg");
-            //writeImage(w, h, file, verifyCode);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            ImageIO.write(getImage(w,h,verifyCode), "jpeg", stream);
-            String img = Base64Util.img(stream.toByteArray());
-            long end = System.currentTimeMillis();
-            System.out.println(end-start);
-            System.out.println(img.length());
-            System.out.println(img);
-        }
-    }
-
-
 }
