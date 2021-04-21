@@ -36,7 +36,8 @@ public class ServiceFile {
                 "import api."+project+".services.TestService;\n" +
                 "import com.alibaba.nacos.api.config.annotation.NacosValue;\n" +
                 "import org.apache.dubbo.config.annotation.DubboService;\n" +
-                "\n" +
+                "import lombok.extern.slf4j.Slf4j;\n" +
+                "@Slf4j\n" +
                 "@DubboService\n" +
                 "public class TestServiceImpl implements TestService {\n" +
                 "    @NacosValue(value = \"${testvalue}\",autoRefreshed = true)\n" +
