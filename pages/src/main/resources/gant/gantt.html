@@ -472,16 +472,16 @@ function showBaselineInfo (event,element){
       <button onclick="$('#workSpace').trigger('undo.gantt');return false;" class="button textual icon requireCanWrite" title="undo"><span class="teamworkIcon">&#39;</span></button>
       <button onclick="$('#workSpace').trigger('redo.gantt');return false;" class="button textual icon requireCanWrite" title="redo"><span class="teamworkIcon">&middot;</span></button>
       <span class="ganttButtonSeparator requireCanWrite requireCanAdd"></span>
-      <button onclick="$('#workSpace').trigger('addAboveCurrentTask.gantt');return false;" class="button textual icon requireCanWrite requireCanAdd" title="insert above"><span class="teamworkIcon">l</span></button>
-      <button onclick="$('#workSpace').trigger('addBelowCurrentTask.gantt');return false;" class="button textual icon requireCanWrite requireCanAdd" title="insert below"><span class="teamworkIcon">X</span></button>
+      <button onclick="$('#workSpace').trigger('addAboveCurrentTask.gantt');return false;" class="button textual icon requireCanWrite requireCanAdd" title="insert above"><span class="teamworkIcon"></span>上插入</button>
+      <button onclick="$('#workSpace').trigger('addBelowCurrentTask.gantt');return false;" class="button textual icon requireCanWrite requireCanAdd" title="insert below"><span class="teamworkIcon"></span>下插入</button>
       <span class="ganttButtonSeparator requireCanWrite requireCanInOutdent"></span>
-      <button onclick="$('#workSpace').trigger('outdentCurrentTask.gantt');return false;" class="button textual icon requireCanWrite requireCanInOutdent" title="un-indent task"><span class="teamworkIcon">.</span></button>
-      <button onclick="$('#workSpace').trigger('indentCurrentTask.gantt');return false;" class="button textual icon requireCanWrite requireCanInOutdent" title="indent task"><span class="teamworkIcon">:</span></button>
+      <button onclick="$('#workSpace').trigger('outdentCurrentTask.gantt');return false;" class="button textual icon requireCanWrite requireCanInOutdent" title="往上一层"><span class="teamworkIcon">.</span>往上</button>
+      <button onclick="$('#workSpace').trigger('indentCurrentTask.gantt');return false;" class="button textual icon requireCanWrite requireCanInOutdent" title="往下一层"><span class="teamworkIcon">:</span>往下</button>
       <span class="ganttButtonSeparator requireCanWrite requireCanMoveUpDown"></span>
       <button onclick="$('#workSpace').trigger('moveUpCurrentTask.gantt');return false;" class="button textual icon requireCanWrite requireCanMoveUpDown" title="move up"><span class="teamworkIcon">k</span></button>
       <button onclick="$('#workSpace').trigger('moveDownCurrentTask.gantt');return false;" class="button textual icon requireCanWrite requireCanMoveUpDown" title="move down"><span class="teamworkIcon">j</span></button>
       <span class="ganttButtonSeparator requireCanWrite requireCanDelete"></span>
-      <button onclick="$('#workSpace').trigger('deleteFocused.gantt');return false;" class="button textual icon delete requireCanWrite" title="Elimina"><span class="teamworkIcon">&cent;</span></button>
+      <button onclick="$('#workSpace').trigger('deleteFocused.gantt');return false;" class="button textual icon delete requireCanWrite" title="Elimina"><span class="teamworkIcon">&cent;</span>删除</button>
       <span class="ganttButtonSeparator"></span>
       <button onclick="$('#workSpace').trigger('expandAll.gantt');return false;" class="button textual icon " title="EXPAND_ALL"><span class="teamworkIcon">6</span></button>
       <button onclick="$('#workSpace').trigger('collapseAll.gantt'); return false;" class="button textual icon " title="COLLAPSE_ALL"><span class="teamworkIcon">5</span></button>
@@ -502,7 +502,7 @@ function showBaselineInfo (event,element){
     <button onclick="editResources();" class="button textual requireWrite" title="edit resources"><span class="teamworkIcon">M</span></button>
       &nbsp; &nbsp; &nbsp; &nbsp;
     </div>
-    <div>
+    <div style="display:none">
       <button onclick="saveGanttOnServer();" class="button first big requireWrite" title="Save">Save</button>
       <input type="file" name="load-file" id="load-file">
       <label for="load-file">Load</label>
@@ -528,7 +528,7 @@ function showBaselineInfo (event,element){
       <th class="gdfColHeader gdfResizable" style="width:80px;">End</th>
       <th class="gdfColHeader " style="width:50px;">天数</th>
       <th class="gdfColHeader " style="width:50px;">进度%</th>
-      <th class="gdfColHeader gdfResizable requireCanSeeDep" style="width:50px;">depe.</th>
+      <th class="gdfColHeader gdfResizable requireCanSeeDep" style="width:50px;">父:迟</th>
       <th class="gdfColHeader gdfResizable" style="width:20px; text-align: left; padding-left: 10px;">负责人</th>
     </tr>
     </thead>
