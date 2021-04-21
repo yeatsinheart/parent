@@ -24,15 +24,12 @@ public class MavenProjectCreater {
         String basePath = business;
         //模块
         List<String> ps = Arrays.asList(
-                "admin", "site",
-                "center", "user", "risk",
+                "admin", "site","message", "user", "risk",
                 "order", "money", "cost",
-                "pay", "webcast",
-                "chat",
+                "pay", "webcast", "chat",
                 "report",
                 ""
         );
-        ps=Arrays.asList("gen");
         String finalBasePath = basePath;
         String finalBusiness = business;
         ps.forEach(s -> {

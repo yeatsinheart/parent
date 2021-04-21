@@ -1,7 +1,9 @@
 <html lang="en"><head>
     <meta charset="UTF-8">
     <title>登录注册卡片样式切换css3动画 www.bootstrapmb.com</title>
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="./css/login.css">
+    <meta name="viewport" content="width-device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no, minimal-ui">
+
 </head>
 <body>
 <div class="form-structor">
@@ -26,7 +28,36 @@
     </div>
 </div>
 
-<script src="js/login.js"></script>
+<script >
+    console.clear();
+
+const loginBtn = document.getElementById('login');
+const signupBtn = document.getElementById('signup');
+
+loginBtn.addEventListener('click', (e) => {
+    let parent = e.target.parentNode.parentNode;
+    Array.from(e.target.parentNode.parentNode.classList).find((element) => {
+        if(element !== "slide-up") {
+            parent.classList.add('slide-up')
+        }else{
+            signupBtn.parentNode.classList.add('slide-up')
+            parent.classList.remove('slide-up')
+        }
+    });
+});
+
+signupBtn.addEventListener('click', (e) => {
+    let parent = e.target.parentNode;
+    Array.from(e.target.parentNode.classList).find((element) => {
+        if(element !== "slide-up") {
+            parent.classList.add('slide-up')
+        }else{
+            loginBtn.parentNode.parentNode.classList.add('slide-up')
+            parent.classList.remove('slide-up')
+        }
+    });
+});
+</script>
 
 
 </body></html>
