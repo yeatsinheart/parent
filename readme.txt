@@ -1,41 +1,27 @@
-site:
-site:site_id,name_key,logo_key,status
-    site_relation 子站，暂时不管
-
-
 业务涉及逻辑
     1。涉及的对象自身的增删查改
     2。关联关系通过事件的方式进行增删查改
-    resource(menu,button,select)encrypt, resource   对应前端的资源编号 ： 页面 页面中的元素
-    api,
-        api-resource:接口是哪些资源触发的
-    position：岗位职责（集权继承，个人额外，个人无权）
-        position-role:创建一个岗位等于多一个角色
-        position-user
-        role-resource
-        role-data
-    个人权限设置，岗位权限设置
-    个人（岗位权限+个人权限）
-    role
-        岗位角色，个人角色
-        role-resource:关联资源编号
-        role-data:数据权限：脱敏，敏感 联系方式 身份证号码，银行卡号，实名信息，用户名
-        role-user:用户关联的角色
-        站长：ALL
-        财务：
-        风控：
-        推广：
-        客服：
-        运营：
+开站：随意服务器
+租户：独有服务器/公用系统运行逻辑，使用域名-租户id区分。。
+    dubbo分组/version隔离，数据库分配
 
 
-静态资源：菜单 url
-        功能 class
-岗位角色，数据敏感度
 
-业务架构：
-    全局配置：
-        站点状态
+业务架构：灰度发布
+界面：维护中
+界面：无权限
+用户 - 界面 - 网关 - 应用 - 数据库
+
+           Nacos
+
+    全局配置（认证服务）： 独立部署
+        站点状态 site
+        站点白名单 
+        接口管理 api 是否需要权限
+        资源管理  限制参数「yyy:in:zzz,yyy:=:zzz]
+        安全认证（验签/解密/JWT）
+        鉴权
+
 
     后台管理：独立网关 鉴权 白名单（nacos:site_id=1.1.1.1,2.2.2.2）
         menu
@@ -54,7 +40,7 @@ site:site_id,name_key,logo_key,status
                 凡事多流程，不能本地一次性完成的，或者关联业务复杂的，都放到这里来异步完成
                 ：注册送彩金，被邀请注册，充值递进流程，游戏的转进转出
 
-    站点site site 统计脚本
+    站点site site_info 统计脚本
             site_language
             site_currency
             site_resource 菜单 功能
@@ -64,8 +50,10 @@ site:site_id,name_key,logo_key,status
             site_user
             site_user_role
             site_free_user
+            site_app_info
             提供role拥有的所有资源，前端自己整理分类，每块区域通过固定class表示是否显示：getResourceClass(resourceId),无则返回null，表示不显示咯。
-                比如下拉列表中，option :class="getResourceClass(1)"===》反向要求后端不能提供通用接口，查询所有/查询指定条件 都要进行拆分出不同的接口。组合查询的情况比较复杂暂时不管。
+                比如下拉列表中，option :class="getResourceClass(1)"===》反向要求后端不能提供通用接口，查询所有/查询指定条件 都要进行拆分出不同的接口。
+                组合查询的情况,限定接口的参数xxx取值（in则判断是否符合，=复写）
                 比如input中，input :class="getResourceClass(1)"
                 比如button中，button :class="getResourceClass(1)"
 
