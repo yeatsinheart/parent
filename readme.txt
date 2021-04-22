@@ -79,6 +79,11 @@ site:site_id,name_key,logo_key,status
     订单order
     统计report
     权限auth
+    接入third third-site
+             third_categra
+             third_type
+             third_detail
+             third_detail_type
     游戏game game_site
     金流pay pay_site
 
