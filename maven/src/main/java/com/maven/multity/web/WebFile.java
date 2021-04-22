@@ -119,7 +119,7 @@ public class WebFile {
                 "            responses = {\n" +
                 "                    @ApiResponse(description = \"返回的是页面\",\n" +
                 "                            content = @Content(mediaType = \"application/json\",\n" +
-                "                                    schema = @Schema(implementation = UserModel.class))),\n" +
+                "                                    schema = @Schema(implementation = String.class))),\n" +
                 "                    @ApiResponse(responseCode = \"400\", description = \"返回400时候错误的原因\")},\n" +
                 "            security = @SecurityRequirement(name = \"需要认证\"))\n"+
                 "    @GetMapping(\"/hello\")\n" +
@@ -175,6 +175,7 @@ public class WebFile {
                 "        \"service."+project+".services\",\n" +
                 "        \"com.db.config\",\n" +
                 "        \"com.redis\",\n" +
+                "        \"com.common.pool\",\n" +
                 "        \"com.common.annotation\"\n" +
                 "})\n" +
                 "@SpringBootApplication\n" +

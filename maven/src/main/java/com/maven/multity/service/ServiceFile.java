@@ -35,20 +35,22 @@ public class ServiceFile {
     }
     public static String testServiceImpl(String project){
         return "package "+level+"."+project+".services.impls;\n" +
-                "\n" +
+                "import com.common.constant.Language;\n" +
+                "import com.common.result.ResultGenerator;\n\n" +
                 "import api."+project+".services.TestService;\n" +
                 "import com.alibaba.nacos.api.config.annotation.NacosValue;\n" +
                 "import org.apache.dubbo.config.annotation.DubboService;\n" +
                 "import lombok.extern.slf4j.Slf4j;\n" +
+                "import com.common.result.Result;\n" +
                 "@Slf4j\n" +
                 "@DubboService\n" +
                 "public class TestServiceImpl implements TestService {\n" +
                 "    @NacosValue(value = \"${testvalue}\",autoRefreshed = true)\n" +
-                "    private String nacosvalue;\n" +
+                "    private Result<String> nacosvalue;\n" +
                 "\n" +
                 "    @Override\n" +
-                "    public String test(String test) {\n" +
-                "        return \"当前输入\"+test+\"，nacos中的值是\"+nacosvalue;\n" +
+                "    public Result<String> test(String test) {\n" +
+                "        return ResultGenerator.genSuccessResult(\"当前输入\"+test+\"，nacos中的值是\"+nacosvalue,Language.中文.getCode());\n" +
                 "    }\n" +
                 "}\n";
 
@@ -96,6 +98,7 @@ public class ServiceFile {
                 "        \""+level+"."+project+".services\",\n" +
                 "        \"com.common.annotation\",\n" +
                 "        \"com.db.config\",\n" +
+                "        \"com.common.pool\",\n" +
                 "        \"com.redis\"\n" +
                 "})\n" +
                 "public class "+ StringUtil.firstUpper(project)+StringUtil.firstUpper(level)+"Application {\n" +

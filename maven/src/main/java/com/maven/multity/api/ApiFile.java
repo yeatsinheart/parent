@@ -25,9 +25,9 @@ public class ApiFile {
     }
     public static String testService(String project){
         return "package "+level+"."+project+".services;\n" +
-                "\n" +
+                "import com.common.result.Result;\n\n" +
                 "public interface TestService {\n" +
-                "    String test(String test);\n" +
+                "    Result<String> test(String test);\n" +
                 "}\n";
 
     }

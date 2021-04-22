@@ -44,16 +44,16 @@ public class FileGenUtil {
 
         List<CreateInfo> modelList = new ArrayList();
         modelList.add(new CreateInfo(PROJECT, "entity", "db." + PROJECT + ".entities", getPath(PROJECT, "db", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT, "dto", "api." + PROJECT + ".dtos", getPath(PROJECT, "api", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT, "pto", "web." + PROJECT + ".ptos", getPath(PROJECT, "web", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
-        //modelList.add(new CreateInfo("root", PACKAGE_TEST + ".root", JAVA_FILE, JAVA_FILE_SUFFIX));
-        // modelList.add(new CreateInfo("create", PACKAGE_TEST + ".create", JAVA_FILE, JAVA_FILE_SUFFIX));
         modelList.add(new CreateInfo(PROJECT, "mapper.xml", NO_PACKAGE, getPath(PROJECT, "db", requestId) + MAPPER_FILE, NO_FILE_SUFFIX));
         modelList.add(new CreateInfo(PROJECT, "mapper", "db." + PROJECT + ".mappers", getPath(PROJECT, "db", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
         modelList.add(new CreateInfo(PROJECT, "daoImpl", "db." + PROJECT + ".daos.impls", getPath(PROJECT, "db", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
         modelList.add(new CreateInfo(PROJECT, "dao", "db." + PROJECT + ".daos", getPath(PROJECT, "db", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT, "dto", "api." + PROJECT + ".dtos", getPath(PROJECT, "api", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT, "service", "api." + PROJECT + ".services", getPath(PROJECT, "service", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
         modelList.add(new CreateInfo(PROJECT, "serviceImpl", "service." + PROJECT + ".services.impls", getPath(PROJECT, "service", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT, "service", "service." + PROJECT + ".services", getPath(PROJECT, "service", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT, "pto", "web." + PROJECT + ".ptos", getPath(PROJECT, "web", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
+        //modelList.add(new CreateInfo("root", PACKAGE_TEST + ".root", JAVA_FILE, JAVA_FILE_SUFFIX));
+        // modelList.add(new CreateInfo("create", PACKAGE_TEST + ".create", JAVA_FILE, JAVA_FILE_SUFFIX));
         //modelList.add(new CreateInfo("controller", PACKAGE_TEST + ".controller", JAVA_FILE, JAVA_FILE_SUFFIX));
 
         /**组装表格数据*/
