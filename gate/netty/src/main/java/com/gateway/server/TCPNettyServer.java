@@ -13,6 +13,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component("tcpServer")
@@ -49,7 +51,10 @@ public class TCPNettyServer {
     private HttpHandler http;
     @Autowired
     private WebSocketHandler webSocket;
-
+    // netty通过Reactor模型基于多路复用器接收并处理用户请求（能讲就多讲一点），
+    // 内部实现了两个线程池，boss线程池和work线程池，
+    // 其中boss线程池的线程负责处理请求的accept事件，当接收到accept事件的请求时，把对应的socket封装到一个NioSocketChannel中，
+    // 并交给work线程池，其中work线程池负责请求的read和write事件
     @PostConstruct
     public void start() {
         bootstrap = new ServerBootstrap();
@@ -136,6 +141,13 @@ class TCPDispatcher extends ByteToMessageDecoder {
         } else {
             pipeline.addLast(tcpHandler);
         }
+        // 检测远端是否存活 超过时间，触发UserEventTriggered事件
+        // 来检测客户端的读取超时的，
+        // 第一个参数是指定读操作空闲秒数，多久没有接收到信息，READER_IDLE（未读操作状态）
+        // 第二个参数是指定写操作的空闲秒数，多久没有发送信息，WRITER_IDLE
+        // 第三个参数是指定读写空闲秒数， ALL_IDLE
+        // 所以我们只需要在自己的handler中截获该事件，然后发起相应的操作即可（比如说发起心跳操作）。
+        pipeline.addLast("ping", new IdleStateHandler(15, 15, 10, TimeUnit.SECONDS));
         in.resetReaderIndex();
         ctx.pipeline().remove(this.getClass());
     }

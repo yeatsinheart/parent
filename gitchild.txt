@@ -1,0 +1,20 @@
+git submodule add https://github.com/PanJiaChen/vue-element-admin admin
+
+git clone --recurse-submodules 自己的仓库
+git submodule init
+git submodule update
+
+==git submodule update --init
+
+注意 DbConnector 记录的 160000 模式。 这是 Git 中的一种特殊模式，它本质上意味着你是将一次提交记作一项目录记录的，
+而非将它记录成一个子目录或者一个文件。
+
+进入子模块然后抓取并更新。
+子模块中查看新工作，可以进入到目录中运行 git fetch 与 git merge，合并上游分支来更新本地代码。
+git submodule update --remote
+
+
+
+既可以在 .gitmodules 文件中设置 （这样其他人也可以跟踪它），也可以只在本地的 .git/config 文件中设置。 让我们在 .gitmodules 文件中设置它：
+
+$ git config -f .gitmodules submodule.DbConnector.branch stable

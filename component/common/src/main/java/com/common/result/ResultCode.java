@@ -5,6 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 响应码枚举，参考HTTP状态码的语义
+ * 解决不同业务返回需要跳转不同页面的需求
+ *  比如未登录。无权限。未设置支付秘密，未绑定银行卡
  */
 public enum ResultCode {
     SUCCESS(1, "SUCCESS"),//成功

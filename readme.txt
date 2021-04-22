@@ -34,6 +34,9 @@ site:site_id,name_key,logo_key,status
 岗位角色，数据敏感度
 
 业务架构：
+    全局配置：
+        站点状态
+
     后台管理：独立网关 鉴权 白名单（nacos:site_id=1.1.1.1,2.2.2.2）
         menu
         menu_function class api 页面中会触发的所有api都需要添加为功能，比如报表页面，那么一打开调用的数据查询功能就是一个功能点
@@ -70,7 +73,7 @@ site:site_id,name_key,logo_key,status
             user_level
             user_wallet
             user_agent 代理
-            user_group 邀请群 是否代理群  用户  群组ID===》（ID转成字符）邀请码/推广码 群备注名称  需要注意全民推广群与代理推广群的差异。
+            user_group 邀请群（建站拥有顶级群，群主是0） 是否代理群  用户  群组ID===》（ID转成字符）邀请码/推广码 群备注名称  需要注意全民推广群与代理推广群的差异。
             user_group_member 群成员 直连关系族谱
 
     财务money
