@@ -1,8 +1,7 @@
 package ${dto.packageName};
 import java.io.Serializable;
-import com.game.common.model.BaseRequestDTO;
 import org.apache.commons.lang3.StringUtils;
-
+import com.common.dto.BaseRequest;
 <#list table.columns as column>
 import ${column.javaType};
 </#list>
@@ -25,7 +24,7 @@ import lombok.EqualsAndHashCode;
 <#if swagger >
 @ApiModel("${table.comment!}")
 </#if>
-public class ${dto.className} extends BaseRequestDTO  implements Serializable {
+public class ${dto.className} extends BaseRequest  implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

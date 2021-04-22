@@ -26,6 +26,13 @@ public class ApiPom {
                 "\n" +
                 "    <artifactId>"+project+"-"+level+"</artifactId>\n" +
                 "    <version>1.0-SNAPSHOT</version>\n" +
+                "    <dependencies>\n" +
+                "        <dependency>\n" +
+                "           <groupId>code</groupId>\n" +
+                "           <artifactId>common</artifactId>\n" +
+                "           <version>${project.version}</version>\n" +
+                "        </dependency>\n" +
+                "    </dependencies>\n" +
                 "</project>";
     }
 }

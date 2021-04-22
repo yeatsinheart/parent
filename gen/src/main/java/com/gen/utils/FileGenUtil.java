@@ -33,25 +33,28 @@ public class FileGenUtil {
     static boolean OPEN_LOMBOK = true;
     static boolean LOCALCACHEABLE = true;
 
-    public static String getPath(String project, String level,String requestId) {
+    public static String getPath(String project, String level, String requestId) {
         //System.getProperty("user.dir") + File.separator +
-        return  requestId+ File.separator+
+        return requestId + File.separator +
                 project + File.separator +
                 project + "-" + level + File.separator;
     }
 
-    public static void gen(Table table, String PROJECT,String requestId) {
+    public static void gen(Table table, String PROJECT, String requestId) {
+
         List<CreateInfo> modelList = new ArrayList();
-        modelList.add(new CreateInfo(PROJECT, "entity", "db." + PROJECT + ".entity", getPath(PROJECT, "db",requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT, "dto", "api." + PROJECT + ".dto", getPath(PROJECT, "api",requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT, "pto", "web." + PROJECT + ".pto", getPath(PROJECT, "web",requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT, "entity", "db." + PROJECT + ".entities", getPath(PROJECT, "db", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT, "dto", "api." + PROJECT + ".dtos", getPath(PROJECT, "api", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT, "pto", "web." + PROJECT + ".ptos", getPath(PROJECT, "web", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
         //modelList.add(new CreateInfo("root", PACKAGE_TEST + ".root", JAVA_FILE, JAVA_FILE_SUFFIX));
         // modelList.add(new CreateInfo("create", PACKAGE_TEST + ".create", JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT, "mapper", "db." + PROJECT + ".mapper", getPath(PROJECT, "db",requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT, "mapper.xml", NO_PACKAGE, getPath(PROJECT, "db", requestId) + MAPPER_FILE, NO_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT, "mapper", "db." + PROJECT + ".mappers", getPath(PROJECT, "db", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT, "daoImpl", "db." + PROJECT + ".daos.impls", getPath(PROJECT, "db", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT, "dao", "db." + PROJECT + ".daos", getPath(PROJECT, "db", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT, "serviceImpl", "service." + PROJECT + ".services.impls", getPath(PROJECT, "service", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
+        modelList.add(new CreateInfo(PROJECT, "service", "service." + PROJECT + ".services", getPath(PROJECT, "service", requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
         //modelList.add(new CreateInfo("controller", PACKAGE_TEST + ".controller", JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT, "service", "api." + PROJECT + ".services", getPath(PROJECT, "api",requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT, "serviceImpl", "service." + PROJECT + ".services.impls", getPath(PROJECT, "service",requestId) + JAVA_FILE, JAVA_FILE_SUFFIX));
-        modelList.add(new CreateInfo(PROJECT, "mapper.xml", NO_PACKAGE, getPath(PROJECT, "db",requestId) + MAPPER_FILE, NO_FILE_SUFFIX));
 
         /**组装表格数据*/
         Map tableMap = toTableMap(table,
@@ -161,7 +164,7 @@ public class FileGenUtil {
                 this.className = captureName(objectName) + "DTO";
             } else if (model.equals("pto")) {
                 this.className = captureName(objectName) + "PTO";
-            } else {
+            }  else {
                 this.className = captureName(objectName) + captureName(model);
             }
             this.fullName = this.packageName + "." + this.className;

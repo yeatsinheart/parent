@@ -29,16 +29,6 @@ public class ServiceFile {
         String resources = baseResource+File.separator+"application.properties";
         FileUtil.write(resources,resource(project),true);
 
-        // 数据库相关
-        String entities=basePackage+File.separator+"entities";
-        FileUtil.mkdir(entities);
-        String mapper=basePackage+File.separator+"mapper";
-        FileUtil.mkdir(mapper);
-
-        String mapperxml=baseResource+File.separator+"mapper";
-        FileUtil.mkdir(mapperxml);
-        String datasql = baseResource+File.separator+"datasql.sql";
-        FileUtil.write(datasql,datasql(project),true);
     }
     public static String datasql(String project){
         return "SELECT 1 FROM DUAL;";
@@ -105,7 +95,8 @@ public class ServiceFile {
                 "@ComponentScan(basePackages={\n" +
                 "        \""+level+"."+project+".services\",\n" +
                 "        \"com.common.annotation\",\n" +
-                "        \"com.db.config\"\n" +
+                "        \"com.db.config\",\n" +
+                "        \"com.redis\"\n" +
                 "})\n" +
                 "public class "+ StringUtil.firstUpper(project)+StringUtil.firstUpper(level)+"Application {\n" +
                 "\n" +

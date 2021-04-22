@@ -18,7 +18,7 @@ public class WebFile {
         String starter=basePackage+File.separator+ StringUtil.firstUpper(project)+StringUtil.firstUpper(level)+"WebApplication.java";
         FileUtil.write(starter,starter(project),true);
 
-        String pto=basePackage+File.separator+"pto";
+        String pto=basePackage+File.separator+"ptos";
         FileUtil.mkdir(pto);
 
         String controller=basePackage+File.separator+"controller";
@@ -96,8 +96,14 @@ public class WebFile {
                 "import org.springframework.ui.Model;\n" +
                 "import reactor.core.publisher.Mono;\n" +
                 "import org.springframework.web.bind.annotation.GetMapping;\n" +
-                "import org.springframework.web.bind.annotation.Controller;\n" +
-                "\n" +
+                "import org.springframework.stereotype.Controller;\n" +
+                "import io.swagger.v3.oas.annotations.Operation;\n" +
+                "import io.swagger.v3.oas.annotations.media.Content;\n" +
+                "import io.swagger.v3.oas.annotations.media.Schema;\n" +
+                "import io.swagger.v3.oas.annotations.responses.ApiResponse;\n" +
+                "import io.swagger.v3.oas.annotations.security.SecurityRequirement;\n" +
+                "import io.swagger.v3.oas.annotations.tags.Tag;\n" +
+                "@Tag(name = \"TestController\")\n" +
                 "@Controller\n" +
                 "public class TestController {\n" +
                 "    @SuppressWarnings(\"SpringJavaInjectionPointsAutowiringInspection\")\n" +
@@ -108,6 +114,14 @@ public class WebFile {
                 "    public String test(String i) {\n" +
                 "        return testService.test(i);\n" +
                 "    }\n" +
+                "    @Operation(summary = \"测试的接口\",\n" +
+                "            description = \"描述的文字\",\n" +
+                "            responses = {\n" +
+                "                    @ApiResponse(description = \"返回的是页面\",\n" +
+                "                            content = @Content(mediaType = \"application/json\",\n" +
+                "                                    schema = @Schema(implementation = UserModel.class))),\n" +
+                "                    @ApiResponse(responseCode = \"400\", description = \"返回400时候错误的原因\")},\n" +
+                "            security = @SecurityRequirement(name = \"需要认证\"))\n"+
                 "    @GetMapping(\"/hello\")\n" +
                 "    public Mono<String> hello(final Model model) {\n" +
                 "        model.addAttribute(\"name\", \"泥瓦匠\");\n" +
@@ -160,6 +174,7 @@ public class WebFile {
                 "        \""+level+"."+project+".controller\",\n" +
                 "        \"service."+project+".services\",\n" +
                 "        \"com.db.config\",\n" +
+                "        \"com.redis\",\n" +
                 "        \"com.common.annotation\"\n" +
                 "})\n" +
                 "@SpringBootApplication\n" +

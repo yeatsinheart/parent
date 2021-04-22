@@ -18,31 +18,17 @@ import java.util.List;
 public class MavenProjectCreater {
 
     public static void main(String[] args) {
+        create(Arrays.asList("demo"), "business");
+    }
+
+    public static void create(List<String> modules, String business) {
         //业务线
-        String business = "business";
         // System.getProperty("user.dir") + File.separator +
         String basePath = business;
-        //模块
-        List<String> ps = Arrays.asList(
-                "admin", "site","message", "user", "risk",
-                "order", "money", "cost",
-                "pay", "webcast", "chat",
-                "report",
-                ""
-        );
-        String finalBasePath = basePath;
-        String finalBusiness = business;
-        ps.forEach(s -> {
-            String realPath = finalBasePath + File.separator + s;
-            newMultyModule(finalBusiness, realPath, s);
+        modules.forEach(s -> {
+            String realPath = basePath + File.separator + s;
+            newMultyModule(business, realPath, s);
         });
-       /* business = "game";
-        basePath = System.getProperty("user.dir") + File.separator + business;
-        List<String> gs = Arrays.asList(
-                "lottery", "pork",
-                ""
-        );*/
-
     }
 
     public static void newMultyModule(String business, String basePath, String project) {
@@ -57,9 +43,8 @@ public class MavenProjectCreater {
 
         WebPom.init(business, basePath + File.separator + project + "-web", project);
         WebFile.init(basePath + File.separator + project + "-web", project);
-/*
         DbPom.init(business, basePath + File.separator + project + "-db", project);
-        DbFile.init(basePath + File.separator + project + "-db", project);*/
+        DbFile.init(basePath + File.separator + project + "-db", project);
     }
 
 }

@@ -1,14 +1,12 @@
 package ${pto.packageName};
 import java.io.Serializable;
-import com.game.common.model.BaseRequestDTO;
+import com.common.dto.BaseRequest;
 import org.apache.commons.lang3.StringUtils;
 
 <#list table.columns as column>
 import ${column.javaType};
 </#list>
-<#if swagger >
-import io.swagger.annotations.*;
-</#if>
+import io.swagger.v3.oas.annotations.media.Schema;
 <#if lombok >
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,10 +20,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 </#if>
-<#if swagger >
-@ApiModel("${table.comment!}")
-</#if>
-public class ${dto.className} extends BaseRequestDTO  implements Serializable {
+@Schema(name="${pto.className}", description="{table.comment!}")
+public class ${pto.className} extends BaseRequest  implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,15 +29,12 @@ public class ${dto.className} extends BaseRequestDTO  implements Serializable {
     /**
     * ${column.comment!}   数据库类型${column.type!}
     */
-    <#if swagger >
-    @ApiModelProperty(value="${column.comment!}",name="${column.objectName?uncap_first}",required=${column.notNull!})
-    </#if>
+    @Schema(description = "${column.comment!}",name="${column.objectName?uncap_first}",required=${column.notNull!})
     private ${column.javaTypeName} ${column.objectName?uncap_first};
 </#list>
 
 <#if !lombok >
 <#list table.columns as column>
-
     public ${column.javaTypeName} get${column.objectName?cap_first}() {
         return ${column.objectName?uncap_first};
     }
@@ -80,7 +73,7 @@ public class ${dto.className} extends BaseRequestDTO  implements Serializable {
 
     @Override
     public String toString() {
-        return "${dto.className}{" +
+        return "${pto.className}{" +
 <#list table.columns as column>
     <#if column_index==0>
                 "  ${column.objectName?uncap_first} :" + ${column.objectName?uncap_first} +

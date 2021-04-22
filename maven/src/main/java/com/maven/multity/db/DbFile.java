@@ -21,8 +21,12 @@ public class DbFile {
 
         String entities=basePackage+File.separator+"entities";
         FileUtil.mkdir(entities);
-        String mapper=basePackage+File.separator+"mapper";
+        String mapper=basePackage+File.separator+"mappers";
         FileUtil.mkdir(mapper);
+        String dao=basePackage+File.separator+"daos";
+        FileUtil.mkdir(dao);
+        String daoImpl=dao+File.separator+"impls";
+        FileUtil.mkdir(daoImpl);
 
         String baseResource = base+File.separator+"resources";
         String mapperxml=baseResource+File.separator+"mapper";

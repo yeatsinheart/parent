@@ -1,5 +1,4 @@
 package ${entity.packageName};
-import ${dto.fullName};
 import java.io.Serializable;
 import com.baomidou.mybatisplus.annotation.*;
 import org.apache.ibatis.type.JdbcType;
@@ -42,20 +41,7 @@ public class ${entity.className} implements Serializable {
     </#if>
     private ${column.javaTypeName} ${column.objectName?uncap_first};
 </#list>
-    public ${dto.className} convert2DTO(){
-        ${dto.className} dto = new ${dto.className}();
-    <#list table.columns as column>
-        dto.set${column.objectName?cap_first}(this.get${column.objectName?cap_first}());
-    </#list>
-        return dto;
-    }
-    public static ${entity.className} convert2Entity(${dto.className} dto){
-    ${entity.className} entity = new ${entity.className}();
-    <#list table.columns as column>
-        entity.set${column.objectName?cap_first}(dto.get${column.objectName?cap_first}());
-    </#list>
-        return entity;
-    }
+
 <#if !lombok >
 
 

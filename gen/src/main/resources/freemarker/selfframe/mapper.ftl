@@ -2,7 +2,6 @@ package ${mapper.packageName};
 
 import java.util.List;
 import ${entity.fullName};
-import ${dto.fullName};
 import java.math.BigDecimal;
 import org.apache.ibatis.annotations.*;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

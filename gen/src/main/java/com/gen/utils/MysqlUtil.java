@@ -1,6 +1,7 @@
 package com.gen.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.common.pool.ThreadPool;
 import com.gen.entities.Column;
 import com.gen.entities.Table;
 import com.gen.mapper.DBMapper;
@@ -129,12 +130,17 @@ public class MysqlUtil {
         SqlSessionTemplate template = new SqlSessionTemplate(session);
         DBMapper tableMapper = template.getMapper(DBMapper.class);
         List<Table> tablees = tableMapper.getAllTables(getTableSql(null));
-        System.out.println(JSON.toJSONString(tablees));
-
+        ThreadPool pool = new ThreadPool();
         for(Table table:tablees){
-            List<Column> columns = tableMapper.getAllColumns(getColumnSql(table.getName()));
-            table.setColumnList(columns);
-            FileGenUtil.gen(table,"testgen","1");
+                List<Column> columns = tableMapper.getAllColumns(getColumnSql(table.getName()));
+                table.setColumnList(columns);
+                pool.unLimitedExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        FileGenUtil.gen(table, "demo", "business");
+                    }
+                });
+
         }
 
     }

@@ -1,5 +1,6 @@
 package com.gen.controller;
 
+import com.common.pool.ThreadPool;
 import com.gen.entities.Table;
 import com.gen.services.MysqlService;
 import com.gen.utils.FileGenUtil;
@@ -33,6 +34,8 @@ import java.util.zip.ZipOutputStream;
 public class TestController {
     @Autowired
     MysqlService dbService;
+    @Autowired
+    ThreadPool threadPool;
 
     @GetMapping("/hello")
     public Mono<String> hello(final Model model) {
@@ -90,14 +93,7 @@ public class TestController {
         ZeroCopyHttpOutputMessage zeroCopyResponse = (ZeroCopyHttpOutputMessage) response;
         response.getHeaders().set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + uuid + ".zip");
         response.getHeaders().setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        Resource resource = new ClassPathResource(toFile);
-        /*File file = null;
-        try {
-            file = resource.getFile();
-        } catch (IOException e) {
-            log.error("下载文件{}出错{}", uuid,e);
-            return Mono.empty();
-        }*/
+
         return zeroCopyResponse.writeWith(to, 0, to.length())
                 .doFinally(a -> {
                     try {

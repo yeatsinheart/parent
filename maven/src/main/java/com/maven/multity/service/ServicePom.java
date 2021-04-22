@@ -33,14 +33,9 @@ public class ServicePom {
                 "            <version>${project.version}</version>\n" +
                 "        </dependency>\n" +
                 "        <dependency>\n" +
-                "           <groupId>code</groupId>\n" +
-                "           <artifactId>common</artifactId>\n" +
+                "           <groupId>code."+business+"</groupId>\n" +
+                "           <artifactId>"+project+"-db</artifactId>\n" +
                 "           <version>${project.version}</version>\n" +
-                "        </dependency>\n" +
-                "        <dependency>\n" +
-                "            <groupId>code</groupId>\n" +
-                "            <artifactId>mysql</artifactId>\n" +
-                "            <version>${project.version}</version>\n" +
                 "        </dependency>\n" +
                 "        <dependency>\n" +
                 "           <groupId>code."+business+"</groupId>\n" +
