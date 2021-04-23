@@ -165,7 +165,7 @@ public class FileGenUtil {
                 this.className = captureName(objectName) + "DTO";
             } else if (model.equals("pto")) {
                 this.className = captureName(objectName) + "PTO";
-            }  else {
+            } else {
                 this.className = captureName(objectName) + captureName(model);
             }
             this.fullName = this.packageName + "." + this.className;

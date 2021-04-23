@@ -7,38 +7,40 @@ import java.io.File;
 
 public class WebFile {
 
-    public static String level="web";
-    public static void init(String projectpath,String project){
+    public static String level = "web";
+
+    public static void init(String projectpath, String project) {
         //初始化文件夹结构
-        String src = projectpath+File.separator+"src";
-        FileUtil.mkdir(src+File.separator+"test"+File.separator+"java"+File.separator+level+File.separator+project);
-        String base = src+ File.separator+"main";
+        String src = projectpath + File.separator + "src";
+        FileUtil.mkdir(src + File.separator + "test" + File.separator + "java" + File.separator + level + File.separator + project);
+        String base = src + File.separator + "main";
 
-        String basePackage=base+File.separator+"java"+File.separator+level+File.separator+project;
-        String starter=basePackage+File.separator+ StringUtil.firstUpper(project)+StringUtil.firstUpper(level)+"WebApplication.java";
-        FileUtil.write(starter,starter(project),true);
+        String basePackage = base + File.separator + "java" + File.separator + level + File.separator + project;
+        String starter = basePackage + File.separator + StringUtil.firstUpper(project) + StringUtil.firstUpper(level) + "WebApplication.java";
+        FileUtil.write(starter, starter(project), true);
 
-        String pto=basePackage+File.separator+"ptos";
+        String pto = basePackage + File.separator + "ptos";
         FileUtil.mkdir(pto);
 
-        String controller=basePackage+File.separator+"controller";
-        String testController = controller+File.separator+"TestController.java";
-        FileUtil.write(testController,testController(project),true);
+        String controller = basePackage + File.separator + "controller";
+        String testController = controller + File.separator + "TestController.java";
+        FileUtil.write(testController, testController(project), true);
 
 
-        String baseResource = base+File.separator+"resources";
+        String baseResource = base + File.separator + "resources";
         FileUtil.mkdir(baseResource);
 
-        String resources = baseResource+File.separator+"application.properties";
-        FileUtil.write(resources,resource(project),true);
-        String helloHtml = baseResource+File.separator+"templates"+File.separator+"hello.html";
-        String cityList = baseResource+File.separator+"templates"+File.separator+"cityList.html";
-        String staticFile = baseResource+File.separator+"static"+File.separator+"index.html";
-        FileUtil.write(helloHtml,helloHtml(project),true);
-        FileUtil.write(cityList,cityList(project),true);
-        FileUtil.write(staticFile,"",true);
+        String resources = baseResource + File.separator + "application.properties";
+        FileUtil.write(resources, resource(project), true);
+        String helloHtml = baseResource + File.separator + "templates" + File.separator + "hello.html";
+        String cityList = baseResource + File.separator + "templates" + File.separator + "cityList.html";
+        String staticFile = baseResource + File.separator + "static" + File.separator + "index.html";
+        FileUtil.write(helloHtml, helloHtml(project), true);
+        FileUtil.write(cityList, cityList(project), true);
+        FileUtil.write(staticFile, "", true);
     }
-    public static String cityList(String project){
+
+    public static String cityList(String project) {
         return "<!DOCTYPE html>\n" +
                 "<html lang=\"zh-CN\">\n" +
                 "<head>\n" +
@@ -75,7 +77,8 @@ public class WebFile {
                 "\n" +
                 "</div></body></html>";
     }
-    public static String helloHtml(String project){
+
+    public static String helloHtml(String project) {
         return "<!DOCTYPE html>\n" +
                 "<html lang=\"zh-CN\">\n" +
                 "<head>\n" +
@@ -88,10 +91,11 @@ public class WebFile {
                 "</body>\n" +
                 "</html>";
     }
-    public static String testController(String project){
-        return "package web."+project+".controller;\n" +
+
+    public static String testController(String project) {
+        return "package web." + project + ".controller;\n" +
                 "\n" +
-                "import api."+project+".services.TestService;\n" +
+                "import api." + project + ".services.TestService;\n" +
                 "import org.apache.dubbo.config.annotation.DubboReference;\n" +
                 "import org.springframework.ui.Model;\n" +
                 "import reactor.core.publisher.Mono;\n" +
@@ -121,7 +125,7 @@ public class WebFile {
                 "                            content = @Content(mediaType = \"application/json\",\n" +
                 "                                    schema = @Schema(implementation = String.class))),\n" +
                 "                    @ApiResponse(responseCode = \"400\", description = \"返回400时候错误的原因\")},\n" +
-                "            security = @SecurityRequirement(name = \"需要认证\"))\n"+
+                "            security = @SecurityRequirement(name = \"需要认证\"))\n" +
                 "    @GetMapping(\"/hello\")\n" +
                 "    public Mono<String> hello(final Model model) {\n" +
                 "        model.addAttribute(\"name\", \"泥瓦匠\");\n" +
@@ -131,8 +135,9 @@ public class WebFile {
                 "    }\n" +
                 "}\n";
     }
-    public static String resource(String project){
-        return "spring.application.name=" +project+"-"+level+"\n"+
+
+    public static String resource(String project) {
+        return "spring.application.name=" + project + "-" + level + "\n" +
                 "# 日志颜色\n" +
                 "spring.output.ansi.enabled=always\n" +
                 "#logging.level.root=debug\n" +
@@ -158,8 +163,9 @@ public class WebFile {
                 "spring.resources.static-locations=classpath:/static/"
                 ;
     }
-    public static String starter(String project){
-        return "package "+level+"."+project+";\n" +
+
+    public static String starter(String project) {
+        return "package " + level + "." + project + ";\n" +
                 "\n" +
                 "import com.common.utils.ShutDown;\n" +
                 "import org.springframework.boot.SpringApplication;\n" +
@@ -171,20 +177,20 @@ public class WebFile {
 
                 "\n" +
                 "@ComponentScan(basePackages={\n" +
-                "        \""+level+"."+project+".controller\",\n" +
-                "        \"service."+project+".services\",\n" +
+                "        \"" + level + "." + project + ".controller\",\n" +
+                "        \"service." + project + ".services\",\n" +
                 "        \"com.db.config\",\n" +
-                "        \"db."+project+".daos.impls\",\n" +
+                "        \"db." + project + ".daos.impls\",\n" +
                 "        \"com.redis\",\n" +
                 "        \"com.common.pool\",\n" +
                 "        \"com.common.annotation\"\n" +
                 "})\n" +
                 "@SpringBootApplication\n" +
-                "public class "+ StringUtil.firstUpper(project)+StringUtil.firstUpper(level)+"WebApplication {\n" +
+                "public class " + StringUtil.firstUpper(project) + StringUtil.firstUpper(level) + "WebApplication {\n" +
                 "\n" +
                 "    public static void main(String[] args) {\n" +
                 "        Runtime.getRuntime().addShutdownHook(new ShutDown());\n" +
-                "        ConfigurableApplicationContext applicationContext = SpringApplication.run("+ StringUtil.firstUpper(project)+StringUtil.firstUpper(level)+"WebApplication.class, args);\n" +
+                "        ConfigurableApplicationContext applicationContext = SpringApplication.run(" + StringUtil.firstUpper(project) + StringUtil.firstUpper(level) + "WebApplication.class, args);\n" +
                 "        try {\n" +
                 "            // ===== 在项目初始化bean后检验数据库连接是否\n" +
                 "            DataSource dataSource = (DataSource) applicationContext.getBean(\"dataSource\");\n" +

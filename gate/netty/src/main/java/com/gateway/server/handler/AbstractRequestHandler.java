@@ -65,12 +65,13 @@ public abstract class AbstractRequestHandler<T> extends SimpleChannelInboundHand
      * 若客户端异常掉线了，并不能响应服务端发来的心跳包，在25s后就会触发IdleState.READER_IDLE（未读操作状态），此时服务器就会将通道关闭
      */
     private int lossConnectCount = 0;
+
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         super.userEventTriggered(ctx, evt);
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
-            if (event.state().equals(IdleState.READER_IDLE) && ++lossConnectCount>2) {
+            if (event.state().equals(IdleState.READER_IDLE) && ++lossConnectCount > 2) {
                 //未进行读操作
                 System.out.println("READER_IDLE");
                 // 超时关闭channel

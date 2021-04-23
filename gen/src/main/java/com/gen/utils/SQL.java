@@ -1,5 +1,5 @@
 package com.gen.utils;
 
 public interface SQL {
-     String getJavaType(String columnType);
+    String getJavaType(String columnType);
 }

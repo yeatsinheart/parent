@@ -1,52 +1,52 @@
 package ${entity.packageName};
 import java.io.Serializable;
 <#list table.columns as column>
-import ${column.javaType};
+    import ${column.javaType};
 </#list>
 <#if swagger >
     import io.swagger.annotations.*;
 </#if>
 /**
- * ${table.comment!}
- * @author ${author}
- * @since ${time}
- */
+* ${table.comment!}
+* @author ${author}
+* @since ${time}
+*/
 <#if swagger >
-@ApiModel("${table.comment!}")
+    @ApiModel("${table.comment!}")
 </#if>
 public class ${entity.className} implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
 <#list table.columns as column>
 
     /**
     * ${column.comment!}  数据库类型${column.type!}
     */
     <#if swagger >
-    @ApiModelProperty(value="${column.comment!}",name="${column.objectName?uncap_first}",required=${column.notNull!})
+        @ApiModelProperty(value="${column.comment!}",name="${column.objectName?uncap_first}",required=${column.notNull!})
     </#if>
     private ${column.javaTypeName} ${column.objectName?uncap_first};
 </#list>
 <#list table.columns as column>
 
     public ${column.javaTypeName} get${column.objectName?cap_first}() {
-        return ${column.objectName?uncap_first};
+    return ${column.objectName?uncap_first};
     }
     public void set${column.objectName?cap_first}(${column.javaTypeName} ${column.objectName?uncap_first}) {
-        this.${column.objectName?uncap_first} = ${column.objectName?uncap_first};
+    this.${column.objectName?uncap_first} = ${column.objectName?uncap_first};
     }
 </#list>
 
-    @Override
-    public String toString() {
-        return "${entity.className}{" +
+@Override
+public String toString() {
+return "${entity.className}{" +
 <#list table.columns as column>
     <#if column_index==0>
-                "  ${column.objectName?uncap_first} :" + ${column.objectName?uncap_first} +
+        "  ${column.objectName?uncap_first} :" + ${column.objectName?uncap_first} +
     <#else>
-                ", ${column.objectName?uncap_first} :" +${column.objectName?uncap_first} +
+        ", ${column.objectName?uncap_first} :" +${column.objectName?uncap_first} +
     </#if>
 </#list>
-                "}";
-    }
+"}";
+}
 }

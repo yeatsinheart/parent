@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @description: this is a 表信息
  **/
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class Column implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,11 +28,11 @@ public class Column implements Serializable {
     private String type;
     /**
      * 长度
-     * */
+     */
     private Integer length;
     /**
      * 小数点
-     * */
+     */
     private Integer scale;
     /**
      * 不是空
@@ -46,7 +46,6 @@ public class Column implements Serializable {
      * 注释
      */
     private String comment;
-
 
 
 }

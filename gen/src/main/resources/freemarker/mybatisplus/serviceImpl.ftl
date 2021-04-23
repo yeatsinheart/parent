@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 <#if lombok >
-import lombok.extern.slf4j.Slf4j;
+    import lombok.extern.slf4j.Slf4j;
 </#if>
 /**
 * ${table.comment!}
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 * @since ${time}
 */
 <#if lombok >
-@Slf4j
+    @Slf4j
 </#if>
 @Service
 public class ${serviceImpl.className} implements ${service.className} {
@@ -28,14 +28,14 @@ public class ${serviceImpl.className} implements ${service.className} {
 <#else >
     private static final Log log = LogFactory.getLog(${serviceImpl.className}.class);
 </#if>
-    @Autowired
-    private  ${mapper.className} ${mapper.className?uncap_first};
+@Autowired
+private  ${mapper.className} ${mapper.className?uncap_first};
 
-    Wrapper<${dto.className}> getQueryWrapper(${dto.className} query){
-        QueryWrapper<${dto.className}> queryWrapper = new QueryWrapper();
-        <#list table.columns as column>
-        if(null != query.get${column.objectName?cap_first}())queryWrapper.eq("${column.name!}",query.get${column.objectName?cap_first}());
-        </#list>
-        return queryWrapper;
-    }
+Wrapper<${dto.className}> getQueryWrapper(${dto.className} query){
+QueryWrapper<${dto.className}> queryWrapper = new QueryWrapper();
+<#list table.columns as column>
+    if(null != query.get${column.objectName?cap_first}())queryWrapper.eq("${column.name!}",query.get${column.objectName?cap_first}());
+</#list>
+return queryWrapper;
+}
 }

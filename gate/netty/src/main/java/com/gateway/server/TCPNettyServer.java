@@ -7,7 +7,6 @@ import com.gateway.server.handler.TCPHandler;
 import com.gateway.server.handler.WebSocketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -51,6 +50,7 @@ public class TCPNettyServer {
     private HttpHandler http;
     @Autowired
     private WebSocketHandler webSocket;
+
     // netty通过Reactor模型基于多路复用器接收并处理用户请求（能讲就多讲一点），
     // 内部实现了两个线程池，boss线程池和work线程池，
     // 其中boss线程池的线程负责处理请求的accept事件，当接收到accept事件的请求时，把对应的socket封装到一个NioSocketChannel中，

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component("udp")
 public class UDPHandler extends AbstractRequestHandler<ByteBuf> {
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf bytebuf)  {
+    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf bytebuf) {
         doBytebuf(ctx, bytebuf);
     }
 }

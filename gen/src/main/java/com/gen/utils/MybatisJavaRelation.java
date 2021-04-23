@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MybatisJavaRelation {
-    /**获取java与mybatis jdbc的映射关系*/
+    /**
+     * 获取java与mybatis jdbc的映射关系
+     */
     public static Map java2jdbc = new HashMap();
     public static Map jdbc2java = new HashMap();
 

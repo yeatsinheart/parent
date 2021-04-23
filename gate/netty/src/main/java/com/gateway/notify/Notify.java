@@ -7,7 +7,7 @@ import org.apache.dubbo.config.annotation.DubboService;
 
 @DubboService
 public class Notify {
-    public Result call(){
+    public Result call() {
         return ResultGenerator.genFailResult(Language.中文.getCode());
     }
 }

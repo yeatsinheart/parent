@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
         "com.gen.services",
         "com.db.config",
 })
-@SpringBootApplication(exclude= {DataSourceAutoConfiguration.class})
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class GenWebWebApplication {
 
     public static void main(String[] args) {

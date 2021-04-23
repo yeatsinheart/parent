@@ -28,36 +28,36 @@ import java.util.List;
 * 原始模板${raw}
 **/
 public class ${class} implements BaseDao {
-    /**
-     * 生成查询对象
-     * 服务类调用searchRequestBuilder.internalBuilder(SearchSourceBuilder sourceBuilder) 设置查询内容 获得响应内容
-     *
-     * @param args
-     */
-    @Override
-    public SearchSourceBuilder initTemple(DaoArgs args) {
-        SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
+/**
+* 生成查询对象
+* 服务类调用searchRequestBuilder.internalBuilder(SearchSourceBuilder sourceBuilder) 设置查询内容 获得响应内容
+*
+* @param args
+*/
+@Override
+public SearchSourceBuilder initTemple(DaoArgs args) {
+SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 ${java}
-        /*
-        ${content}
-        */
+/*
+${content}
+*/
 
-        return searchSourceBuilder;
-    }
+return searchSourceBuilder;
+}
 
-    /**
-     * 查询响应封装
-     *
-     * @param args
-     * @param response
-     */
-    @Override
-    public DaoResult get(DaoArgs args, SearchResponse response) {
-        DaoResult result = new DaoResult<>();
-        List list = new ArrayList<>();
+/**
+* 查询响应封装
+*
+* @param args
+* @param response
+*/
+@Override
+public DaoResult get(DaoArgs args, SearchResponse response) {
+DaoResult result = new DaoResult<>();
+List list = new ArrayList<>();
 
 
-        result.setResult(list);
-        return result;
-    }
+result.setResult(list);
+return result;
+}
 }

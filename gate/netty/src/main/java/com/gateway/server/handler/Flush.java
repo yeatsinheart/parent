@@ -7,7 +7,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,7 +41,7 @@ public class Flush {
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.copiedBuffer(result, CharsetUtil.UTF_8));
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
         setCros(response);
-        log.info("{}HTTP响应{}", SessionHolder.getsession(ctx.channel()) ,result);
+        log.info("{}HTTP响应{}", SessionHolder.getsession(ctx.channel()), result);
         ctx.writeAndFlush(response);
         ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
     }
@@ -56,7 +55,7 @@ public class Flush {
     }
 
     public static void flushBytes(Channel channel, byte[] result) {
-        log.info("{}", SessionHolder.getsession(channel) );
+        log.info("{}", SessionHolder.getsession(channel));
         ByteBuf buf = Unpooled.buffer();
         buf.writeBytes(result);
         channel.writeAndFlush(buf);

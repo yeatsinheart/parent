@@ -19,7 +19,8 @@ public class SessionHolder {
         String ip = address.getAddress().getHostAddress();
         session.attr(SessionHolder.IP).set(ip);
     }
-    public static String getsession(Channel session){
-        return session.attr(IP).get()+":"+session.attr(USER).get();
+
+    public static String getsession(Channel session) {
+        return session.attr(IP).get() + ":" + session.attr(USER).get();
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
  * @description: this is a 数据库表信息
  **/
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class Table implements Serializable {
 
     private static final long serialVersionUID = 1L;

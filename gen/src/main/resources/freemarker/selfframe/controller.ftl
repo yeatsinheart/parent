@@ -34,7 +34,7 @@ import ${service.fullName};
 * @since ${time}
 */
 <#if lombok >
-@Slf4j
+    @Slf4j
 </#if>
 @RestController
 @RequestMapping("/${table.objectName}")
@@ -43,20 +43,21 @@ public class ${controller.className}   {
 <#else >
     private static final Log log = LogFactory.getLog(${controller.className}.class);
 </#if>
-    @DubboReference
-    private ${service.className} ${service.className?uncap_first};
-    /**
-    * 获取数据列表
-    */
+@DubboReference
+private ${service.className} ${service.className?uncap_first};
+/**
+* 获取数据列表
+*/
 <#if swagger>
     @ApiOperation(value = "没有参数", notes = "没有参数")
 </#if>
-    @PostMapping("selectList")
-    public Object list${entity.className}( @Valid @ModelAttribute ${dto.className} ${dto.className?uncap_first}){
-    Result<List<${dto.className}>> result = ${service.className?uncap_first}.selectAll(null);
-    List<${dto.className}> data = result.getData();
-    return JSON.toJSONString(data);
-    }
+@PostMapping("selectList")
+public Object list${entity.className}( @Valid @ModelAttribute ${dto.className} ${dto.className?uncap_first}){
+Result
+<List<${dto.className}>> result = ${service.className?uncap_first}.selectAll(null);
+List<${dto.className}> data = result.getData();
+return JSON.toJSONString(data);
+}
 }
 
 

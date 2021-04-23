@@ -39,6 +39,7 @@ public class TestController {
         String path = "hello";
         return Mono.create(monoSink -> monoSink.success(path));
     }
+
     @GetMapping("/db")
     public Mono<String> db(final Model model) {
         String path = "db";
@@ -50,25 +51,25 @@ public class TestController {
     @GetMapping("/down")
     public Mono<Void> db(String db, String url, String user, String pwd, String table, String project, String uuid, ServerHttpResponse response) {
         //被压缩的文件夹
-        String tmp=uuid;
+        String tmp = uuid;
         File tmpFile = new File(tmp);
-        String sourceFile = tmp+File.separator+uuid;
+        String sourceFile = tmp + File.separator + uuid;
         if (StringUtils.isAllBlank(sourceFile)) {
             return Mono.empty();
         }
         List<String> tableQuery = new ArrayList<>();
-        if(!StringUtils.isAllEmpty(table)){
-            tableQuery= Arrays.asList(table.split(","));
+        if (!StringUtils.isAllEmpty(table)) {
+            tableQuery = Arrays.asList(table.split(","));
         }
         SqlSessionFactory sqlSessionFactory = MysqlUtil.connect(db, url, user, pwd);
-        List<Table> tables = dbService.getAllTables(sqlSessionFactory,  tableQuery);
+        List<Table> tables = dbService.getAllTables(sqlSessionFactory, tableQuery);
         for (Table table1 : tables) {
-            table1.setColumnList(dbService.getAllColumns(sqlSessionFactory,  table1.getName()));
+            table1.setColumnList(dbService.getAllColumns(sqlSessionFactory, table1.getName()));
             FileGenUtil.gen(table1, project, sourceFile);
             //重定向到下载位置
         }
 
-        String toFile = tmp+File.separator+"code" + uuid + ".zip";
+        String toFile = tmp + File.separator + "code" + uuid + ".zip";
         File to = new File(toFile);
 
         //压缩结果输出，即压缩包
@@ -94,7 +95,7 @@ public class TestController {
                     try {
                         FileUtils.deleteDirectory(tmpFile);
                     } catch (Exception e) {
-                        log.error("下载后删除文件失败{},{}", tmpFile.getAbsolutePath(),e);
+                        log.error("下载后删除文件失败{},{}", tmpFile.getAbsolutePath(), e);
                     }
                 });
         /*return ServerResponse.ok()

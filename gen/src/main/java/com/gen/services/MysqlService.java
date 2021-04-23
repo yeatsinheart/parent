@@ -9,7 +9,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class MysqlService {
@@ -32,7 +31,7 @@ public class MysqlService {
 
         SqlSessionTemplate template = new SqlSessionTemplate(sqlSessionFactory);
         DBMapper tableMapper = template.getMapper(DBMapper.class);
-        String sql = MysqlUtil.getColumnSql( tableName);
+        String sql = MysqlUtil.getColumnSql(tableName);
         List<Column> columns = tableMapper.getAllColumns(sql);
         return columns;
     }
