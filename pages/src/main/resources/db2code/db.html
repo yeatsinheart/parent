@@ -1,0 +1,93 @@
+<html dir="ltr" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>www.bootstrapmb.com - Neumorphism Login Form</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body><!-- partial:index.partial.html -->
+<meta content="width=device-width, user-scalable=no, initial-scale=1.0" name="viewport">
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&amp;display=swap" rel="stylesheet">
+<div class="main">
+    <div class="container a-container" id="a-container">
+        <form action="" class="form" id="a-form" method="">
+            <h2 class="form_title title">表代码生成</h2>
+            <!--<div class="form__icons"></div>-->
+            <span class="form__span">数据库中指定的表生成后端代码</span>
+            <input class="form__input" id="url" placeholder="url" type="text" value="47.242.219.77:3306/chzx_chat">
+            <input class="form__input" id="user" placeholder="user" type="text" value="root">
+            <input class="form__input" id="pwd" placeholder="password" type="password" value="IQdtJcwVuspR0WT6">
+            <input class="form__input" id="ts" placeholder="table1,table2" type="text">
+            <input class="form__input" id="project" placeholder="project" type="text">
+            <button class="form__button button submit" onclick="download()">立即下载</button>
+        </form>
+    </div>
+    <div class="switch" id="switch-cnt">
+        <div class="switch__circle"></div>
+        <div class="switch__circle switch__circle--t"></div>
+        <div class="switch__container" id="switch-c1"><h2 class="switch__title title">欢迎使用!</h2>
+            <p class="switch__description description">保持更新,方便未来</p>
+            <!--<button class="switch__button button switch-btn">立即登录</button>-->
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    function uuid(len, radix) {
+        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+        var uuid = [], i;
+        radix = radix || chars.length;
+        if (len) {
+            // Compact form
+            for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+        } else {
+            // rfc4122, version 4 form
+            var r;
+            // rfc4122 requires these characters
+            uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+            uuid[14] = '4';
+            // Fill in random data.  At i==19 set the high bits of clock sequence as
+            // per rfc4122, sec. 4.1.5
+            for (i = 0; i < 36; i++) {
+                if (!uuid[i]) {
+                    r = 0 | Math.random() * 16;
+                    uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+                }
+            }
+        }
+        return uuid.join('');
+    }
+
+    function download() {
+        let dburl = document.getElementById('url').value;
+        if (!dburl || dburl.trim() == "") {
+            alert("数据库连接信息未填写");
+            return;
+        }
+        let dbuser = document.getElementById('user').value;
+        if (!dbuser || dbuser.trim() == "") {
+            alert("数据库用户未填写");
+            return;
+        }
+        let dbpwd = document.getElementById('pwd').value;
+        if (!dbpwd || dbpwd.trim() == "") {
+            alert("数据库密码未填写");
+            return;
+        }
+        let tables = document.getElementById('ts').value;
+
+        let project = document.getElementById('project').value;
+        if (!project || project.trim() == "") {
+            alert("归属项目project必须要填写");
+            return;
+        }
+        window.open("/down?url=" + dburl +
+            "&user=" + dbuser +
+            "&pwd=" + dbpwd +
+            "&table=" + tables +
+            "&project=" + project +
+            "&uuid=" + uuid(15), '_self');
+    }
+</script>
+</html>
