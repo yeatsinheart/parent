@@ -30,13 +30,12 @@ import java.util.concurrent.TimeUnit;
 @Component("redisService")
 public class RedisServiceImpl implements RedisService {
 
-    private static JedisPool pool = null;
-    private final String OK_CODE = "OK";
-    private final String OK_MULTI_CODE = "+OK";
-    private static String KEY_PRE = "REDIS_LOCK_";
     private static final String LOCK_SUCCESS = "OK";
     private static final Long RELEASE_SUCCESS = 1L;
-
+    private static JedisPool pool = null;
+    private static final String KEY_PRE = "REDIS_LOCK_";
+    private final String OK_CODE = "OK";
+    private final String OK_MULTI_CODE = "+OK";
     private int lockExpirseTime = 2;
 
     private int tryExpirseTime = 2;
@@ -109,8 +108,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 从连接池里取连接（用完连接后必须销毁）
-     *
-     * @return
      */
     private Jedis getResource() {
         return pool.getResource();
@@ -119,23 +116,16 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 用完后，销毁连接（必须）
-     *
-     * @param jedis
      */
     private void destroyResource(Jedis jedis) {
         if (jedis == null) {
             return;
         }
-        if (jedis != null) {
-            jedis.close();
-        }
+        jedis.close();
     }
 
     /**
      * 根据key取数据
-     *
-     * @param key
-     * @return
      */
     @Override
     public String get(String key) {
@@ -156,10 +146,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 根据key取对象数据（不支持Collection数据类型）
-     *
-     * @param key
-     * @param clazz
-     * @return
      */
     @Override
     public <T> T get(String key, Class<T> clazz) {
@@ -186,10 +172,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 根据key取对象数据（不支持Collection数据类型）
-     *
-     * @param key
-     * @param clazz
-     * @return
      */
     @Override
     public <T> RedisResult<T> getResult(String key, Class<T> clazz) {
@@ -201,7 +183,7 @@ public class RedisServiceImpl implements RedisService {
             log.warn("Params clazz is null!");
             return null;
         }
-        RedisResult<T> redisResult = new RedisResult<T>();
+        RedisResult<T> redisResult = new RedisResult<>();
 
         String value = get(key);
         if (StringUtils.isBlank(value)) {
@@ -213,7 +195,7 @@ public class RedisServiceImpl implements RedisService {
         if (StringUtils.equalsIgnoreCase(value, BLANK_CONTENT)) {
             return redisResult;
         }
-        T obj = null;
+        T obj;
         try {
             obj = om.readValue(value, clazz);
             redisResult.setResult(obj);
@@ -227,10 +209,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 根据key取 Collection 对象数据
-     *
-     * @param key
-     * @param elementClazz 集合元素类型
-     * @return
      */
     @Override
     public <T> RedisResult<T> getListResult(String key, Class<T> elementClazz) {
@@ -243,7 +221,7 @@ public class RedisServiceImpl implements RedisService {
             log.warn("Params elementClazz is null!");
             return null;
         }
-        RedisResult<T> redisResult = new RedisResult<T>();
+        RedisResult<T> redisResult = new RedisResult<>();
 
         String value = get(key);
         if (StringUtils.isBlank(value)) {
@@ -257,7 +235,7 @@ public class RedisServiceImpl implements RedisService {
             return redisResult;
         }
 
-        List<T> list = null;
+        List<T> list;
         try {
             list = om.readValue(value, getCollectionType(List.class, elementClazz));
             redisResult.setListResult(list);
@@ -273,11 +251,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 写入/修改 缓存内容(无论key是否存在，均会更新key对应的值)
-     *
-     * @param key
-     * @param obj
-     * @param expireTime 缓存 内容过期时间 （单位：秒） ，若expireTime小于等于0 则表示该内容不过期
-     * @return
      */
     @Override
     public String set(String key, Object obj, int expireTime) {
@@ -294,11 +267,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 写入/修改 缓存内容(无论key是否存在，均会更新key对应的值)
-     *
-     * @param key
-     * @param value
-     * @param expireTime 缓存 内容过期时间 （单位：秒） ，若expireTime小于等于0 则表示该内容不过期
-     * @return
      */
     @Override
     public String set(String key, String value, int expireTime) {
@@ -317,7 +285,7 @@ public class RedisServiceImpl implements RedisService {
         try {
             String result = jedis.set(key, value);
             if (expireTime > 0) {
-                jedis.expire(key, expireTime);
+                jedis.expire(key, (long) expireTime);
             }
             return result;
         } finally {
@@ -327,10 +295,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 写入/修改 缓存内容
-     *
-     * @param key
-     * @param obj
-     * @return
      */
     @Override
     public String set(String key, Object obj) {
@@ -347,10 +311,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 写入/修改 缓存内容(默认有过期时间 1小时)
-     *
-     * @param key
-     * @param value
-     * @return
      */
     @Override
     public String set(String key, String value) {
@@ -359,11 +319,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 写入/修改 缓存内容
-     *
-     * @param key
-     * @param value
-     * @param expiredTime 缓存存活时长，必须 大于0
-     * @return
      */
     @Override
     public String set(String key, String value, SetParams setParams, int expiredTime) {
@@ -390,17 +345,12 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 仅当redis中不含对应的key时，设定缓存内容
-     *
-     * @param key
-     * @param value
-     * @param expiredTime 缓存内容过期时间 （单位：秒） ，expireTime必须大于0
-     * @return
      */
     @Override
     public String setnx(String key, String value, int expiredTime) {
         SetParams setParams = new SetParams();
         setParams.nx();
-        setParams.ex(expiredTime);
+        setParams.ex((long) expiredTime);
         return this.set(key, value, setParams, expiredTime);
     }
 
@@ -408,32 +358,24 @@ public class RedisServiceImpl implements RedisService {
     public String tryLock(String key, String value, int expiredTime) {
         SetParams setParams = new SetParams();
         setParams.nx();
-        setParams.ex(expiredTime);
+        setParams.ex((long) expiredTime);
         return this.set(key, value, setParams, expiredTime);
     }
 
 
     /**
      * 仅当redis中含有对应的key时，修改缓存内容
-     *
-     * @param key
-     * @param value
-     * @param expiredTime 缓存内容过期时间 （单位：秒） ，expireTime必须大于0
-     * @return
      */
     @Override
     public String setxx(String key, String value, int expiredTime) {
         SetParams setParams = new SetParams();
         setParams.xx();
-        setParams.ex(expiredTime);
+        setParams.ex((long) expiredTime);
         return this.set(key, value, setParams, expiredTime);
     }
 
     /**
      * 根据key删除缓存
-     *
-     * @param keys
-     * @return
      */
     @Override
     public Long delete(String... keys) {
@@ -451,9 +393,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 判断对应的key是否存在
-     *
-     * @param key
-     * @return
      */
     @Override
     public boolean exists(String key) {
@@ -472,7 +411,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     /**
-     * @Description: 添加风控有关的redis操作接口
+     * 添加风控有关的redis操作接口
      */
 
     /**
@@ -494,9 +433,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 设定redis 对应的key的剩余存活时间
-     *
-     * @param key
-     * @param seconds
      */
     @Override
     public void setTTL(String key, int seconds) {
@@ -509,7 +445,7 @@ public class RedisServiceImpl implements RedisService {
         }
         Jedis jedis = this.getResource();
         try {
-            jedis.expire(key, seconds);
+            jedis.expire(key, (long) seconds);
         } finally {
             this.destroyResource(jedis);
         }
@@ -517,9 +453,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 发布消息到指定的频道
-     *
-     * @param channel
-     * @param message
      */
     @Override
     public void publish(final String channel, final String message) {
@@ -530,9 +463,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 订阅给定的一个或多个频道的信息
-     *
-     * @param jedisPubSub
-     * @param channels
      */
     @Override
     public void subscribe(final JedisPubSub jedisPubSub, final String... channels) {
@@ -545,15 +475,11 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 将脚本 script 添加到脚本缓存中，但并不立即执行这个脚本
-     *
-     * @param script
-     * @param <T>
-     * @return
      */
     @Override
     public <T> T scriptLoad(final String script) {
         Jedis jedis = this.getResource();
-        T obj = null;
+        T obj;
         try {
             obj = (T) jedis.scriptLoad(script);
             return obj;
@@ -566,17 +492,11 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 对 Lua 脚本进行求值
-     *
-     * @param sha
-     * @param keycount
-     * @param args
-     * @param <T>
-     * @return
      */
     @Override
     public <T> T evalsha(final String sha, final int keycount, final String... args) {
         Jedis jedis = this.getResource();
-        T obj = null;
+        T obj;
         try {
             obj = (T) jedis.evalsha(sha, keycount, args);
             return obj;
@@ -604,7 +524,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     /**
-     * @Description: 把一个或多个元素添加到指定集合
+     * 把一个或多个元素添加到指定集合
      */
     @Override
     public Long sadd(String key, String members) {
@@ -613,7 +533,7 @@ public class RedisServiceImpl implements RedisService {
             return null;
         }
         Jedis jedis = this.getResource();
-        Long result = null;
+        Long result;
         try {
             result = jedis.sadd(key, members);
             return result;
@@ -632,7 +552,7 @@ public class RedisServiceImpl implements RedisService {
             return null;
         }
         Jedis jedis = this.getResource();
-        Long result = null;
+        Long result;
         try {
             result = jedis.lpush(key, members);
             return result;
@@ -651,7 +571,7 @@ public class RedisServiceImpl implements RedisService {
             return null;
         }
         Jedis jedis = this.getResource();
-        List<String> result = null;
+        List<String> result;
         try {
             result = jedis.lrange(key, start, end);
             return result;
@@ -699,7 +619,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     /**
-     * @Description: 添加元素到指定集合并设置集合的有效期
+     * 添加元素到指定集合并设置集合的有效期
      */
     @Override
     public boolean sadd(String key, String members, int expireTime) {
@@ -708,12 +628,12 @@ public class RedisServiceImpl implements RedisService {
             return false;
         }
         Jedis jedis = this.getResource();
-        List<Object> result = null;
+        List<Object> result;
         try {
             // 开始事务
             Transaction transaction = jedis.multi();
             transaction.sadd(key, members);
-            transaction.expire(key, expireTime);
+            transaction.expire(key, (long) expireTime);
             // 执行事务 result中返回两个Long类型的1
             result = transaction.exec();
             for (Object rt : result) {
@@ -728,7 +648,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     /**
-     * @Description: 返回集合所有成员
+     * 返回集合所有成员
      */
     @Override
     public Set<String> smembers(String key) {
@@ -737,7 +657,7 @@ public class RedisServiceImpl implements RedisService {
             return null;
         }
         Jedis jedis = this.getResource();
-        Set<String> result = null;
+        Set<String> result;
         try {
             result = jedis.smembers(key);
             return result;
@@ -747,7 +667,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     /**
-     * @Description: 判断元素是否是集合成员
+     * 判断元素是否是集合成员
      */
 
     @Override
@@ -769,7 +689,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     /**
-     * @Description: 移除一个或多个元素，不存的元素会被忽略
+     * 移除一个或多个元素，不存的元素会被忽略
      */
     @Override
     public Long srem(String key, String... members) {
@@ -779,7 +699,7 @@ public class RedisServiceImpl implements RedisService {
         }
 
         Jedis jedis = this.getResource();
-        Long result = null;
+        Long result;
         try {
             result = jedis.srem(key, members);
             return result;
@@ -789,7 +709,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     /**
-     * @Description: 随机移除并返回一个元素
+     * 随机移除并返回一个元素
      */
     @Override
     public String spop(String key) {
@@ -809,7 +729,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     /**
-     * @Description: 把指定成员从一个集合移动到目标集合，指定成员不存在，不执行任何操作
+     * 把指定成员从一个集合移动到目标集合，指定成员不存在，不执行任何操作
      */
     @Override
     public Long smove(String srckey, String dstkey, String member) {
@@ -829,12 +749,12 @@ public class RedisServiceImpl implements RedisService {
     }
 
     /**
-     * @Description: 返回指定集合的并集
+     * 返回指定集合的并集
      */
     @Override
     public Set<String> sunion(String... keys) {
         Jedis jedis = this.getResource();
-        Set<String> result = null;
+        Set<String> result;
 
         try {
             result = jedis.sunion(keys);
@@ -845,7 +765,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     /**
-     * @Description: 返回多个集合的交集
+     * 返回多个集合的交集
      */
     @Override
     public Set<String> sinter(String... keys) {
@@ -861,7 +781,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     /**
-     * @Description: 返回多个集合的差集
+     * 返回多个集合的差集
      */
     @Override
     public Set<String> sdiff(String... keys) {
@@ -876,7 +796,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     /**
-     * @Description: 当key不存在时放入值，超时时间单位为秒
+     * 当key不存在时放入值，超时时间单位为秒
      */
     @Override
     public boolean addn(String key, String value, int expiredTime) {
@@ -886,11 +806,11 @@ public class RedisServiceImpl implements RedisService {
         }
 
         Jedis jedis = this.getResource();
-        String result = null;
+        String result;
         try {
             SetParams setParams = new SetParams();
             setParams.nx();
-            setParams.ex(expiredTime <= 0 ? 1 : expiredTime);
+            setParams.ex(expiredTime <= 0 ? (long) 1 : (long) expiredTime);
             result = jedis.set(key, value, setParams);
             return isStatusOk(result);
         } finally {
@@ -902,16 +822,13 @@ public class RedisServiceImpl implements RedisService {
      * 判断 返回值是否ok.
      */
     public boolean isStatusOk(String status) {
-        return (status != null) && (OK_CODE.equals(status) || OK_MULTI_CODE.equals(status) || "1".equals(status));
+        return (OK_CODE.equals(status) || OK_MULTI_CODE.equals(status) || "1".equals(status));
     }
 
     /***************************************************jedis操作set End***************************************************/
 
     /**
      * 将对象转为json字符串。若对象为null，则返回 {@link RedisService#BLANK_CONTENT}
-     *
-     * @param object
-     * @return
      */
     @Override
     public String toJsonString(Object object) {
@@ -953,15 +870,12 @@ public class RedisServiceImpl implements RedisService {
     }
 
     /**
-     * @param key
-     * @return
-     * @Title: generateIncr
-     * @Description: Atomically increments by one the current value.
+     * Atomically increments by one the current value.
      */
     @Override
     public long generateIncr(String key) {
         Jedis jedis = this.getResource();
-        long result = 0;
+        long result;
         try {
             result = jedis.incrBy(key, 1);
             return result;
@@ -972,12 +886,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 自增map
-     *
-     * @param key
-     * @param field
-     * @param time
-     * @param unit
-     * @return
      */
     @Override
     public long getAndIncrFromHash(String key, String field, int time, TimeUnit unit) {
@@ -988,7 +896,7 @@ public class RedisServiceImpl implements RedisService {
                 return jedis.hincrBy(key, field, 1);
             }
             jedis.hset(key, field, "1");
-            jedis.expire(key, time);
+            jedis.expire(key, (long) time);
             return result;
         } finally {
             this.destroyResource(jedis);
@@ -1013,7 +921,7 @@ public class RedisServiceImpl implements RedisService {
         Jedis jedis = this.getResource();
         try {
             jedis.hset(key, field, JSON.toJSONString(value));
-            jedis.expire(key, time);
+            jedis.expire(key, (long) time);
         } finally {
             this.destroyResource(jedis);
         }
@@ -1088,8 +996,7 @@ public class RedisServiceImpl implements RedisService {
     public List<String> hvalsHashValues(String key) {
         Jedis jedis = this.getResource();
         try {
-            List<String> list = jedis.hvals(key);
-            return list;
+            return jedis.hvals(key);
         } finally {
             this.destroyResource(jedis);
         }
@@ -1111,9 +1018,6 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 删除HASH值
-     *
-     * @param key
-     * @param field
      */
     @Override
     public void delHashValue(String key, String field) {
@@ -1126,8 +1030,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     /**
-     * @Description: 获取在线用户数 TODO 数据量大要测试性能问题
-     * @params:
+     * 获取在线用户数 TODO 数据量大要测试性能问题
      */
     @Override
     public long getKeysLen(String key) {

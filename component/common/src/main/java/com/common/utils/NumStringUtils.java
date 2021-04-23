@@ -75,7 +75,7 @@ public class NumStringUtils {
      */
     public static String numToLowerString(long num, int len) {
         StringBuilder sb = new StringBuilder();
-        Assert.state(num > 0);
+        Assert.state(num > 0,"数值大于0");
         while (num > 0) {
             sb.insert(0, lowerCaseChar.charAt((int) (num % lowerCaseChar.length())));
             num = num / lowerCaseChar.length();
