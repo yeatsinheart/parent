@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 //mybatis-plus.mapper-locations.classpath*=mapper/*.xml
 @Configuration
-@MapperScan("db.*.mapper")
+@MapperScan("db.*.mappers")
 public class MybatisPlusConfig {
 
     @Bean

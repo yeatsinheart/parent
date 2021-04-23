@@ -1,4 +1,5 @@
 package ${pto.packageName};
+import ${dto.fullName};
 import java.io.Serializable;
 import com.common.dto.BaseRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 </#if>
-@Schema(name="${pto.className}", description="{table.comment!}")
+@Schema(name="${pto.className}", description="${table.comment!}")
 public class ${pto.className} extends BaseRequest  implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -91,4 +92,11 @@ public class ${pto.className} extends BaseRequest  implements Serializable {
         </#list>
         return key;
     }
+     private ${dto.className} convert2DTO(${pto.className} pto){
+         ${dto.className} dto = new ${dto.className}();
+         <#list table.columns as column>
+         dto.set${column.objectName?cap_first}(pto.get${column.objectName?cap_first}());
+         </#list>
+         return dto;
+     }
 }

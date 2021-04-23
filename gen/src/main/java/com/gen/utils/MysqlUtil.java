@@ -1,7 +1,5 @@
 package com.gen.utils;
 
-import com.alibaba.fastjson.JSON;
-import com.common.pool.ThreadPool;
 import com.gen.entities.Column;
 import com.gen.entities.Table;
 import com.gen.mapper.DBMapper;
@@ -17,14 +15,19 @@ import org.springframework.util.CollectionUtils;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class MysqlUtil {
-    public static Map<String, String> java2dataBase = new HashMap();
-    public static Map<String, String> dataBase2java = new HashMap();
+    public static Map<String, String> java2dataBase = new HashMap<>();
+    public static Map<String, String> dataBase2java = new HashMap<>();
 
     static {
         dataBase2java.put("VARCHAR", "java.lang.String");
@@ -51,6 +54,7 @@ public class MysqlUtil {
             java2dataBase.put(v, k);
         });
     }
+
     public static String getJavaType(String columnType) {
         String type = columnType
                 .replaceAll(" without time zone", "")
@@ -77,12 +81,12 @@ public class MysqlUtil {
         try {
             factoryBean.setMapperLocations(context.getResources("classpath*:com/gen/mapper/*Mapper.xml"));
         } catch (IOException e) {
-            log.error("出错{}", e);
+            log.error("出错", e);
         }
         try {
             sqlSessionFactory = factoryBean.getObject();
         } catch (Exception e) {
-            log.error("出错{}", e);
+            log.error("出错", e);
         }
         return sqlSessionFactory;
     }
@@ -100,7 +104,7 @@ public class MysqlUtil {
         //所有表
         if (CollectionUtils.isEmpty(tables)) {
             return sql
-                    .replaceAll("AND  table_name in \\(#\\{tables\\}\\)", "")
+                    .replaceAll("AND table_name in \\(#\\{tables\\}\\)", "")
                     .replaceAll("AND A.tablename in \\(#\\{tables\\}\\)", "")
                     .replaceAll("and relname in \\(#\\{tables\\}\\)", "");
         }
@@ -110,6 +114,7 @@ public class MysqlUtil {
                 .replaceAll("\\[", "")
                 .replaceAll("\\]", "");
     }
+
     public static String getColumnSql(String tableName) {
         String sql = "SELECT \n" +
                 "A.TABLE_NAME 'table_name', \n" +
@@ -122,26 +127,21 @@ public class MysqlUtil {
                 "FROM information_schema.COLUMNS A \n" +
                 "WHERE TABLE_NAME='#{tableName}' AND TABLE_SCHEMA=(SELECT DATABASE()) \n" +
                 "ORDER BY TABLE_NAME ";
-        return sql.replaceAll("#\\{tableName\\}", "" + tableName + "");
+        return sql.replaceAll("#\\{tableName}", "" + tableName + "");
     }
 
     public static void main(String[] args) {
-        SqlSessionFactory session = connect("mysql","47.242.219.77:3306/chzx_chat","root","IQdtJcwVuspR0WT6");
+        SqlSessionFactory session = connect("mysql", "47.242.219.77:3306/chzx_chat", "root", "IQdtJcwVuspR0WT6");
         SqlSessionTemplate template = new SqlSessionTemplate(session);
         DBMapper tableMapper = template.getMapper(DBMapper.class);
-        List<Table> tablees = tableMapper.getAllTables(getTableSql(null));
-        ThreadPool pool = new ThreadPool();
-        for(Table table:tablees){
-                List<Column> columns = tableMapper.getAllColumns(getColumnSql(table.getName()));
-                table.setColumnList(columns);
-                pool.unLimitedExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        FileGenUtil.gen(table, "demo", "business");
-                    }
-                });
-
+        String tableSql = getTableSql(Arrays.asList("ad_user"));
+        List<Table> tablees = tableMapper.getAllTables(tableSql);
+        ExecutorService pool = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 1L, TimeUnit.SECONDS, new SynchronousQueue<>());
+        for (Table table : tablees) {
+            String columnSql = getColumnSql(table.getName());
+            List<Column> columns = tableMapper.getAllColumns(columnSql);
+            table.setColumnList(columns);
+            pool.execute(() -> FileGenUtil.gen(table, "demo", "business"));
         }
-
     }
 }

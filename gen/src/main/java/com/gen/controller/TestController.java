@@ -1,6 +1,5 @@
 package com.gen.controller;
 
-import com.common.pool.ThreadPool;
 import com.gen.entities.Table;
 import com.gen.services.MysqlService;
 import com.gen.utils.FileGenUtil;
@@ -11,8 +10,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ZeroCopyHttpOutputMessage;
@@ -34,8 +31,6 @@ import java.util.zip.ZipOutputStream;
 public class TestController {
     @Autowired
     MysqlService dbService;
-    @Autowired
-    ThreadPool threadPool;
 
     @GetMapping("/hello")
     public Mono<String> hello(final Model model) {

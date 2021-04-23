@@ -24,7 +24,10 @@ public class DbFile {
         String mapper=basePackage+File.separator+"mappers";
         FileUtil.mkdir(mapper);
         String dao=basePackage+File.separator+"daos";
+        String baseDao=dao+File.separator+"BaseDao.java";
         FileUtil.mkdir(dao);
+        FileUtil.write(baseDao,baseDao(project),true);
+
         String daoImpl=dao+File.separator+"impls";
         FileUtil.mkdir(daoImpl);
 
@@ -37,6 +40,64 @@ public class DbFile {
         FileUtil.write(datasql,datasql(project),true);
     }
 
+    public static String baseDao(String project){
+        return "package "+level+"."+project+".daos;\n" +
+                "\n" +
+                "import com.baomidou.mybatisplus.core.conditions.Wrapper;\n" +
+                "import com.baomidou.mybatisplus.core.mapper.BaseMapper;\n" +
+                "import com.baomidou.mybatisplus.extension.service.IService;\n" +
+                "\n" +
+                "import java.util.Collection;\n" +
+                "import java.util.Map;\n" +
+                "import java.util.function.Function;\n" +
+                "\n" +
+                "public class BaseDao<T> implements IService<T> {\n" +
+                "    @Override\n" +
+                "    public boolean saveBatch(Collection<T> entityList, int batchSize) {\n" +
+                "        return false;\n" +
+                "    }\n" +
+                "\n" +
+                "    @Override\n" +
+                "    public boolean saveOrUpdateBatch(Collection<T> entityList, int batchSize) {\n" +
+                "        return false;\n" +
+                "    }\n" +
+                "\n" +
+                "    @Override\n" +
+                "    public boolean updateBatchById(Collection<T> entityList, int batchSize) {\n" +
+                "        return false;\n" +
+                "    }\n" +
+                "\n" +
+                "    @Override\n" +
+                "    public boolean saveOrUpdate(T entity) {\n" +
+                "        return false;\n" +
+                "    }\n" +
+                "\n" +
+                "    @Override\n" +
+                "    public T getOne(Wrapper<T> queryWrapper, boolean throwEx) {\n" +
+                "        return null;\n" +
+                "    }\n" +
+                "\n" +
+                "    @Override\n" +
+                "    public Map<String, Object> getMap(Wrapper<T> queryWrapper) {\n" +
+                "        return null;\n" +
+                "    }\n" +
+                "\n" +
+                "    @Override\n" +
+                "    public <V> V getObj(Wrapper<T> queryWrapper, Function<? super Object, V> mapper) {\n" +
+                "        return null;\n" +
+                "    }\n" +
+                "\n" +
+                "    @Override\n" +
+                "    public BaseMapper<T> getBaseMapper() {\n" +
+                "        return null;\n" +
+                "    }\n" +
+                "\n" +
+                "    @Override\n" +
+                "    public Class<T> getEntityClass() {\n" +
+                "        return null;\n" +
+                "    }\n" +
+                "}\n";
+    }
     public static String starter(String project){
         return "package "+level+"."+project+";\n" +
                 "\n" +
@@ -79,7 +140,32 @@ public class DbFile {
                 "spring.output.ansi.enabled=always\n" +
                 "#logging.level.root=debug\n" +
                 "logging.pattern.console=%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint}%clr(${LOG_LEVEL_PATTERN:%5p}) %clr(${PID}){magenta}%clr([%t]){faint} %clr(%-40.40logger{39}){cyan}[line:%line]%clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}\n" +
-                ""
+                "" +
+                "" +
+                "#3.2.1以上使用\n" +
+                "modulelist=com.baomidou.mybatisplus.extension.p6spy.MybatisPlusLogFactory,com.p6spy.engine.outage.P6OutageFactory\n" +
+                "#3.2.1以下使用或者不配置\n" +
+                "#modulelist=com.p6spy.engine.logging.P6LogFactory,com.p6spy.engine.outage.P6OutageFactory\n" +
+                "# 自定义日志打印\n" +
+                "logMessageFormat=com.baomidou.mybatisplus.extension.p6spy.P6SpyLogger\n" +
+                "#日志输出到控制台\n" +
+                "appender=com.baomidou.mybatisplus.extension.p6spy.StdoutLogger\n" +
+                "# 使用日志系统记录 sql\n" +
+                "#appender=com.p6spy.engine.spy.appender.Slf4JLogger\n" +
+                "# 设置 p6spy driver 代理\n" +
+                "deregisterdrivers=true\n" +
+                "# 取消JDBC URL前缀\n" +
+                "useprefix=true\n" +
+                "# 配置记录 Log 例外,可去掉的结果集有error,info,batch,debug,statement,commit,rollback,result,resultset.\n" +
+                "excludecategories=info,debug,result,commit,resultset\n" +
+                "# 日期格式\n" +
+                "dateformat=yyyy-MM-dd HH:mm:ss\n" +
+                "# 实际驱动可多个\n" +
+                "#driverlist=org.h2.Driver\n" +
+                "# 是否开启慢SQL记录\n" +
+                "outagedetection=true\n" +
+                "# 慢SQL记录标准 2 秒\n" +
+                "outagedetectioninterval=2"
                 ;
     }
 }

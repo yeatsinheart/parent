@@ -46,7 +46,7 @@ public class ServiceFile {
                 "@DubboService\n" +
                 "public class TestServiceImpl implements TestService {\n" +
                 "    @NacosValue(value = \"${testvalue}\",autoRefreshed = true)\n" +
-                "    private Result<String> nacosvalue;\n" +
+                "    private String nacosvalue;\n" +
                 "\n" +
                 "    @Override\n" +
                 "    public Result<String> test(String test) {\n" +
@@ -66,7 +66,7 @@ public class ServiceFile {
                 "# 主配置服务器地址\n" +
                 "nacos.config.server-addr=192.168.31.140:8848\n" +
                 "#nacos.config.context-path=nacos\n" +
-                "nacos.config.data-ids=test,database,dubbo\n" +
+                "nacos.config.data-ids=test,database,dubbo,redis\n" +
                 "nacos.config.group=DEFAULT_GROUP\n" +
                 "nacos.config.type=properties\n" +
                 "nacos.config.max-retry=10\n" +
@@ -98,6 +98,7 @@ public class ServiceFile {
                 "        \""+level+"."+project+".services\",\n" +
                 "        \"com.common.annotation\",\n" +
                 "        \"com.db.config\",\n" +
+                "       \"db."+project+".daos.impls\",\n" +
                 "        \"com.common.pool\",\n" +
                 "        \"com.redis\"\n" +
                 "})\n" +

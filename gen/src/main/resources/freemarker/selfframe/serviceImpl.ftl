@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import java.util.List;
 import java.lang.Integer;
 import com.common.result.ResultGenerator;
+
+import com.common.constant.Language;
 import java.util.ArrayList;
 import ${entity.fullName};
 import ${dto.fullName};
@@ -15,8 +17,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.util.CollectionUtils;
-
+import com.common.result.PageResult;
 import com.common.result.Result;
+import org.apache.dubbo.config.annotation.DubboService;
 import java.util.Set;
 <#if cacheable >
 import com.redis.RedisService;
@@ -33,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 <#if lombok >
 @Slf4j
 </#if>
-@Service
+@DubboService
 public class ${serviceImpl.className} implements ${service.className} {
 
 <#if lombok >
@@ -42,10 +45,10 @@ public class ${serviceImpl.className} implements ${service.className} {
 </#if>
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
-    private  ${dao.className} dao;
+    private ${dao.className} ${table.objectName}Dao;
 <#if cacheable >
     @Autowired
-    RedisService redisService;
+    private RedisService redisService;
 </#if>
 
     /**增**/
@@ -54,7 +57,7 @@ public class ${serviceImpl.className} implements ${service.className} {
         //String redisKey = "${dto.project}:${service.className}:selectOne" + createDTO.redisKey();
         //redisService.delete(redisKey);
         ${entity.className} entity =convert2Entity(createDTO);
-        entity = dao.create(entity);
+        entity = ${table.objectName}Dao.create(entity);
         if(null != entity){
             Set<String> keys = redisService.keys("${dto.project}:${service.className}:*");
             if (!CollectionUtils.isEmpty(keys)) {
@@ -62,7 +65,7 @@ public class ${serviceImpl.className} implements ${service.className} {
             }
             return ResultGenerator.genSuccessResult(convert2DTO(entity),createDTO.getRequestLanguage());
         }
-        return null;
+        return ResultGenerator.genFailResult(createDTO.getRequestLanguage());
     }
     /**条件查一个**/
     public Result<${dto.className}> selectOne(${dto.className} queryDTO){
@@ -70,29 +73,40 @@ public class ${serviceImpl.className} implements ${service.className} {
         String redisKey = "${dto.project}:${service.className}:selectOne" + queryDTO.redisKey();
         ${entity.className} entity = redisService.get(redisKey, ${entity.className}.class);
         if (null == entity) {
-            entity = dao.selectOne(convert2Entity(queryDTO));
+            entity = ${table.objectName}Dao.selectOne(convert2Entity(queryDTO));
             if(null == entity){
-                return null;
+                return ResultGenerator.genFailResult(queryDTO.getRequestLanguage());
             }
             redisService.set(redisKey, entity, 10 * 60);
         }
 <#else>
-        entity = dao.selectOne(convert2Entity(queryDTO));
+        entity = ${table.objectName}Dao.selectOne(convert2Entity(queryDTO));
         if(null == entity){
-            return null;
+            return ResultGenerator.genFailResult(queryDTO.getRequestLanguage());
         }
 </#if>
         return ResultGenerator.genSuccessResult(convert2DTO(entity),queryDTO.getRequestLanguage());
     }
     /**条件查一个并锁定**/
     public Result<${dto.className}> selectOneForUpdate(${dto.className} queryDTO){
-        ${entity.className} entity = dao.selectOneForUpdate(convert2Entity(queryDTO));
+        ${entity.className} entity = ${table.objectName}Dao.selectOneForUpdate(convert2Entity(queryDTO));
         if(null == entity){
-            return null;
+            return ResultGenerator.genFailResult(queryDTO.getRequestLanguage());
         }
         return  ResultGenerator.genSuccessResult(convert2DTO(entity),queryDTO.getRequestLanguage());
     }
-
+    /**查所有**/
+    public Result<List<${dto.className}>> selectAll(${dto.className} queryDTO){
+        List<${entity.className}> entities = ${table.objectName}Dao.list();
+        if(CollectionUtils.isEmpty(entities)){
+            return ResultGenerator.genFailResult(Language.中文.getCode());
+        }
+        List<${dto.className}> dtos = new ArrayList();
+        for (${entity.className} entity : entities) {
+            dtos.add(convert2DTO(entity));
+        }
+        return ResultGenerator.genSuccessResult(dtos,Language.中文.getCode());
+    }
     /**条件查一列表**/
     public Result<List<${dto.className}>> selectList(${dto.className} queryDTO){
         <#if cacheable >
@@ -100,9 +114,9 @@ public class ${serviceImpl.className} implements ${service.className} {
         RedisResult<${dto.className}> listResult = redisService.getListResult(redisKey, ${dto.className}.class);
         List<${dto.className}> dtos =listResult.getListResult();
         if( null == listResult || !listResult.isExist() || CollectionUtils.isEmpty(dtos)){
-            List<${entity.className}> entities = dao.selectList(convert2Entity(queryDTO));
+            List<${entity.className}> entities = ${table.objectName}Dao.selectList(convert2Entity(queryDTO));
             if(CollectionUtils.isEmpty(entities)){
-                return ResultGenerator.genSuccessResult(dtos,queryDTO.getRequestLanguage());
+                return ResultGenerator.genFailResult(queryDTO.getRequestLanguage());
             }
             dtos = new ArrayList();
             for (${entity.className} entity : entities) {
@@ -111,9 +125,9 @@ public class ${serviceImpl.className} implements ${service.className} {
             redisService.set(redisKey, dtos, 10 * 60);
         }
         <#else>
-        List<${entity.className}> entities = dao.selectList(convert2Entity(queryDTO));
+        List<${entity.className}> entities = ${table.objectName}Dao.selectList(convert2Entity(queryDTO));
         if(CollectionUtils.isEmpty(entities)){
-            return dtos;
+            return ResultGenerator.genFailResult(queryDTO.getRequestLanguage());
         }
         List<${dto.className}> dtos = new ArrayList();
         for(${entity.className} entity:entities){
@@ -124,37 +138,30 @@ public class ${serviceImpl.className} implements ${service.className} {
     }
     /**分页查**/
     @Override
-    public Result<Page<${dto.className}>> page(${dto.className} queryDTO){
-        Page<${entity.className}> page = dao.page( convert2Entity(queryDTO),queryDTO.getRequestPageSize(),queryDTO.getRequestPageNum());
+    public PageResult<${dto.className}> page(${dto.className} queryDTO){
+        Page<${entity.className}> page = ${table.objectName}Dao.page( convert2Entity(queryDTO),queryDTO.getRequestPageSize(),queryDTO.getRequestPageNum());
         List<${dto.className}> dtos = new ArrayList();
         for (${entity.className} entity : page.getRecords()) {
             dtos.add(convert2DTO(entity));
         }
-        Page<${dto.className}> pageDTO = new Page();
-        pageDTO.setSize(page.getSize());
-        pageDTO.setCurrent(page.getCurrent());
-        pageDTO.setTotal(page.getTotal());
-        pageDTO.setPages(page.getPages());
-        pageDTO.setOrders(page.getOrders());
-        pageDTO.setRecords(dtos);
-        return ResultGenerator.genSuccessResult(pageDTO,queryDTO.getRequestLanguage());
+        return ResultGenerator.genPageResult(page.getSize(),page.getCurrent(),page.getTotal(),page.getPages(),page.getRecords(),queryDTO.getRequestLanguage());
     }
-    /**改**/
+     /**改**/
     @Override
-    public Result<Integer> updateById(${dto.className} updateDTO){
-        int updatedNum = dao.updateById(convert2Entity(updateDTO));
-        if(updatedNum>0){
+    public Result<Boolean> updateById(${dto.className} updateDTO){
+        Boolean updated = ${table.objectName}Dao.updateById(convert2Entity(updateDTO));
+        if(updated){
             Set<String> keys = redisService.keys("${dto.project}:${service.className}:*");
             if (!CollectionUtils.isEmpty(keys)) {
                 redisService.delete((String[])keys.toArray());
             }
         }
-        return  ResultGenerator.genSuccessResult(updatedNum,updateDTO.getRequestLanguage());
+        return  ResultGenerator.genSuccessResult(updated,updateDTO.getRequestLanguage());
     }
     /**改**/
     @Override
     public Result<Integer> updateByQuery(${dto.className} updateDTO,${dto.className} query){
-        int updatedNum =  dao.updateByQuery( convert2Entity(updateDTO), convert2Entity(query));
+        int updatedNum =  ${table.objectName}Dao.updateByQuery( convert2Entity(updateDTO), convert2Entity(query));
         if(updatedNum>0){
             Set<String> keys = redisService.keys("${dto.project}:${service.className}:*");
             if (!CollectionUtils.isEmpty(keys)) {
@@ -167,7 +174,7 @@ public class ${serviceImpl.className} implements ${service.className} {
     <#if column.name=="sequence" >
     @Override
     public Result<Integer> updateSequence(${dto.className} updateDTO){
-        int updatedNum = dao.updateSequence(convert2Entity(updateDTO));
+        int updatedNum = ${table.objectName}Dao.updateSequence(convert2Entity(updateDTO));
         if(updatedNum>0){
             Set<String> keys = redisService.keys("${dto.project}:${service.className}:*");
             if (!CollectionUtils.isEmpty(keys)) {
@@ -178,7 +185,6 @@ public class ${serviceImpl.className} implements ${service.className} {
     }
     </#if>
 </#list>
-
      private ${dto.className} convert2DTO(${entity.className} entity){
          ${dto.className} dto = new ${dto.className}();
          <#list table.columns as column>

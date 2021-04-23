@@ -143,7 +143,7 @@ public class WebFile {
                 "# 主配置服务器地址\n" +
                 "nacos.config.server-addr=192.168.31.140:8848\n" +
                 "#nacos.config.context-path=nacos\n" +
-                "nacos.config.data-ids=test,database,dubbo\n" +
+                "nacos.config.data-ids=test,database,dubbo,redis\n" +
                 "nacos.config.group=DEFAULT_GROUP\n" +
                 "nacos.config.type=properties\n" +
                 "nacos.config.max-retry=10\n" +
@@ -174,6 +174,7 @@ public class WebFile {
                 "        \""+level+"."+project+".controller\",\n" +
                 "        \"service."+project+".services\",\n" +
                 "        \"com.db.config\",\n" +
+                "        \"db."+project+".daos.impls\",\n" +
                 "        \"com.redis\",\n" +
                 "        \"com.common.pool\",\n" +
                 "        \"com.common.annotation\"\n" +
