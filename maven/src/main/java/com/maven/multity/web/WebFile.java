@@ -117,7 +117,8 @@ public class WebFile {
                 "\n" +
                 "    @GetMapping(\"/test\")\n" +
                 "    public String test(String i) {\n" +
-                "        return testService.test(i);\n" +
+                "        testService.test(i);\n" +
+                "        return \"\";\n" +
                 "    }\n" +
                 "    @Operation(summary = \"测试的接口\",\n" +
                 "            description = \"描述的文字\",\n" +

@@ -83,7 +83,7 @@ public class ServiceFile {
                 "        \"" + level + "." + project + ".services\",\n" +
                 "        \"com.common.annotation\",\n" +
                 "        \"com.db.config\",\n" +
-                "       \"db." + project + ".daos.impls\",\n" +
+                "        \"db." + project + ".daos.impls\",\n" +
                 "        \"com.common.pool\",\n" +
                 "        \"com.redis\"\n" +
                 "})\n" +
