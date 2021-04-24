@@ -4,3 +4,6 @@ find ./  -name 'dist' -type  d   | xargs rm -rf
 find ./  -name '.DS_Store' -type  f   | xargs rm -rf
 find ./  -name '.idea/' -type  d   | xargs rm -rf
 find ./  -name '.vscode/' -type  d   | xargs rm -rf
+
+rm -rf .idea
+echo "清理无用文件完成"
