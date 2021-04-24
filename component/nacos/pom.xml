@@ -30,16 +30,16 @@
                     <artifactId>spring-context-support</artifactId>
                     <groupId>com.alibaba.spring</groupId>
                 </exclusion>
-                <exclusion>
+                <!--<exclusion>
                     <artifactId>nacos-client</artifactId>
                     <groupId>com.alibaba.nacos</groupId>
-                </exclusion>
+                </exclusion>-->
             </exclusions>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <artifactId>nacos-client</artifactId>
             <groupId>com.alibaba.nacos</groupId>
             <version>2.0.0</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 </project>

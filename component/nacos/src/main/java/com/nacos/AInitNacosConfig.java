@@ -58,7 +58,8 @@ public class AInitNacosConfig {
         try {
             //log.info(dataId + group + content);
             System.out.println(get(dataId,group,configService));
-            boolean isPublishOk = configService.publishConfig(dataId, group, content, ConfigType.PROPERTIES.getType());
+            //, ConfigType.PROPERTIES.getType()
+            boolean isPublishOk = configService.publishConfig(dataId, group, content);
             System.out.println(isPublishOk);
         } catch (NacosException e) {
             log.error("{}", e);

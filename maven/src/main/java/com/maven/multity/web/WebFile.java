@@ -108,6 +108,7 @@ public class WebFile {
                 "import io.swagger.v3.oas.annotations.responses.ApiResponse;\n" +
                 "import io.swagger.v3.oas.annotations.security.SecurityRequirement;\n" +
                 "import io.swagger.v3.oas.annotations.tags.Tag;\n" +
+                "import org.springframework.web.bind.annotation.ResponseBody;\n" +
                 "@Tag(name = \"TestController\")\n" +
                 "@Controller\n" +
                 "public class TestController {\n" +
@@ -116,9 +117,9 @@ public class WebFile {
                 "    TestService testService;\n" +
                 "\n" +
                 "    @GetMapping(\"/test\")\n" +
+                "     @ResponseBody\n" +
                 "    public String test(String i) {\n" +
-                "        testService.test(i);\n" +
-                "        return \"\";\n" +
+                "        return testService.test(i).getData();\n" +
                 "    }\n" +
                 "    @Operation(summary = \"测试的接口\",\n" +
                 "            description = \"描述的文字\",\n" +
