@@ -1,10 +1,14 @@
-package com.properties;
+package com.nacos;
 
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.PropertyKeyConst;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.ConfigType;
 import com.alibaba.nacos.api.exception.NacosException;
+import com.alibaba.nacos.api.naming.NamingService;
+import com.properties.DubboProperties;
+import com.properties.MysqlProperties;
+import com.properties.RedisProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
@@ -20,8 +24,9 @@ public class AInitNacosConfig {
         try {
             Properties properties = new Properties();
             properties.put(PropertyKeyConst.SERVER_ADDR, serverAddr);
-            properties.put(PropertyKeyConst.NAMESPACE, NAME_SPACE);
+            //properties.put(PropertyKeyConst.NAMESPACE, NAME_SPACE);
             ConfigService configService = NacosFactory.createConfigService(properties);
+            //NamingService nameService = NacosFactory.createNamingService(properties);
             application(configService);
         } catch (NacosException e) {
             log.error("{}", e);
