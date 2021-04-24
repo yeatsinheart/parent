@@ -12,6 +12,7 @@
     <artifactId>component</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>properties</module>
         <module>dubbo</module>
         <module>mysql</module>
         <module>nacos</module>

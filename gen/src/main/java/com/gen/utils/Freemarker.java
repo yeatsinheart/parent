@@ -4,6 +4,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Map;

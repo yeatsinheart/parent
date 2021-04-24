@@ -1,7 +1,7 @@
 mvn versions:use-latest-releases -DprocessAllModules=true
 
-
-
+cd router
+mvn versions:use-latest-releases
 
 cd component
 cd mysql
