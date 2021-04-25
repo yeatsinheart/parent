@@ -1,4 +1,4 @@
-mvn versions:use-latest-releases -DprocessAllModules=true
+#mvn versions:use-latest-releases -DprocessAllModules=true
 
 cd router
 mvn versions:use-latest-releases
@@ -21,4 +21,8 @@ mvn versions:use-latest-releases
 
 cd ..
 cd common
+mvn versions:use-latest-releases
+
+cd ..
+cd nacos
 mvn versions:use-latest-releases
