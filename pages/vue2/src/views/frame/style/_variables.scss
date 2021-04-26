@@ -1,0 +1,77 @@
+//页面布局变量
+//1080px = 10rem
+$maxWidth: 10rem;
+$borderRadius: .133333rem;
+/* 总和为10rem 2padding+containerwidth*/
+$padding: .05rem;
+$beautyPadding: .746667rem 0.6rem .4rem;
+//单行元素最大宽度。内部元素需要排除padding margin 计算出实际rem值
+$containerwidth: 9.9rem;
+$beauty-width:7.733333rem;
+
+$beauty-font-size: .48rem;
+$fontSize: 15px;
+$titleFontSize: 18px;
+$bigTitleFontSize: 22px;
+
+
+//通用定义，为了能够实现快速换色。自定义的就自己在视图中定义该变量
+$themDefault: (
+        default:(
+          /* 背景色 */
+                primaryBGColor:linear-gradient(0deg, #b41718 1%, #d63a3e),
+                secondBGColor:#fff,
+          /* 字体颜色 */
+                primaryFontColor:black,
+                secondFontColor:#fff,
+          /* 边框颜色*/
+                primaryBorderColor:linear-gradient(0deg, #b41718 1%, #d63a3e),
+                secondBorderColor:#fff,
+        )
+);
+
+//生成名字相关选择器（.$selectortitle下级名字）
+@mixin getThemeSelector($params:$themDefault) {
+  @each $name, $map in $params {
+    .theme-#{$name} & {
+      $mixinMap: () !global;
+      @each $key, $value in $map {
+        $mixinMap: map-merge($mixinMap, ($key: $value)) !global;
+      }
+      @content;
+      $mixinMap: null !global;
+    }
+  }
+}
+$languageDefault: (
+        zh-CN:(
+          /* 背景色 */
+                primaryBGColor:linear-gradient(0deg, #b41718 1%, #d63a3e),
+                secondBGColor:#fff,
+          /* 字体颜色 */
+                primaryFontColor:black,
+                secondFontColor:#fff,
+          /* 边框颜色*/
+                primaryBorderColor:linear-gradient(0deg, #b41718 1%, #d63a3e),
+                secondBorderColor:#fff,
+        )
+);
+@mixin getLanguageSelector($params:$languageDefault) {
+  @each $name, $map in $params {
+    .language-#{$name} & {
+      $mixinMap: () !global;
+      @each $key, $value in $map {
+        $mixinMap: map-merge($mixinMap, ($key: $value)) !global;
+      }
+      @content;
+      $mixinMap: null !global;
+    }
+  }
+}
+
+@function getContent($key) {
+  @return map_get($mixinMap, $key)
+}
+
+
+
