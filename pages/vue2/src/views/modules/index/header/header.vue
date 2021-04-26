@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  props: { header: Object },
+  props: {header: Object},
   computed: {
     test: function () {
       return process.env.VUE_APP_IN_TEST == "true";
@@ -24,13 +24,14 @@ export default {
     return {};
   },
   methods: {},
-  mounted() {},
+  mounted() {
+  },
   watch: {
     //路由变化时候更新
     $route(newVal, oldVal) {
       newVal, oldVal;
       //console.log(oldVal, '->', newVal)
-      
+
     },
   },
   components: {},
@@ -44,5 +45,8 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
+  line-height: 100px;
+  height: 100px;
+  background: rgba(18, 18, 18, .4);
 }
 </style>

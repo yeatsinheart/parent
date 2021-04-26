@@ -1,0 +1,20 @@
+install nodejs
+# node版本跟node sass有绑定关系
+npm list -g --depth 0
+
+npm uninstall -g
+npm install vue -g
+
+# NVM 也很好的解决了同台机器上多个项目 Node 版本不兼容的窘境
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+# 查看node可安装版本
+nvm ls-remote
+#(Latest LTS: Fermium)
+nvm install v14.16.1
+#查看1⃣️安装的node
+nvm ls
+#切换当前node
+nvm alias default v10.10.0
+
+npm install -g @vue/cli
+npm update -g @vue/cli

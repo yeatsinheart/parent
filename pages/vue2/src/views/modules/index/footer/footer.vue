@@ -8,15 +8,15 @@
             <span>{{ $t('layout-Footer.home') }}</span>
           </div>
         </router-link>
-        <router-link to="/found">
+        <router-link to="found">
           <i class="icon icon-home"></i>
           <span>{{ $t('layout-Footer.found') }}</span>
         </router-link>
-        <router-link to="/welfare">
+        <router-link to="welfare">
           <i class="icon icon-home"></i>
           <span>{{ $t('layout-Footer.welfare') }}</span>
         </router-link>
-        <router-link to="/myself">
+        <router-link to="user">
           <i class="icon icon-home"></i>
           <span>{{ $t('layout-Footer.myself') }}</span>
         </router-link>
@@ -28,6 +28,7 @@
 <script>
 export default {
   name: 'Footer',
+  data(){return {}},
   computed: {
     test: function () {
       return process.env.VUE_APP_IN_TEST == 'true'
@@ -39,7 +40,7 @@ export default {
   }, watch: {
     //路由变化时候更新
     $route(newVal, oldVal) {
-      newVal == oldVal
+      newVal === oldVal
       //console.log(newVal, oldVal);
       /*if (newVal.meta.index >= 0) {
           this.tabIndex = newVal.meta.index;
@@ -73,7 +74,7 @@ $tmp: (
 footer {
   z-index: 99;
   width: 100%;
-  position: absolute;
+  position: fixed;
   bottom:0;
   @include getThemeSelector() {
     background: getContent("secondBGColor");
@@ -82,12 +83,15 @@ footer {
 
 .container {
   margin: 0 auto !important;
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center;     /* 垂直居中 */
 }
 
 footer a {
   display: inline-block;
   width: 1rem;
-  margin-top: .35rem;
+  //margin-top: .35rem;
   text-align: center;
   @include getThemeSelector() {
     color: getContent("primaryFontColor");

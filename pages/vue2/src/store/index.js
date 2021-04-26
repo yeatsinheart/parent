@@ -12,10 +12,8 @@ export default new Vuex.Store({
     changeTheme: function (state, theme) {
       state.choosedTheme = theme
       localStorage.setItem('choosed-theme', theme)
-      console.log('转成这个主题', state.choosedTheme)
     }, changeLanguage: function (state, language) {
       state.choosedLanguage = language
-      console.log('转成这个语言', state.choosedLanguage)
     }
   }, actions: {}, modules: {}
 })
