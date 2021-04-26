@@ -3,27 +3,29 @@ import VueRouter from 'vue-router'
 //if (!window.VueRouter)
 Vue.use(VueRouter)
 
-import { url, getRoute } from '@/url/index'
+import {url, getRoute} from '@/url/index'
+
 let routes = []
 for (const key in url) {
     //frame 切换
     let frame = localStorage.getItem('choosed-frame') || localStorage.getItem('application-default-frame') || process.env.VUE_APP_DEFAULT_FRAME
-    let filePath = getRoute(key, frame)
-    let metaInfo = {}
-    if (filePath) {
-
-        console.log(filePath)
-        routes.push({
-            path: key, 
-            component: () => import(`@/views/modules/${process.env.VUE_APP_PROJECT_MODULE}/${filePath}`),
-           // component: () => import('@/views/modules/'+process.env.VUE_APP_PROJECT_MODULE+'/'+ ),
-            meta: metaInfo
-        })
+    let urlConfig = getRoute(key, frame)
+    if (urlConfig) {
+        routes.push(urlConfig)
     }
 }
-console.log("所有路由",routes)
+console.log("所有路由", routes)
 const router = new VueRouter({
     mode: 'history', /* base: process.env.BASE_URL,*/
     routes
+})
+router.beforeEach((to, from, next) => {
+    // 登陆拦截
+    if (to.meta && to.meta.needLogin && to.meta.needLogin === true) {
+        console.log(to)
+        console.log("需要登陆")
+        next({path: '/login'})
+    }
+    next()
 })
 export default router

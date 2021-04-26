@@ -1,5 +1,5 @@
 <template>
-  <div :class="[theme,language]">
+  <div :class="[theme,language]" v-if="canShow()">
     <header>
       头部
     </header>
@@ -23,13 +23,18 @@ export default {
   data: function () {
     return {};
   },
-  methods: {},
+  methods: {
+    canShow(){
+      return (this.$route.meta && this.$route.meta.withHeader && this.$route.meta.withHeader===true)
+    }
+  },
   mounted() {
   },
   watch: {
     //路由变化时候更新
     $route(newVal, oldVal) {
       newVal, oldVal;
+
       //console.log(oldVal, '->', newVal)
 
     },

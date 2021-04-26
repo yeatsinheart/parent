@@ -1,5 +1,5 @@
 <template>
-  <div :class="[theme,language]">
+  <div :class="[theme,language]" v-if="canShow()">
     <footer>
       <div class="container ">
         <router-link to="/">
@@ -29,6 +29,11 @@
 export default {
   name: 'Footer',
   data(){return {}},
+  methods: {
+    canShow(){
+      return (this.$route.meta && this.$route.meta.withFooter && this.$route.meta.withFooter===true)
+    }
+  },
   computed: {
     test: function () {
       return process.env.VUE_APP_IN_TEST == 'true'
