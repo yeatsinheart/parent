@@ -15,7 +15,7 @@ public interface ${mapper.className}  extends BaseMapper<${entity.className}> {
 ${entity.className} selectOneForUpdate(${entity.className} query);
 <#list table.columns as column>
     <#if column.name=="sequence" >
-        int updateSequence(${entity.className} updateDTO);
+    int updateSequence(${entity.className} updateDTO);
     </#if>
 </#list>
 }

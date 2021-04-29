@@ -130,18 +130,25 @@ public class MysqlUtil {
         return sql.replaceAll("#\\{tableName}", "" + tableName + "");
     }
 
-    public static void main(String[] args) {
-        SqlSessionFactory session = connect("mysql", "47.242.219.77:3306/chzx_chat", "root", "IQdtJcwVuspR0WT6");
+    public static void create(String 项目,String 模块,List tables) {
+        SqlSessionFactory session = connect("mysql", "127.0.0.1:3306/code", "root", "zdc1991");
         SqlSessionTemplate template = new SqlSessionTemplate(session);
         DBMapper tableMapper = template.getMapper(DBMapper.class);
-        String tableSql = getTableSql(Arrays.asList("ad_user"));
+        String tableSql = getTableSql(tables);
         List<Table> tablees = tableMapper.getAllTables(tableSql);
         ExecutorService pool = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 1L, TimeUnit.SECONDS, new SynchronousQueue<>());
         for (Table table : tablees) {
             String columnSql = getColumnSql(table.getName());
             List<Column> columns = tableMapper.getAllColumns(columnSql);
             table.setColumnList(columns);
-            pool.execute(() -> FileGenUtil.gen(table, "demo", "business"));
+            pool.execute(() -> FileGenUtil.gen(table, 模块, 项目));
         }
+    }
+
+    public static void main(String[] args) {
+        create("business","user",Arrays.asList("user","user_wallet","user_wallet_log"));
+        create("business","tenant",Arrays.asList("tenant","tenant_admin","tenant_admin_role",
+                "tenant_currency","tenant_language","tenant_resource",
+                "tenant_role","tenant_domian","tenant_role_resource","tenant_wallet","tenant_template"));
     }
 }

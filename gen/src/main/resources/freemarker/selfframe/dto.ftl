@@ -3,14 +3,14 @@ import java.io.Serializable;
 import org.apache.commons.lang3.StringUtils;
 import com.common.dto.BaseRequest;
 <#list table.columns as column>
-    import ${column.javaType};
+import ${column.javaType};
 </#list>
 <#if swagger >
-    import io.swagger.annotations.*;
+import io.swagger.annotations.*;
 </#if>
 <#if lombok >
-    import lombok.Data;
-    import lombok.EqualsAndHashCode;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 </#if>
 /**
 * ${table.comment!}
@@ -18,15 +18,15 @@ import com.common.dto.BaseRequest;
 * @since ${time}
 */
 <#if lombok >
-    @Data
-    @EqualsAndHashCode(callSuper=false)
+@Data
+@EqualsAndHashCode(callSuper=false)
 </#if>
 <#if swagger >
     @ApiModel("${table.comment!}")
 </#if>
 public class ${dto.className} extends BaseRequest  implements Serializable {
 
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
 <#list table.columns as column>
     /**
@@ -90,11 +90,11 @@ private static final long serialVersionUID = 1L;
     "}";
     }
 </#if>
-public String redisKey(){
-String key ="";
+    public String redisKey(){
+        String key ="";
 <#list table.columns as column>
-    if(null != this.get${column.objectName?cap_first}())key=key+":${column.name!}_"+this.get${column.objectName?cap_first}();
+        if(null != this.get${column.objectName?cap_first}())key=key+":${column.name!}_"+this.get${column.objectName?cap_first}();
 </#list>
-return key;
-}
+        return key;
+    }
 }
