@@ -12,14 +12,18 @@
         <#list table.columns as column>${column.name}<#if column_has_next>,</#if></#list>
     </sql>
     <sql id="where_clause_not_null">
-        <where><#list table.columns as column>
-                <if test="${column.objectName} != null">AND  ${column.name}
-                = ${r'#{'}${column.objectName}${r'}'}</if></#list></where>
+        <where>
+            <#list table.columns as column>
+            <if test="${column.objectName} != null"> AND  ${column.name} = ${r'#{'}${column.objectName}${r'}'}</if>
+            </#list>
+        </where>
     </sql>
     <sql id="set_clause_not_null">
-        <trim prefix=" " prefixOverrides=","><#list table.columns as column>
-                <if test="${column.objectName} != null">, ${column.name}
-                = ${r'#{'}${column.objectName}${r'}'}</if></#list></trim>
+        <trim prefix=" " prefixOverrides=",">
+            <#list table.columns as column>
+            <if test="${column.objectName} != null">, ${column.name} = ${r'#{'}${column.objectName}${r'}'}</if>
+            </#list>
+        </trim>
     </sql>
     <select id="selectOneForUpdate" parameterType="${entity.fullName}"
             resultMap="${entity.objectName}ResultMap">
@@ -30,9 +34,10 @@
     </select>
     <#list table.columns as column>
         <#if column.name=="sequence" >
-            <update id="updateSequence" parameterType="${entity.fullName}">
-                update ${table.name!} set `sequence` = ${r'#{sequence}'} where id=${r'#{id}'}
-            </update>
+    <update id="updateSequence" parameterType="${entity.fullName}">
+        update ${table.name!} set `sequence` = ${r'#{sequence}'} where id=${r'#{id}'}
+    </update>
         </#if>
     </#list>
+
 </mapper>

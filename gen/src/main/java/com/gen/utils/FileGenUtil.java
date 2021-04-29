@@ -16,7 +16,7 @@ import java.util.Map;
 public class FileGenUtil {
     static String SOURCE_FILE = "src/main/";
     static String RESOURCE_FILE = SOURCE_FILE + "/resources/";
-    static String MAPPER_FILE = RESOURCE_FILE + "/mapper/";
+    static String MAPPER_FILE = RESOURCE_FILE + "/mappers/";
     static String JAVA_FILE = SOURCE_FILE + "/java/";
     static String MODEL = "freemarker/selfframe/";
     static String MODEL_FILE = System.getProperty("user.dir") + "/gen/" + RESOURCE_FILE + MODEL;
