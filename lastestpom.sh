@@ -3,6 +3,7 @@
 cd router
 mvn versions:use-latest-releases
 
+cd ..
 cd component
 cd mysql
 mvn versions:use-latest-releases

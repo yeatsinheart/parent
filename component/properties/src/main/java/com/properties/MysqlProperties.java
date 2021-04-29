@@ -2,7 +2,7 @@ package com.properties;
 
 public class MysqlProperties {
     public static final String properties="" +
-            "mybatis-plus.mapper-locations.classpath*=mapper/*.xml\n" +
+            "mybatis-plus.mapper-locations.classpath*=mappers/*.xml\n" +
             "# 配置文件指定执行sql（静态资源）\n" +
             "# spring.datasource.initialization-mode=always\n" +
             "# schema.sql中一般存放的是DDL脚本\n" +
