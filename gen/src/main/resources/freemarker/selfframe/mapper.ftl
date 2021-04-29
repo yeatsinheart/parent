@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 @Mapper
 public interface ${mapper.className}  extends BaseMapper<${entity.className}> {
-${entity.className} selectOneForUpdate(${entity.className} query);
+    ${entity.className} selectOneForUpdate(${entity.className} query);
 <#list table.columns as column>
     <#if column.name=="sequence" >
     int updateSequence(${entity.className} updateDTO);

@@ -27,13 +27,13 @@ public class DbFile {
         String dao = basePackage + File.separator + "daos";
         String baseDao = dao + File.separator + "BaseDao.java";
         FileUtil.mkdir(dao);
-        FileUtil.write(baseDao, baseDao(project), true);
+       // FileUtil.write(baseDao, baseDao(project), true);
 
         String daoImpl = dao + File.separator + "impls";
         FileUtil.mkdir(daoImpl);
 
         String baseResource = base + File.separator + "resources";
-        String mapperxml = baseResource + File.separator + "mapper";
+        String mapperxml = baseResource + File.separator + "mappers";
         FileUtil.mkdir(mapperxml);
         String resources = baseResource + File.separator + "application.properties";
         FileUtil.write(resources, resource(project), true);

@@ -1,12 +1,16 @@
 package com.db.config;
 
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
+import db.mysql.entities.GlobalTableIdEntity;
+import db.mysql.mappers.GlobalTableIdMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 //IdType.ASSIGN_ID
 @Component
 public class GlobalIdGenerator implements IdentifierGenerator {
@@ -15,6 +19,9 @@ public class GlobalIdGenerator implements IdentifierGenerator {
     static Lock writeLock = reentrantLock.writeLock();
     ConcurrentHashMap<String, AtomicLong> nowIdMap = new ConcurrentHashMap<>();
     ConcurrentHashMap<String, AtomicLong> counterMap = new ConcurrentHashMap<>();
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Autowired
+    GlobalTableIdMapper tableIdMapper;
 
     @Override
     public Long nextId(Object entity) {
@@ -24,18 +31,39 @@ public class GlobalIdGenerator implements IdentifierGenerator {
         AtomicLong counter = counterMap.get(bizKey);
         AtomicLong nowId = nowIdMap.get(bizKey);
         if (null == counter || counter.get() == 200) {
-            updateCacheId(bizKey, counter, nowId);
+           updateCacheId(bizKey, counter, nowId);
         }
         counter.getAndAdd(1);
         long id = nowId.addAndGet(1);
         return id;
     }
 
-    public void updateCacheId(String bizKey, AtomicLong counter, AtomicLong nowId) {
+    public Object updateCacheId(String bizKey, AtomicLong counter, AtomicLong nowId) {
         writeLock.lock();
         try {
             // 保证只有一个线程进入，进入后重复判断是否已经被修改，防止并发数据库重置当前ID时有问题
             if (null == counter || counter.get() == 200) {
+                GlobalTableIdEntity query = new GlobalTableIdEntity();
+                query.setTable(bizKey);
+                GlobalTableIdEntity result = tableIdMapper.selectOneForUpdate(query);
+                if (null != result) {
+                    result.setGenId(result.getGenId() + 200);
+                    int updatedNum = tableIdMapper.updateById(result);
+                    if (1 == updatedNum) {
+
+                    } else {
+
+                    }
+                }
+                GlobalTableIdEntity newOne = new GlobalTableIdEntity();
+                newOne.setGenId(1L);
+                newOne.setTable(bizKey);
+                if (1 == tableIdMapper.insert(newOne)) {
+
+                } else {
+
+                }
+
                 //根据bizKey调用分布式ID生成
                 // 数据库中存在global_id_generate表
                 // 事务内 查询当前值（注意不能脏读）nowId，数据库表ID+200，保存
@@ -46,5 +74,7 @@ public class GlobalIdGenerator implements IdentifierGenerator {
         } finally {
             writeLock.unlock();
         }
+        return null;
     }
+
 }

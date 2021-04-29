@@ -149,6 +149,7 @@ public class MysqlUtil {
         create("business","user",Arrays.asList("user","user_wallet","user_wallet_log"));
         create("business","tenant",Arrays.asList("tenant","tenant_admin","tenant_admin_role",
                 "tenant_currency","tenant_language","tenant_resource",
-                "tenant_role","tenant_domian","tenant_role_resource","tenant_wallet","tenant_template"));
+                "tenant_role","tenant_domian","tenant_role_resource","tenant_wallet","tenant_template",
+                "global_api","global_admin","global_resource","global_table_id"));
     }
 }
