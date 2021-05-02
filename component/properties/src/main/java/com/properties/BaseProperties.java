@@ -9,7 +9,7 @@ public class BaseProperties {
             "#开启配置预加载功能\n" +
             "nacos.config.bootstrap.enable=true\n" +
             "# 主配置服务器地址\n" +
-            "nacos.config.server-addr=192.168.0.102:8848\n" +
+            "nacos.config.server-addr=172.20.10.4:8848\n" +
             "#nacos.config.context-path=nacos\n" +
             "nacos.config.data-ids=application\n" +
             "nacos.config.group=DEFAULT_GROUP\n" +

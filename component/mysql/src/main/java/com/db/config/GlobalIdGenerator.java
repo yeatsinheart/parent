@@ -12,7 +12,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 //IdType.ASSIGN_ID
-@Component
+//@Component
 public class GlobalIdGenerator implements IdentifierGenerator {
     static ReentrantReadWriteLock reentrantLock = new ReentrantReadWriteLock();
     static Lock readLock = reentrantLock.readLock();

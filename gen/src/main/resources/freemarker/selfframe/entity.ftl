@@ -35,7 +35,7 @@ private static final long serialVersionUID = 1L;
     @ApiModelProperty(value="${column.comment!}",name="${column.objectName?uncap_first}",required=${column.notNull!})
     </#if>
     <#if column.key=="PRI" >
-    @TableId(value="${column.name!}", type = IdType.AUTO)
+    @TableId(value="${column.name!}", type = IdType.INPUT)
     <#else >
     @TableField(value="${column.name!}", jdbcType = JdbcType.UNDEFINED)
     </#if>

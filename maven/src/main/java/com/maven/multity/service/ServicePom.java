@@ -55,7 +55,7 @@ public class ServicePom {
                 "                    <fork>\n" +
                 "                        true\n" +
                 "                    </fork>\n" +
-                "                    <includeSystemScope>true</includeSystemScope>\n" +
+                "                    <includeSystemScope>true</includeSystemScope>\n<classifier>execute</classifier>\n" +
                 "                </configuration>\n" +
                 "                <executions>\n" +
                 "                    <execution>\n" +

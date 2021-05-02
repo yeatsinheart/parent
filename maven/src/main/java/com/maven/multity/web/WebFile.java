@@ -141,6 +141,7 @@ public class WebFile {
 
     public static String resource(String project) {
         return BaseProperties.genProperties(project + "-" + level, 0) +
+                "springdoc.swagger-ui.path=/api.html\n" +
                 "spring.resources.static-locations=classpath:/static/\n"
                 ;
     }
@@ -173,8 +174,19 @@ public class WebFile {
                 "        Runtime.getRuntime().addShutdownHook(new ShutDown());\n" +
                 "        ConfigurableApplicationContext applicationContext = SpringApplication.run(" + StringUtil.firstUpper(project) + StringUtil.firstUpper(level) + "WebApplication.class, args);\n" +
                 "        try {\n" +
+                "            /*String[] beans = applicationContext\n" +
+                "                    .getBeanDefinitionNames();\n" +
+                "            for (String beanName : beans) {\n" +
+                "                Class<?> beanType = applicationContext\n" +
+                "                        .getType(beanName);\n" +
+                "                System.out.println(\"BeanName:\" + beanName);\n" +
+                "                System.out.println(\"Bean的类型：\" + beanType);\n" +
+                "                System.out.println(\"Bean所在的包：\" + beanType.getPackage());\n" +
+                "                System.out.println(\"Bean：\" + applicationContext.getBean(\n" +
+                "                        beanName));\n" +
+                "            }*/\n" +
                 "            // ===== 在项目初始化bean后检验数据库连接是否\n" +
-                "            DataSource dataSource = (DataSource) applicationContext.getBean(\"dataSource\");\n" +
+                "            DataSource dataSource = (DataSource) applicationContext.getBean(\"shardingDataSource\");\n" +
                 "            Connection connection = dataSource.getConnection();\n" +
                 "            connection.close();\n" +
                 "        } catch (Exception e) {\n" +

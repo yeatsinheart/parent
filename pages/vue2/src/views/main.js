@@ -9,8 +9,8 @@ import i18n from '@/language'
 Vue.prototype.$ = $
 let header
 let footer
-const Header = () => import(`@/views/modules/${process.env.VUE_APP_PROJECT_MODULE}/header/header${process.env.VUE_APP_DEFAULT_FRAME}.vue`)
- const Footer = () => import(`@/views//modules/${process.env.VUE_APP_PROJECT_MODULE}/footer/footer${process.env.VUE_APP_DEFAULT_FRAME}.vue`)
+const Header = () => import(`@/views/${process.env.VUE_APP_PROJECT_MODULE}/header/header${process.env.VUE_APP_DEFAULT_FRAME}.vue`)
+ const Footer = () => import(`@/views/${process.env.VUE_APP_PROJECT_MODULE}/footer/footer${process.env.VUE_APP_DEFAULT_FRAME}.vue`)
 /* 头部尾部控制 */
 /*导航放到外部，不至于出现无法滚动的情况*/
 router.beforeEach((to, from, next) => {
@@ -28,7 +28,7 @@ router.beforeEach((to, from, next) => {
     }
     next()
 })
-const viewer = () => import(`@/views/modules/${process.env.VUE_APP_PROJECT_MODULE}/viewer.vue`)
+const viewer = () => import(`@/views/${process.env.VUE_APP_PROJECT_MODULE}/viewer.vue`)
 new Vue({
     i18n, router, store, render: h => h(viewer)
 }).$mount('#content')

@@ -95,7 +95,7 @@ public class ${serviceImpl.className} implements ${service.className} {
         return ResultGenerator.genSuccessResult(convert2DTO(entity),queryDTO.getRequestLanguage());
     }
     /**查所有**/
-    public Result<List<${dto.className}>> selectAll(${dto.className} queryDTO){
+    public Result<List<${dto.className}>> selectAll(){
         List<${entity.className}> entities = ${table.objectName}Dao.list();
         if(CollectionUtils.isEmpty(entities)){
             return ResultGenerator.genFailResult(Language.中文.getCode());

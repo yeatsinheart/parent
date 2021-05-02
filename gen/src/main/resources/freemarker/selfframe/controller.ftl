@@ -45,15 +45,31 @@ public class ${controller.className}   {
 </#if>
     @DubboReference
     private ${service.className} ${service.className?uncap_first};
+
+
+    /**
+    * 新增数据
+    */
+    @Operation(summary = "新增数据",
+            description = "数据库中新增该记录",
+            responses = {
+                    @ApiResponse(description = "返回的是json数据",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = String.class))),
+                    @ApiResponse(responseCode = "400", description = "返回400时候错误的原因")},
+            security = @SecurityRequirement(name = "需要认证"))
+    @PostMapping("create")
+    public Object create${entity.className}( @RequestBody @Valid ${pto.className} ${pto.className?uncap_first}){
+        Result<${dto.className}> result = ${service.className?uncap_first}.create(${pto.className}.convert2DTO(${pto.className?uncap_first}));
+        ${dto.className} data = result.getData();
+        return JSON.toJSONString(data);
+    }
     /**
     * 获取数据列表
     */
-    <#if swagger>
-        @ApiOperation(value = "没有参数", notes = "没有参数")
-    </#if>
     @PostMapping("selectList")
     public Object list${entity.className}( @Valid @ModelAttribute ${dto.className} ${dto.className?uncap_first}){
-        Result<List<${dto.className}>> result = ${service.className?uncap_first}.selectAll(null);
+        Result<List<${dto.className}>> result = ${service.className?uncap_first}.selectAll();
         List<${dto.className}> data = result.getData();
         return JSON.toJSONString(data);
     }

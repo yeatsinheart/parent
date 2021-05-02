@@ -71,7 +71,7 @@ module.exports = {
         loaderOptions: {
             css: {},
             sass: {
-                prependData: `@import "src/views/modules/${process.env.VUE_APP_PROJECT_MODULE}/style/_variables${process.env.VUE_APP_DEFAULT_FRAME}.scss";`
+                prependData: `@import "src/views/${process.env.VUE_APP_PROJECT_MODULE}/style/_variables${process.env.VUE_APP_DEFAULT_FRAME}.scss";`
             },
             less: {}
         }
@@ -134,12 +134,17 @@ module.exports = {
         config.output.chunkFilename('js/[name].js?v=[hash]').end();
         //取消预加载 首屏加速
         config.plugins.delete('preload-index');
+        config.plugins.delete('preload-admin');
         config.plugins.delete('prefetch-index');
-        config.plugin('html-index')
-            .tap(args => {
+        config.plugins.delete('prefetch-admin');
+        config.plugin('html-index').tap(args => {
                 args[0].cdn = cdn
                 return args
             })
+        config.plugin('html-admin').tap(args => {
+            args[0].cdn = cdn
+            return args
+        })
     }, //静态资源打包路径
     assetsDir: 'static', //打包后的启动文件
     indexPath: 'index.html', // baseUrl 从 Vue CLI 3.3 起已弃用，请使用publicPath。
@@ -154,7 +159,19 @@ module.exports = {
             // 在这个页面中包含的块，默认情况下会包含
             // 提取出来的通用 chunk 和 vendor chunk。
             chunks: ['chunk-vendors', 'chunk-common', 'index'],
-            favicon: `./src/views/modules/${process.env.VUE_APP_PROJECT_MODULE}/favicon.ico`
+            favicon: `./src/views/${process.env.VUE_APP_PROJECT_MODULE}/favicon.ico`
+        },
+        admin: {
+            // page 的入口
+            entry: './src/views/admin/main.js', //
+            template: './src/views/admin/public/index.html', //  模板来源
+            filename: 'admin.html', // 在 dist/h5.html 的输出
+            // 当使用 title 选项时，template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
+            title: process.env.VUE_APP_PROJECT_NAME,
+            // 在这个页面中包含的块，默认情况下会包含
+            // 提取出来的通用 chunk 和 vendor chunk。
+            chunks: ['chunk-vendors', 'chunk-common', 'admin'],
+            favicon: `./src/views/admin/public/favicon.ico`
         }
     },
     devServer: {
@@ -169,6 +186,13 @@ module.exports = {
                 }
             }
         },
-        compress: true, hot: true, port: 9000
+        compress: true, hot: true, port: 9000,
+        historyApiFallback: {
+            verbose: true,
+            rewrites: [
+                { from: /^\/index\/.*$/, to: '/index.html'},
+                { from: /^\/admin\/.*$/, to: '/admin.html'}
+            ]
+        }
     }
 }

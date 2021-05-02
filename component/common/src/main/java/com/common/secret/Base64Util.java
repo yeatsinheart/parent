@@ -1,16 +1,17 @@
 package com.common.secret;
 
-import org.apache.commons.codec.binary.Base64;
+
+import java.util.Base64;
 
 public class Base64Util {
     //base64 解码
     public static String decode(byte[] bytes) {
-        return new String(Base64.decodeBase64(bytes));
+        return new String(Base64.getDecoder().decode(bytes));
     }
 
     //base64 编码
     public static String encode(byte[] bytes) {
-        return new String(Base64.encodeBase64(bytes));
+        return new String(Base64.getEncoder().encode(bytes));
     }
     public static String img(byte[] bytes){
         StringBuffer buffer = new StringBuffer();

@@ -93,8 +93,19 @@ public class ServiceFile {
                 "        Runtime.getRuntime().addShutdownHook(new ShutDown());\n" +
                 "        ConfigurableApplicationContext applicationContext = SpringApplication.run(" + StringUtil.firstUpper(project) + StringUtil.firstUpper(level) + "Application.class, args);\n" +
                 "        try {\n" +
+                "            /*String[] beans = applicationContext\n" +
+                "                    .getBeanDefinitionNames();\n" +
+                "            for (String beanName : beans) {\n" +
+                "                Class<?> beanType = applicationContext\n" +
+                "                        .getType(beanName);\n" +
+                "                System.out.println(\"BeanName:\" + beanName);\n" +
+                "                System.out.println(\"Bean的类型：\" + beanType);\n" +
+                "                System.out.println(\"Bean所在的包：\" + beanType.getPackage());\n" +
+                "                System.out.println(\"Bean：\" + applicationContext.getBean(\n" +
+                "                        beanName));\n" +
+                "            }*/\n" +
                 "            // ===== 在项目初始化bean后检验数据库连接是否\n" +
-                "            DataSource dataSource = (DataSource) applicationContext.getBean(\"dataSource\");\n" +
+                "            DataSource dataSource = (DataSource) applicationContext.getBean(\"shardingDataSource\");\n" +
                 "            Connection connection = dataSource.getConnection();\n" +
                 "            connection.close();\n" +
                 "        } catch (Exception e) {\n" +

@@ -18,7 +18,7 @@ import java.util.Properties;
 public class AInitNacosConfig {
     public static String GROUP = "DEFAULT_GROUP";
     public static String NAME_SPACE = "public";
-    public static String serverAddr = "192.168.0.102:8848";
+    public static String serverAddr = "172.20.10.4:8848";
 
     public static void main(String[] args) {
         try {

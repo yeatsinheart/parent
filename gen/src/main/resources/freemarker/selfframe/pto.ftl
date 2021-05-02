@@ -92,7 +92,7 @@ public class ${pto.className} extends BaseRequest  implements Serializable {
         </#list>
         return key;
     }
-    private ${dto.className} convert2DTO(${pto.className} pto){
+    public static ${dto.className} convert2DTO(${pto.className} pto){
         ${dto.className} dto = new ${dto.className}();
         <#list table.columns as column>
         dto.set${column.objectName?cap_first}(pto.get${column.objectName?cap_first}());

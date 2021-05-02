@@ -21,7 +21,7 @@ public interface ${service.className}  {
     /**条件查一个**/
     Result<${dto.className}> selectOne(${dto.className} queryDTO);
     /**查所有**/
-    Result<List<${dto.className}>> selectAll(${dto.className} queryDTO);
+    Result<List<${dto.className}>> selectAll();
     /**条件查一列表**/
     Result<List<${dto.className}>> selectList(${dto.className} queryDTO);
     /**分页查**/

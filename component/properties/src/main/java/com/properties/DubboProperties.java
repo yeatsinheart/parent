@@ -10,8 +10,8 @@ public class DubboProperties {
             "dubbo.protocol.name=dubbo\n" +
             "dubbo.protocol.port=-1\n" +
             "## Dubbo Registry ?backup=\n" +
-            "dubbo.registry.address=nacos://192.168.0.102:8848\n" +
-            "#dubbo.monitor.address=192.168.0.102:8848\n" +
+            "dubbo.registry.address=nacos://172.20.10.4:8848\n" +
+            "#dubbo.monitor.address=172.20.10.4:8848\n" +
             "dubbo.registry.file=dubbo.cache.log\n" +
             "dubbo.registry.group=register-group\n" +
             "dubbo.registry.version=1\n" +
