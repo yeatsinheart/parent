@@ -9,10 +9,6 @@ public enum Currency {
         this.code = code;
     }
 
-    public String getCode() {
-        return code;
-    }
-
     public static Currency getCurrency(String code) {
         for (Currency now : Currency.values()) {
             if (now.code.equals(code)) {
@@ -21,6 +17,10 @@ public enum Currency {
         }
         // 默认人民币
         return CNY;
+    }
+
+    public String getCode() {
+        return code;
     }
 
 }

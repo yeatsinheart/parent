@@ -7,6 +7,7 @@ export function urltoImage(url, fn) {
         fn(img);
     }
 }
+
 //复制代码2、imagetoCanvas(image)
 // 将一个Image对象转变为一个Canvas类型对象，其中image参数传入一个Image对象，代码如下：
 export function imagetoCanvas(image) {
@@ -17,9 +18,9 @@ export function imagetoCanvas(image) {
     ctx.drawImage(image, 0, 0, cvs.width, cvs.height);
     // 将canvas的透明背景设置成白色
     var imageData = ctx.getImageData(0, 0, cvs.width, cvs.height);
-    for(var i = 0; i < imageData.data.length; i += 4) {
+    for (var i = 0; i < imageData.data.length; i += 4) {
         // 当该像素是透明的，则设置成白色
-        if(imageData.data[i + 3] == 0) {
+        if (imageData.data[i + 3] == 0) {
             imageData.data[i] = 255;
             imageData.data[i + 1] = 255;
             imageData.data[i + 2] = 255;
@@ -29,6 +30,7 @@ export function imagetoCanvas(image) {
     ctx.putImageData(imageData, 0, 0);
     return cvs;
 }
+
 //3、canvasResizetoFile(canvas,quality,fn)会
 // 将一个Canvas对象压缩转变为一个Blob类型对象；
 // 其中canvas参数传入一个Canvas对象;
@@ -58,6 +60,7 @@ export function filetoDataURL(file, fn) {
     };
     reader.readAsDataURL(file);
 }
+
 //6、dataURLtoImage(dataurl,fn) 会
 // 将一串dataURL字符串转变为Image类型文件,
 // 其中dataurl参数传入一个dataURL字符串,fn为回调方法，包含一个Image类型文件的参数，代码如下：
@@ -68,6 +71,7 @@ export function dataURLtoImage(dataurl, fn) {
     };
     img.src = dataurl;
 }
+
 //7、dataURLtoFile(dataurl) 会
 // 将一串dataURL字符串转变为Blob类型对象，其中dataurl参数传入一个dataURL字符串,代码如下：
 export function dataURLtoFile(dataurl) {

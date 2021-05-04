@@ -1,7 +1,8 @@
 package com.common.result;
 
 
-import com.alibaba.fastjson.JSON;
+import com.common.utils.JsonUtil;
+import lombok.SneakyThrows;
 
 import java.io.Serializable;
 
@@ -17,7 +18,7 @@ public class PageResult<T> implements Serializable {
     private long current;
     private long pages;
 
-    public PageResult(long size,long current,long total,long pages, T data, String language) {
+    public PageResult(long size, long current, long total, long pages, T data, String language) {
         this.code = ResultCode.SUCCESS.getCode();
         this.size = size;
         this.current = current;
@@ -49,8 +50,9 @@ public class PageResult<T> implements Serializable {
     }
 
 
+    @SneakyThrows
     @Override
     public String toString() {
-        return JSON.toJSONString(this);
+        return JsonUtil.toJsonStr(this);
     }
 }

@@ -2,12 +2,12 @@ package com.gateway.server.handler;
 
 import com.common.constant.Language;
 import com.common.result.ResultGenerator;
+import com.common.utils.JsonUtil;
 import com.gateway.server.RequestHandler;
 import com.gateway.server.SessionHolder;
 import com.gateway.server.parameter.ParamUtil;
 import com.gateway.server.parameter.WebSocketMsgStringDTO;
 import com.gateway.server.parameter.WebSocketRequestDTO;
-import com.google.gson.Gson;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -15,6 +15,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.websocketx.*;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,7 @@ public class WebSocketHandler extends AbstractRequestHandler<WebSocketRequestDTO
     }
 
     //处理websocket数据
+    @SneakyThrows
     private void handleFrame(ChannelHandlerContext ctx, WebSocketFrame frame) {
         // 判断是否关闭链路的指令
         if (frame instanceof CloseWebSocketFrame) {
@@ -92,7 +94,7 @@ public class WebSocketHandler extends AbstractRequestHandler<WebSocketRequestDTO
             if (StringUtils.isNotEmpty(response)) {
                 Flush.flushWebSocket(channel, response);
             } else {
-                Flush.flushWebSocket(channel, new Gson().toJson(ResultGenerator.genFailResult(Language.中文.getCode())));
+                Flush.flushWebSocket(channel, JsonUtil.toJsonStr(ResultGenerator.genFailResult(Language.中文.getCode())));
             }
 
         } else if (frame instanceof BinaryWebSocketFrame) {

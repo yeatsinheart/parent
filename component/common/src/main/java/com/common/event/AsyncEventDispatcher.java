@@ -20,12 +20,14 @@ public class AsyncEventDispatcher {
         AsyncEventHandler handler = handlerMap.get(intention.getTag());
         handler.asyncProcess(intention);
     }
+
     //创建事件追踪
-    public boolean create(){
+    public boolean create() {
         AsyncEventIntention intention = new AsyncEventIntention();
         AsyncEventHandler handler = handlerMap.get(intention.getTag());
         return handler.create(intention);
     }
+
     //清除当前该过期的结束的intention
     public void clear() {
         //delete All deadline < LocalDateTimeUtil.getNowMsTimestamp() AND (state=)

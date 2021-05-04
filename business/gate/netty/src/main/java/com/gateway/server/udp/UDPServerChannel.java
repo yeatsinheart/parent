@@ -39,9 +39,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class UDPServerChannel extends AbstractNioMessageChannel implements ServerSocketChannel {
+    protected final LinkedHashMap<InetSocketAddress, UDPChannel> channels = new LinkedHashMap<>();
     private final ChannelMetadata METADATA = new ChannelMetadata(true);
     private final UDPServerChannelConfig config;
-    protected final LinkedHashMap<InetSocketAddress, UDPChannel> channels = new LinkedHashMap<>();
 
     public UDPServerChannel() throws IOException {
         this(SelectorProvider.provider().openDatagramChannel(StandardProtocolFamily.INET));

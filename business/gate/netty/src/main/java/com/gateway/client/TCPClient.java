@@ -1,6 +1,5 @@
 package com.gateway.client;
 
-import com.alibaba.fastjson.JSONObject;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
@@ -17,28 +16,6 @@ import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class TCPClient {
-    @Slf4j
-    public static class SimpleClientHandler extends ChannelInboundHandlerAdapter {
-        @Override
-        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            if (msg instanceof ByteBuf) {
-                String value = ((ByteBuf) msg).toString(Charset.defaultCharset());
-                System.out.println("服务器端返回的数据:" + value);
-            }
-            ByteBuf buf = (ByteBuf) msg;
-            byte[] req = new byte[buf.readableBytes()];
-            buf.readBytes(req);
-            String body = new String(req, StandardCharsets.UTF_8.name());
-            System.out.println("receive response:" + body);
-
-            log.info("返回咯🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉");
-            AttributeKey<String> key = AttributeKey.valueOf("ServerData");
-            ctx.channel().attr(key).set("客户端处理完毕");
-            //把客户端的通道关闭
-            //ctx.channel().close();
-        }
-    }
-
     public static ChannelFuture future;
 
     public static void main(String[] args) throws InterruptedException {
@@ -68,9 +45,8 @@ public class TCPClient {
         ChannelFuture future = client.connect("localhost", 7901).sync();
 
         //发送数据给服务器
-        JSONObject object = new JSONObject();
 
-        future.channel().writeAndFlush(object.toJSONString());
+        //future.channel().writeAndFlush(object.toJSONString());
 
         for (int i = 0; i < 5; i++) {
             // Thread.sleep(1000);
@@ -85,5 +61,27 @@ public class TCPClient {
         AttributeKey<String> key = AttributeKey.valueOf("ServerData");
         Object result = future.channel().attr(key).get();
         System.out.println(result.toString());
+    }
+
+    @Slf4j
+    public static class SimpleClientHandler extends ChannelInboundHandlerAdapter {
+        @Override
+        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+            if (msg instanceof ByteBuf) {
+                String value = ((ByteBuf) msg).toString(Charset.defaultCharset());
+                System.out.println("服务器端返回的数据:" + value);
+            }
+            ByteBuf buf = (ByteBuf) msg;
+            byte[] req = new byte[buf.readableBytes()];
+            buf.readBytes(req);
+            String body = new String(req, StandardCharsets.UTF_8.name());
+            System.out.println("receive response:" + body);
+
+            log.info("返回咯🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉");
+            AttributeKey<String> key = AttributeKey.valueOf("ServerData");
+            ctx.channel().attr(key).set("客户端处理完毕");
+            //把客户端的通道关闭
+            //ctx.channel().close();
+        }
     }
 }

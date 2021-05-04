@@ -1,11 +1,11 @@
 package com.common.dto;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.common.utils.JsonUtil;
 import com.common.utils.LocalDateTimeUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.SneakyThrows;
 
 import java.io.Serializable;
 
@@ -69,9 +69,10 @@ public class BaseRequest implements Serializable {
 
     private Long requestTime = LocalDateTimeUtil.timestamp13();
 
+    @SneakyThrows
     public String toString() {
         //return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-        return JSON.toJSONString(this, SerializerFeature.WriteMapNullValue);
+        return JsonUtil.toJsonStr(this);
     }
 
 

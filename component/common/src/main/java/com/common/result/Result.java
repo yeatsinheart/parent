@@ -1,24 +1,27 @@
 package com.common.result;
 
 
-import com.alibaba.fastjson.JSON;
+import com.common.utils.JsonUtil;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
 
 /**
  * 统一API响应结果封装
  */
+@Slf4j
 public class Result<T> implements Serializable {
     private int code;
     private String message;
     private T data;
 
-    public Result(ResultCode resultCode,String language) {
+    public Result(ResultCode resultCode, String language) {
         this.code = resultCode.getCode();
         this.message = resultCode.getMessage(language);
     }
 
-    public Result(ResultCode resultCode, T data,String language) {
+    public Result(ResultCode resultCode, T data, String language) {
         this.code = resultCode.getCode();
         this.message = resultCode.getMessage(language);
         this.data = data;
@@ -46,8 +49,9 @@ public class Result<T> implements Serializable {
         return this;
     }
 
+    @SneakyThrows
     @Override
     public String toString() {
-        return JSON.toJSONString(this);
+        return JsonUtil.toJsonStr(this);
     }
 }

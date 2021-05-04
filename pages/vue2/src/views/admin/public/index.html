@@ -11,10 +11,10 @@
     <meta content="true" name="x5-fullscreen">
     <meta content="mobile" name="applicable-device">
 
-    <meta http-equiv="Expires" content="-1">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Cache-control" content="no-cache">
-    <meta http-equiv="Cache" content="no-cache">
+    <meta content="-1" http-equiv="Expires">
+    <meta content="no-cache" http-equiv="Pragma">
+    <meta content="no-cache" http-equiv="Cache-control">
+    <meta content="no-cache" http-equiv="Cache">
 
     <title><%= htmlWebpackPlugin.options.title %></title>
 
@@ -24,19 +24,19 @@
     </script>
     <!-- 使用CDN的CSS文件 -->
     <% htmlWebpackPlugin.options.cdn.css.forEach(function(item){ if(item){ %>
-    <link rel='stylesheet' href="<%= item %>">
+    <link href="<%= item %>" rel='stylesheet'>
     <% }}) %>
     <!-- 使用CDN的JS文件 -->
     <% htmlWebpackPlugin.options.cdn.js.forEach(function(item){ if(item){ %>
-    <script type="text/javascript" src="<%= item %>"></script>
+    <script src="<%= item %>" type="text/javascript"></script>
     <% }}) %>
 </head>
 
 <body style="font-size: 12px;">
-<div class="header" id="header"></div>
+<div id="header" class="header"></div>
 <div id="content">
     <div class="start_screen">
-        <img id="start_screen_img" style="display: block; margin:0 auto;width:90%;max-width: 512px;" src="">
+        <img id="start_screen_img" src="" style="display: block; margin:0 auto;width:90%;max-width: 512px;">
         <div class="spinner">
             <div class="rect1"></div>
             <div class="rect2"></div>
@@ -48,17 +48,17 @@
     </div>
     <!-- -->
 </div>
-<div class="footer" id="footer"></div>
+<div id="footer" class="footer"></div>
 </body>
 
 <script>
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src = "/static/js/init.js?v="+ Math.random()
+    script.src = "/static/js/init.js?v=" + Math.random()
     document.body.appendChild(script)
     script = document.createElement("script")
     script.type = "text/javascript"
-    script.src = "/static/js/startScreen.js?v="+ Math.random()
+    script.src = "/static/js/startScreen.js?v=" + Math.random()
     document.body.appendChild(script)
 </script>
 

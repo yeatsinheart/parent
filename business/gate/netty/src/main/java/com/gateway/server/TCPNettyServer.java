@@ -30,10 +30,10 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component("tcpServer")
 public class TCPNettyServer {
-    @Value("${session.online.time}")
-    public int SESION_RECYCLER_EXPIRE = 20;//10;
     public static int TCP_FRAME_FIXED_HEADER_LENGTH = 4;     // 4 bytes
     public static int TCP_FRAME_MAX_BODY_LENGTH = 6 * 1024; // 6K bytes
+    @Value("${session.online.time}")
+    public int SESION_RECYCLER_EXPIRE = 20;//10;
     public ExecutorService serverStartor;
     public ServerBootstrap bootstrap;
     //Runtime.getRuntime().availableProcessors()

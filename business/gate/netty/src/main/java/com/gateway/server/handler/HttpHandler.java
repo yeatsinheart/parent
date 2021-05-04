@@ -2,11 +2,12 @@ package com.gateway.server.handler;
 
 import com.common.constant.Language;
 import com.common.result.ResultGenerator;
+import com.common.utils.JsonUtil;
 import com.gateway.server.SessionHolder;
-import com.google.gson.Gson;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 @ChannelHandler.Sharable
 @Component("http")
 public class HttpHandler extends AbstractRequestHandler<FullHttpRequest> {
+    @SneakyThrows
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest httpRequest) {
         SessionHolder.setIP(ctx.channel());
@@ -22,7 +24,7 @@ public class HttpHandler extends AbstractRequestHandler<FullHttpRequest> {
         if (StringUtils.isNotEmpty(response)) {
             Flush.flushHttp(ctx, response);
         } else {
-            Flush.flushHttp(ctx, new Gson().toJson(ResultGenerator.genFailResult(Language.中文.getCode())));
+            Flush.flushHttp(ctx, JsonUtil.toJsonStr(ResultGenerator.genFailResult(Language.中文.getCode())));
         }
     }
 }

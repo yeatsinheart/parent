@@ -1,5 +1,5 @@
 <template>
-  <div :class="[theme,language]" v-if="canShow()">
+  <div v-if="canShow()" :class="[theme,language]">
     <footer>
       <div class="container ">
         <router-link to="/">
@@ -28,10 +28,12 @@
 <script>
 export default {
   name: 'Footer',
-  data(){return {}},
+  data() {
+    return {}
+  },
   methods: {
-    canShow(){
-      return (this.$route.meta && this.$route.meta.withFooter && this.$route.meta.withFooter===true)
+    canShow() {
+      return (this.$route.meta && this.$route.meta.withFooter && this.$route.meta.withFooter === true)
     }
   },
   computed: {
@@ -80,7 +82,7 @@ footer {
   z-index: 99;
   width: 100%;
   position: fixed;
-  bottom:0;
+  bottom: 0;
   @include getThemeSelector() {
     background: getContent("secondBGColor");
   }
@@ -90,7 +92,7 @@ footer {
   margin: 0 auto !important;
   display: flex;
   justify-content: center; /* 水平居中 */
-  align-items: center;     /* 垂直居中 */
+  align-items: center; /* 垂直居中 */
 }
 
 footer a {

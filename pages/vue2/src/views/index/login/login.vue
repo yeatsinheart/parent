@@ -3,20 +3,20 @@
 
     <div class="form-structor">
       <div class="signup">
-        <h2 class="form-title" id="signup"><span>或</span>注册</h2>
+        <h2 id="signup" class="form-title"><span>或</span>注册</h2>
         <div class="form-holder">
-          <input type="text" class="input" placeholder="用户名">
-          <input type="email" class="input" placeholder="邮箱">
-          <input type="password" class="input" placeholder="密码">
+          <input class="input" placeholder="用户名" type="text">
+          <input class="input" placeholder="邮箱" type="email">
+          <input class="input" placeholder="密码" type="password">
         </div>
         <button class="submit-btn">注册</button>
       </div>
       <div class="login slide-up">
         <div class="center">
-          <h2 class="form-title" id="login"><span>或</span>登录</h2>
+          <h2 id="login" class="form-title"><span>或</span>登录</h2>
           <div class="form-holder">
-            <input type="email" class="input" placeholder="邮箱">
-            <input type="password" class="input" placeholder="密码">
+            <input class="input" placeholder="邮箱" type="email">
+            <input class="input" placeholder="密码" type="password">
           </div>
           <button class="submit-btn">登录</button>
         </div>
@@ -25,7 +25,7 @@
   </div>
 </template>
 <style lang="scss" scoped>
-#content{
+#content {
   position: relative;
   min-height: 100vh;
   background-color: #E1E8EE;
@@ -36,6 +36,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .form-structor {
   background-color: #222;
   border-radius: 15px;
@@ -295,7 +296,9 @@
 </style>
 <script>
 export default {
-  data(){return {}},
+  data() {
+    return {}
+  },
   components: {},
   mounted() {
     let initLanguage =
@@ -313,9 +316,9 @@ export default {
     loginBtn.addEventListener('click', (e) => {
       let parent = e.target.parentNode.parentNode;
       Array.from(e.target.parentNode.parentNode.classList).find((element) => {
-        if(element !== "slide-up") {
+        if (element !== "slide-up") {
           parent.classList.add('slide-up')
-        }else{
+        } else {
           signupBtn.parentNode.classList.add('slide-up')
           parent.classList.remove('slide-up')
         }
@@ -325,9 +328,9 @@ export default {
     signupBtn.addEventListener('click', (e) => {
       let parent = e.target.parentNode;
       Array.from(e.target.parentNode.classList).find((element) => {
-        if(element !== "slide-up") {
+        if (element !== "slide-up") {
           parent.classList.add('slide-up')
-        }else{
+        } else {
           loginBtn.parentNode.parentNode.classList.add('slide-up')
           parent.classList.remove('slide-up')
         }

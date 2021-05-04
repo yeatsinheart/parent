@@ -7,7 +7,7 @@ $padding: .05rem;
 $beautyPadding: .746667rem 0.6rem .4rem;
 //单行元素最大宽度。内部元素需要排除padding margin 计算出实际rem值
 $containerwidth: 9.9rem;
-$beauty-width:7.733333rem;
+$beauty-width: 7.733333rem;
 
 $beauty-font-size: .48rem;
 $fontSize: 15px;
@@ -20,7 +20,7 @@ $themDefault: (
         default:(
           /* 背景色 */
                 primaryBGColor:linear-gradient(0deg, #b41718 1%, #d63a3e),
-                secondBGColor:rgba(18,18,18,.4),
+                secondBGColor:rgba(18, 18, 18, .4),
           /* 字体颜色 */
                 primaryFontColor:black,
                 secondFontColor:#fff,
@@ -43,6 +43,7 @@ $themDefault: (
     }
   }
 }
+
 $languageDefault: (
         zh-CN:(
           /* 背景色 */

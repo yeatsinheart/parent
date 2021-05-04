@@ -14,16 +14,18 @@ public class FileUtil {
         try {
             FileUtils.deleteDirectory(new File(path));
         } catch (IOException e) {
-            log.warn("文件{}删除失败",path);
+            log.warn("文件{}删除失败", path);
         }
         return false;
     }
+
     // 创建目录
     public static boolean mkdir(String path) {
         File directory = new File(path);
         parent(directory);
         return directory.mkdirs();
     }
+
     // 创建文件
     public static File create(String path) {
         File file = null;
@@ -51,8 +53,8 @@ public class FileUtil {
     // 写入内容
     public static void write(String path, String content, boolean faildelete) {
         File f = create(path);
-        if(null==f){
-            log.warn("文件{}找不到",path);
+        if (null == f) {
+            log.warn("文件{}找不到", path);
         }
         try {
             FileUtils.write(f, content, StandardCharsets.UTF_8.name());
@@ -63,14 +65,15 @@ public class FileUtil {
             }
         }
     }
+
     // 添加内容
     public static void append(String path, String content, boolean faildelete) {
         File f = create(path);
-        if(null==f){
-            log.warn("文件{}找不到",path);
+        if (null == f) {
+            log.warn("文件{}找不到", path);
         }
         try {
-            FileUtils.write(f, content, StandardCharsets.UTF_8.name(),true);
+            FileUtils.write(f, content, StandardCharsets.UTF_8.name(), true);
         } catch (Exception e) {
             log.warn("文件{}未写入成功", path);
             if (f.exists() && faildelete) {

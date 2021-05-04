@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import db.mysql.entities.GlobalTableIdEntity;
 import db.mysql.mappers.GlobalTableIdMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -31,7 +30,7 @@ public class GlobalIdGenerator implements IdentifierGenerator {
         AtomicLong counter = counterMap.get(bizKey);
         AtomicLong nowId = nowIdMap.get(bizKey);
         if (null == counter || counter.get() == 200) {
-           updateCacheId(bizKey, counter, nowId);
+            updateCacheId(bizKey, counter, nowId);
         }
         counter.getAndAdd(1);
         long id = nowId.addAndGet(1);

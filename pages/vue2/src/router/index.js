@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import {getRoute, url} from '@/url/index'
 //if (!window.VueRouter)
 Vue.use(VueRouter)
-
-import {url, getRoute} from '@/url/index'
 
 let routes = []
 for (const key in url) {

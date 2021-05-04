@@ -1,4 +1,3 @@
-
 /*
 javascript中制作滚动代码的常用属性
 页可见区域宽： document.body.clientWidth;
@@ -34,10 +33,11 @@ export function scroll2top() {
     let speed = 1 + acceleration
     window.scrollTo(Math.floor(x / speed), Math.floor(y / speed))
     if (x > 0 || y > 0) {
-        let invokeFunction = scroll2top( acceleration , time )
+        let invokeFunction = scroll2top(acceleration, time)
         window.setTimeout(invokeFunction, time)
     }
 }
+
 export function scroll2Bottom() {
     let acceleration = 0.1
     let time = 100
@@ -58,7 +58,7 @@ export function scroll2Bottom() {
     let speed = 1 + acceleration
     window.scrollTo(Math.floor(-x / speed), Math.floor(-y / speed))
     if (x > 0 || y > 0) {
-        let invokeFunction = scroll2top( acceleration , time )
+        let invokeFunction = scroll2top(acceleration, time)
         window.setTimeout(invokeFunction, time)
     }
 }

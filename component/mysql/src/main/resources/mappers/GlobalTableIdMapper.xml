@@ -3,33 +3,42 @@
 <mapper namespace="db.mysql.mappers.GlobalTableIdMapper">
     <!-- 通用查询映射结果 -->
     <resultMap id="GlobalTableIdResultMap" type="db.mysql.entities.GlobalTableIdEntity">
-            <result column="id" property="id" jdbcType="INTEGER"
-                    javaType="java.lang.Integer"/>
-            <result column="gen_id" property="genId" jdbcType="BIGINT"
-                    javaType="java.lang.Long"/>
-            <result column="table" property="table" jdbcType="VARCHAR"
-                    javaType="java.lang.String"/>
+        <result column="id" property="id" jdbcType="INTEGER"
+                javaType="java.lang.Integer"/>
+        <result column="gen_id" property="genId" jdbcType="BIGINT"
+                javaType="java.lang.Long"/>
+        <result column="table" property="table" jdbcType="VARCHAR"
+                javaType="java.lang.String"/>
     </resultMap>
     <sql id="base_Column_List">
-        id,gen_id,table
+        id
+        ,gen_id,table
     </sql>
     <sql id="where_clause_not_null">
         <where>
-                <if test="id != null">AND  id
-                = #{id}</if>
-                <if test="genId != null">AND  gen_id
-                = #{genId}</if>
-                <if test="table != null">AND  table
-                = #{table}</if></where>
+            <if test="id != null">AND id
+                = #{id}
+            </if>
+            <if test="genId != null">AND gen_id
+                = #{genId}
+            </if>
+            <if test="table != null">AND table
+                = #{table}
+            </if>
+        </where>
     </sql>
     <sql id="set_clause_not_null">
         <trim prefix=" " prefixOverrides=",">
-                <if test="id != null">, id
-                = #{id}</if>
-                <if test="genId != null">, gen_id
-                = #{genId}</if>
-                <if test="table != null">, table
-                = #{table}</if></trim>
+            <if test="id != null">, id
+                = #{id}
+            </if>
+            <if test="genId != null">, gen_id
+                = #{genId}
+            </if>
+            <if test="table != null">, table
+                = #{table}
+            </if>
+        </trim>
     </sql>
     <select id="selectOneForUpdate" parameterType="db.mysql.entities.GlobalTableIdEntity"
             resultMap="GlobalTableIdResultMap">

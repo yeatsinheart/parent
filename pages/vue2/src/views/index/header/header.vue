@@ -1,5 +1,5 @@
 <template>
-  <div :class="[theme,language]" v-if="canShow()">
+  <div v-if="canShow()" :class="[theme,language]">
     <header>
       <div class="topbar">
         <div></div>
@@ -8,27 +8,27 @@
             <li class="tb-item userbox">
               <div class="nav-login"><a href="https://sso.toutiao.com/login/">登录</a></div>
             </li>
-            <li class="tb-item"><a class="tb-link" target="_blank" rel="noopener noreferrer"
-                                   href="//mp.toutiao.com/profile_v3_public/public/complains">侵权投诉</a></li>
+            <li class="tb-item"><a class="tb-link" href="//mp.toutiao.com/profile_v3_public/public/complains" rel="noopener noreferrer"
+                                   target="_blank">侵权投诉</a></li>
             <li class="tb-item more"><a class="tb-link" href="//www.toutiao.com/about/">头条产品</a>
               <div class="layer">
                 <ul>
-                  <li><a href="https://www.wukong.com" class="layer-item" target="_blank"
-                         rel="noopener noreferrer">问答</a></li>
-                  <li><a href="https://www.baike.com/" class="layer-item" target="_blank"
-                         rel="noopener noreferrer">头条百科</a>
+                  <li><a class="layer-item" href="https://www.wukong.com" rel="noopener noreferrer"
+                         target="_blank">问答</a></li>
+                  <li><a class="layer-item" href="https://www.baike.com/" rel="noopener noreferrer"
+                         target="_blank">头条百科</a>
                   </li>
-                  <li><a href="https://mp.toutiao.com/" class="layer-item" target="_blank"
-                         rel="noopener noreferrer">头条号</a>
+                  <li><a class="layer-item" href="https://mp.toutiao.com/" rel="noopener noreferrer"
+                         target="_blank">头条号</a>
                   </li>
-                  <li><a href="https://tuchong.com?utm_source=toutiao&amp;utm_medium=pc_header" class="layer-item"
-                         target="_blank" rel="noopener noreferrer">图虫</a></li>
-                  <li><a href="https://stock.tuchong.com/?source=ttweb" class="layer-item" target="_blank"
-                         rel="noopener noreferrer">正版图库</a></li>
-                  <li><a href="https://ad.toutiao.com/promotion/?source2=pchometop" class="layer-item" target="_blank"
-                         rel="noopener noreferrer">广告投放</a></li>
-                  <li><a href="https://www.dcdapp.com/?zt=tt_pc_home_top_bar" class="layer-item" target="_blank"
-                         rel="noopener noreferrer">懂车帝</a></li>
+                  <li><a class="layer-item" href="https://tuchong.com?utm_source=toutiao&amp;utm_medium=pc_header"
+                         rel="noopener noreferrer" target="_blank">图虫</a></li>
+                  <li><a class="layer-item" href="https://stock.tuchong.com/?source=ttweb" rel="noopener noreferrer"
+                         target="_blank">正版图库</a></li>
+                  <li><a class="layer-item" href="https://ad.toutiao.com/promotion/?source2=pchometop" rel="noopener noreferrer"
+                         target="_blank">广告投放</a></li>
+                  <li><a class="layer-item" href="https://www.dcdapp.com/?zt=tt_pc_home_top_bar" rel="noopener noreferrer"
+                         target="_blank">懂车帝</a></li>
                 </ul>
               </div>
             </li>

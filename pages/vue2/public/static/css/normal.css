@@ -1,128 +1,131 @@
 @charset "utf-8";
 body, html {
-  font-family: PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,Helvetica Neue,Arial,sans-serif;
-  color: #333;
-  background-color: #f4f5f6;
+    font-family: PingFang SC, Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, Helvetica Neue, Arial, sans-serif;
+    color: #333;
+    background-color: #f4f5f6;
 
-  -webkit-font-smoothing: antialiased;
-  position: relative;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-overflow-scrolling: touch;
-  -moz-overflow-scrolling: touch;
-  -o-overflow-scrolling: touch;
-  width: 100%;
-  height: 100%;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-overflow-scrolling: touch;
+    -moz-overflow-scrolling: touch;
+    -o-overflow-scrolling: touch;
+    width: 100%;
+    height: 100%;
 }
 
 body, button, dd, div, dl, dt, footer, form, h1, h2, h3, h4, h5, h6, header, input, li, menu, nav, ol, p, section, td, textarea, th, ul {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 body, button, input, select, textarea {
-  /*font-family: "Hiragino Sans GB", "Helvetica Neue", Helvetica, STHeiTi, "Microsoft Yahei", sans-serif;*/
+    /*font-family: "Hiragino Sans GB", "Helvetica Neue", Helvetica, STHeiTi, "Microsoft Yahei", sans-serif;*/
 
 }
 
 img {
-  border: 0;
-  vertical-align: middle
+    border: 0;
+    vertical-align: middle
 }
 
 a, body, html {
-  -webkit-touch-callout: none
+    -webkit-touch-callout: none
 }
 
 :focus, a, a:focus, button, input {
-  outline: 0
+    outline: 0
 }
 
 .clear, .clearfix:after {
-  clear: both
+    clear: both
 }
 
 .clearfix, .zoom {
-  zoom: 1
+    zoom: 1
 }
 
 .clear, .clearfix:after {
-  overflow: hidden
+    overflow: hidden
 }
 
 .clearfix:before, .clearfix:after {
-  content: " ";
-  display: table;
-  clear: both
+    content: " ";
+    display: table;
+    clear: both
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: normal
+    font-weight: normal
 }
 
 em, i {
-  font-style: normal
+    font-style: normal
 }
 
 li, ol, ul {
-  list-style: none
+    list-style: none
 }
 
 input, select, textarea {
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  border: 0;
-  background: 0;
-  -webkit-appearance: none;
-  outline: 0;
-  cursor: pointer
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    border: 0;
+    background: 0;
+    -webkit-appearance: none;
+    outline: 0;
+    cursor: pointer
 }
 
 a {
-  -webkit-tap-highlight-color: transparent;
-  text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    text-decoration: none;
 }
 
 a, a:hover {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 body {
-  background: #fff;
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  padding: 0;
+    background: #fff;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    padding: 0;
 }
 
 * {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
-*::before,*::after{
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+
+*::before, *::after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .example {
-  border: 1px solid red;
+    border: 1px solid red;
 }
 
 .blur, .blur_pic img {
-  -webkit-filter: blur(2px);
-  filter: blur(2px)
+    -webkit-filter: blur(2px);
+    filter: blur(2px)
 }
-#content{
-width:100%;
-  height: 100%;
+
+#content {
+    width: 100%;
+    height: 100%;
 }
-.start_screen{
-  margin: 0 auto;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  display:block;
-  position:fixed;
-  background-color: rgba(0, 0, 0, 0.4);
-  background-size: 100%
+
+.start_screen {
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: block;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.4);
+    background-size: 100%
 }

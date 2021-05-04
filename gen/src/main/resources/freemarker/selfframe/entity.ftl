@@ -3,14 +3,14 @@ import java.io.Serializable;
 import com.baomidou.mybatisplus.annotation.*;
 import org.apache.ibatis.type.JdbcType;
 <#list table.columns as column>
-import ${column.javaType};
+    import ${column.javaType};
 </#list>
 <#if lombok >
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+    import lombok.Data;
+    import lombok.EqualsAndHashCode;
 </#if>
 <#if swagger >
-import io.swagger.annotations.*;
+    import io.swagger.annotations.*;
 </#if>
 /**
 * ${table.comment!}
@@ -18,11 +18,11 @@ import io.swagger.annotations.*;
 * @since ${time}
 */
 <#if swagger >
-@ApiModel("${table.comment!}")
+    @ApiModel("${table.comment!}")
 </#if>
 <#if lombok >
-@Data
-@EqualsAndHashCode(callSuper=false)
+    @Data
+    @EqualsAndHashCode(callSuper=false)
 </#if>
 @TableName("${table.name!}")
 public class ${entity.className} implements Serializable {
@@ -32,12 +32,12 @@ private static final long serialVersionUID = 1L;
     * ${column.comment!}  数据库类型${column.type!} ${column.key!}
     */
     <#if swagger >
-    @ApiModelProperty(value="${column.comment!}",name="${column.objectName?uncap_first}",required=${column.notNull!})
+        @ApiModelProperty(value="${column.comment!}",name="${column.objectName?uncap_first}",required=${column.notNull!})
     </#if>
     <#if column.key=="PRI" >
-    @TableId(value="${column.name!}", type = IdType.INPUT)
+        @TableId(value="${column.name!}", type = IdType.INPUT)
     <#else >
-    @TableField(value="${column.name!}", jdbcType = JdbcType.UNDEFINED)
+        @TableField(value="${column.name!}", jdbcType = JdbcType.UNDEFINED)
     </#if>
     private ${column.javaTypeName} ${column.objectName?uncap_first};
 </#list>
@@ -47,17 +47,17 @@ private static final long serialVersionUID = 1L;
 
     <#list table.columns as column>
 
-    public ${column.javaTypeName} get${column.objectName?cap_first}() {
+        public ${column.javaTypeName} get${column.objectName?cap_first}() {
         return ${column.objectName?uncap_first};
-    }
-    public void set${column.objectName?cap_first}(${column.javaTypeName} ${column.objectName?uncap_first}) {
+        }
+        public void set${column.objectName?cap_first}(${column.javaTypeName} ${column.objectName?uncap_first}) {
         this.${column.objectName?uncap_first} = ${column.objectName?uncap_first};
-    }
+        }
     </#list>
 
     @Override
     public String toString() {
-        return "${entity.className}{" +
+    return "${entity.className}{" +
     <#list table.columns as column>
         <#if column_index==0>
             "  ${column.objectName?uncap_first} :" + ${column.objectName?uncap_first} +
@@ -65,7 +65,7 @@ private static final long serialVersionUID = 1L;
             ", ${column.objectName?uncap_first} :" +${column.objectName?uncap_first} +
         </#if>
     </#list>
-            "}";
+    "}";
     }
 </#if>
 }

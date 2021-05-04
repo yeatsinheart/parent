@@ -1,11 +1,11 @@
 package com.common.dto;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.common.utils.JsonUtil;
 import com.common.utils.LocalDateTimeUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.SneakyThrows;
 
 import java.io.Serializable;
 
@@ -20,15 +20,15 @@ public class GateWayRequest implements Serializable {
     private String domain;
     /**
      * 操作人IP
-     * */
+     */
     private String requestIp;
     /**
      * 路由标签
-     * */
+     */
     private String uri;
     /**
      * 操作接口
-     * */
+     */
     private String api;
     /**
      * 操作人用户token
@@ -54,17 +54,18 @@ public class GateWayRequest implements Serializable {
 
     /**
      * 真实请求数据
-     * */
+     */
     private BaseRequest data;
 
     private Long requestTime = LocalDateTimeUtil.timestamp13();
 
-    public String toString() {
-        //return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-        return JSON.toJSONString(this, SerializerFeature.WriteMapNullValue);
-    }
-
     public static void main(String[] args) {
         System.out.println(new GateWayRequest().toString());
+    }
+
+    @SneakyThrows
+    public String toString() {
+        //return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return JsonUtil.toJsonStr(this);
     }
 }

@@ -87,10 +87,10 @@ module.exports = {
             .use('image-webpack-loader')
             .loader('image-webpack-loader')
             .options({
-                mozjpeg: { progressive: true, quality: 65 },
-                optipng: { enabled: false },
-                pngquant: { quality: [0.65, 0.90], speed: 4 },
-                gifsicle: { interlaced: false }
+                mozjpeg: {progressive: true, quality: 65},
+                optipng: {enabled: false},
+                pngquant: {quality: [0.65, 0.90], speed: 4},
+                gifsicle: {interlaced: false}
                 /*webp: { quality: 75 }*/
             })
         const cdn = {
@@ -138,9 +138,9 @@ module.exports = {
         config.plugins.delete('prefetch-index');
         config.plugins.delete('prefetch-admin');
         config.plugin('html-index').tap(args => {
-                args[0].cdn = cdn
-                return args
-            })
+            args[0].cdn = cdn
+            return args
+        })
         config.plugin('html-admin').tap(args => {
             args[0].cdn = cdn
             return args
@@ -190,8 +190,8 @@ module.exports = {
         historyApiFallback: {
             verbose: true,
             rewrites: [
-                { from: /^\/index\/.*$/, to: '/index.html'},
-                { from: /^\/admin\/.*$/, to: '/admin.html'}
+                {from: /^\/index\/.*$/, to: '/index.html'},
+                {from: /^\/admin\/.*$/, to: '/admin.html'}
             ]
         }
     }

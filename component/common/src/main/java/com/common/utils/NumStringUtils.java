@@ -5,9 +5,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -75,7 +72,7 @@ public class NumStringUtils {
      */
     public static String numToLowerString(long num, int len) {
         StringBuilder sb = new StringBuilder();
-        Assert.state(num > 0,"数值大于0");
+        Assert.state(num > 0, "数值大于0");
         while (num > 0) {
             sb.insert(0, lowerCaseChar.charAt((int) (num % lowerCaseChar.length())));
             num = num / lowerCaseChar.length();

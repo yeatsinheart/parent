@@ -1,11 +1,11 @@
 package com.properties;
 
 public class DubboProperties {
-    public static final String properties="" +
+    public static final String properties = "" +
             "dubbo.scan.base-packages=" +
-                "service.demo.services.impls," +
-                "service.testb.services.impls," +
-                "com.gateway.Notify\n" +
+            "service.demo.services.impls," +
+            "service.testb.services.impls," +
+            "com.gateway.Notify\n" +
             "dubbo.consumer.check=false\n" +
             "dubbo.protocol.name=dubbo\n" +
             "dubbo.protocol.port=-1\n" +

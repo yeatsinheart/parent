@@ -130,7 +130,7 @@ public class MysqlUtil {
         return sql.replaceAll("#\\{tableName}", "" + tableName + "");
     }
 
-    public static void create(String 项目,String 模块,List tables) {
+    public static void create(String 项目, String 模块, List tables) {
         SqlSessionFactory session = connect("mysql", "127.0.0.1:3306/code", "root", "zdc1991");
         SqlSessionTemplate template = new SqlSessionTemplate(session);
         DBMapper tableMapper = template.getMapper(DBMapper.class);
@@ -146,10 +146,10 @@ public class MysqlUtil {
     }
 
     public static void main(String[] args) {
-        create("business","user",Arrays.asList("user","user_wallet","user_wallet_log"));
-        create("business","tenant",Arrays.asList("tenant","tenant_admin","tenant_admin_role",
-                "tenant_currency","tenant_language","tenant_resource",
-                "tenant_role","tenant_domian","tenant_role_resource","tenant_wallet","tenant_template",
-                "global_api","global_admin","global_resource","global_table_id"));
+        create("business", "user", Arrays.asList("user", "user_wallet", "user_wallet_log"));
+        create("business", "tenant", Arrays.asList("tenant", "tenant_admin", "tenant_admin_role",
+                "tenant_currency", "tenant_language", "tenant_resource",
+                "tenant_role", "tenant_domian", "tenant_role_resource", "tenant_wallet", "tenant_template",
+                "global_api", "global_admin", "global_resource", "global_table_id"));
     }
 }

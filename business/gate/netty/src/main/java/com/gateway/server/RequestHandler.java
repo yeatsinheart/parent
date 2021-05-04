@@ -1,8 +1,8 @@
 package com.gateway.server;
 
+import com.common.utils.JsonUtil;
 import com.gateway.router.Router;
 import com.gateway.server.parameter.ParamUtil;
-import com.google.gson.Gson;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -68,7 +68,7 @@ public class RequestHandler {
 
         HashMap<String, String> request = new HashMap<>();
         try {
-            request = new Gson().fromJson(reqStr, HashMap.class);
+            request = JsonUtil.toObj(reqStr, HashMap.class);
         } catch (Exception e) {
             log.warn("ByteBuf请求不是json");
             return null;
@@ -93,7 +93,7 @@ public class RequestHandler {
         }
         Map<String, String> map = ParamUtil.getRequestParams(paramsHttp);
         try {
-            return requestHandler.dispatch(ctx, uri, new Gson().toJson(map));
+            return requestHandler.dispatch(ctx, uri, JsonUtil.toJsonStr(map));
         } catch (Exception e) {
             log.error("Http请求逻辑中出错{}", e);
         }

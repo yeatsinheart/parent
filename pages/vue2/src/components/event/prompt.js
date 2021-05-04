@@ -4,6 +4,7 @@ import {createViewObj, destroyViewObj} from '../dynamicVueObject'
 //import promptVue from '../../views/common/popup/prompt.vue'
 // 异步视图 如果有自定义存在。自定义还是通用界面？
 const promptVue = () => import('commonpage/page/popup/prompt.vue')
+
 export function test(title, initValue) {
     new Promise((resolve, reject) => {
         let dyVueObj = createViewObj(promptVue, {title, initValue}, {

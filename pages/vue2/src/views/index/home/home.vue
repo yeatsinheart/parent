@@ -8,13 +8,15 @@
 </style>
 <script>
 export default {
-  data(){return {}},
+  data() {
+    return {}
+  },
   components: {},
   mounted() {
     let initLanguage =
-      localStorage.getItem("choosed-language") ||
-      localStorage.getItem("application-default-language") ||
-      process.env.VUE_APP_DEFAULT_LANGUAGE;
+        localStorage.getItem("choosed-language") ||
+        localStorage.getItem("application-default-language") ||
+        process.env.VUE_APP_DEFAULT_LANGUAGE;
     this.$languageChange(initLanguage);
   },
   computed: {},

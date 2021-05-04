@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import {getRoute, url} from '@/views/admin/router/url/index'
 //if (!window.VueRouter)
 Vue.use(VueRouter)
-
-import {url, getRoute} from '@/views/admin/router/url/index'
 
 let routes = []
 for (const key in url) {
@@ -16,7 +15,7 @@ for (const key in url) {
 }
 console.log("所有路由", routes)
 const router = new VueRouter({
-    base:'admin',
+    base: 'admin',
     mode: 'history', /* base: process.env.BASE_URL,*/
     routes
 })
@@ -30,11 +29,11 @@ router.beforeEach((to, from, next) => {
         console.log("需要登陆")
         next({path: '/login'})
     }
-    if (to.path.indexOf(page)!=-1) {
+    if (to.path.indexOf(page) != -1) {
         console.log("包含入口后缀")
         next({path: to.path.replace(page, "")})
     }
-    console.log("没有入口后缀"+to.path+path.indexOf(page))
+    console.log("没有入口后缀" + to.path + path.indexOf(page))
     next()
 })
 export default router

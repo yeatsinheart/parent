@@ -1,8 +1,10 @@
-<html lang="en"><head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <title>登录注册卡片样式切换css3动画 www.bootstrapmb.com</title>
-    <link rel="stylesheet" href="./css/login.css">
-    <meta name="viewport" content="width-device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no, minimal-ui">
+    <link href="./css/login.css" rel="stylesheet">
+    <meta content="width-device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no, minimal-ui"
+          name="viewport">
 
 </head>
 <body>
@@ -10,9 +12,9 @@
     <div class="signup">
         <h2 class="form-title" id="signup"><span>或</span>注册</h2>
         <div class="form-holder">
-            <input type="text" class="input" placeholder="用户名">
-            <input type="email" class="input" placeholder="邮箱">
-            <input type="password" class="input" placeholder="密码">
+            <input class="input" placeholder="用户名" type="text">
+            <input class="input" placeholder="邮箱" type="email">
+            <input class="input" placeholder="密码" type="password">
         </div>
         <button class="submit-btn">注册</button>
     </div>
@@ -20,44 +22,45 @@
         <div class="center">
             <h2 class="form-title" id="login"><span>或</span>登录</h2>
             <div class="form-holder">
-                <input type="email" class="input" placeholder="邮箱">
-                <input type="password" class="input" placeholder="密码">
+                <input class="input" placeholder="邮箱" type="email">
+                <input class="input" placeholder="密码" type="password">
             </div>
             <button class="submit-btn">登录</button>
         </div>
     </div>
 </div>
 
-<script >
+<script>
     console.clear();
 
-const loginBtn = document.getElementById('login');
-const signupBtn = document.getElementById('signup');
+    const loginBtn = document.getElementById('login');
+    const signupBtn = document.getElementById('signup');
 
-loginBtn.addEventListener('click', (e) => {
-    let parent = e.target.parentNode.parentNode;
-    Array.from(e.target.parentNode.parentNode.classList).find((element) => {
-        if(element !== "slide-up") {
-            parent.classList.add('slide-up')
-        }else{
-            signupBtn.parentNode.classList.add('slide-up')
-            parent.classList.remove('slide-up')
-        }
+    loginBtn.addEventListener('click', (e) => {
+        let parent = e.target.parentNode.parentNode;
+        Array.from(e.target.parentNode.parentNode.classList).find((element) => {
+            if (element !== "slide-up") {
+                parent.classList.add('slide-up')
+            } else {
+                signupBtn.parentNode.classList.add('slide-up')
+                parent.classList.remove('slide-up')
+            }
+        });
     });
-});
 
-signupBtn.addEventListener('click', (e) => {
-    let parent = e.target.parentNode;
-    Array.from(e.target.parentNode.classList).find((element) => {
-        if(element !== "slide-up") {
-            parent.classList.add('slide-up')
-        }else{
-            loginBtn.parentNode.parentNode.classList.add('slide-up')
-            parent.classList.remove('slide-up')
-        }
+    signupBtn.addEventListener('click', (e) => {
+        let parent = e.target.parentNode;
+        Array.from(e.target.parentNode.classList).find((element) => {
+            if (element !== "slide-up") {
+                parent.classList.add('slide-up')
+            } else {
+                loginBtn.parentNode.parentNode.classList.add('slide-up')
+                parent.classList.remove('slide-up')
+            }
+        });
     });
-});
 </script>
 
 
-</body></html>
+</body>
+</html>

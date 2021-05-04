@@ -11,7 +11,6 @@ import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerIntercept
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.NullValue;
-import net.sf.jsqlparser.expression.StringValue;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +27,7 @@ import java.util.Map;
 public class MybatisPlusConfig {
     @Autowired
     private TenantContext tenantContext;
+
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         /*注意:
@@ -61,7 +61,7 @@ public class MybatisPlusConfig {
             public String dynamicTableName(String sql, String tableName) {
                 //String[] tableSuffix = {"2018", "2019", "2020"};
                 //+ "_" + tableSuffix[(int) (Math.random() * tableSuffix.length)]
-                return tableName ;
+                return tableName;
             }
         });
         dynamicTabNameInterceptor.setTableNameHandlerMap(tableNameHandlerMap);
@@ -73,6 +73,7 @@ public class MybatisPlusConfig {
         TenantLineInnerInterceptor tenantLineInnerInterceptor = new TenantLineInnerInterceptor();
         tenantLineInnerInterceptor.setTenantLineHandler(new TenantLineHandler() {
             List<String> tables = Arrays.asList("global_api", "global_resource");
+
             @Override
             public Expression getTenantId() {
                 Long tenant = tenantContext.getTenantId();
@@ -81,10 +82,12 @@ public class MybatisPlusConfig {
                 }
                 return new NullValue();
             }
+
             @Override
             public String getTenantIdColumn() {
                 return "tenant_id";
             }
+
             @Override
             public boolean ignoreTable(String tableName) {
                 return tables.contains(tableName);

@@ -64,12 +64,12 @@ public class GlobalAopAdvice {
         */
         // id小于0则抛出非法id的异常
         /*if (id < 0) {
-            return JSON.parseObject("{\"message\":\"illegal id\",\"code\":403}");
+            return JsonUtil.toObj("{\"message\":\"illegal id\",\"code\":403}");
         }*/
         try {
             return joinPoint.proceed();
         } catch (Throwable throwable) {
-            log.error("role 拦截 ERR:{}",throwable);
+            log.error("role 拦截 ERR:{}", throwable);
         }
         return ResultGenerator.genFailResult(Language.中文.getCode());
     }

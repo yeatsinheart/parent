@@ -13,12 +13,12 @@
     </sql>
     <sql id="where_clause_not_null">
         <where><#list table.columns as column>
-                <if test="${column.objectName} != null">AND  ${column.name}
+            <if test="${column.objectName} != null">AND  ${column.name}
                 = ${r'#{'}${column.objectName}${r'}'}</if></#list></where>
     </sql>
     <sql id="set_clause_not_null">
         <trim prefix=" " prefixOverrides=","><#list table.columns as column>
-                <if test="${column.objectName} != null">, ${column.name}
+            <if test="${column.objectName} != null">, ${column.name}
                 = ${r'#{'}${column.objectName}${r'}'}</if></#list></trim>
     </sql>
     <select id="selectOneForUpdate" parameterType="${entity.fullName}"

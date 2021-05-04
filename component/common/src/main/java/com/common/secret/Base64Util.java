@@ -13,12 +13,14 @@ public class Base64Util {
     public static String encode(byte[] bytes) {
         return new String(Base64.getEncoder().encode(bytes));
     }
-    public static String img(byte[] bytes){
+
+    public static String img(byte[] bytes) {
         StringBuffer buffer = new StringBuffer();
         buffer.append("data:image/jpeg;base64,")
                 .append(encode(bytes));
         return buffer.toString();
     }
+
     public static void main(String[] args) {
         String string = "测试Base64编码";
         //编码

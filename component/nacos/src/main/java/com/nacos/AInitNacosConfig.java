@@ -3,9 +3,7 @@ package com.nacos;
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.PropertyKeyConst;
 import com.alibaba.nacos.api.config.ConfigService;
-import com.alibaba.nacos.api.config.ConfigType;
 import com.alibaba.nacos.api.exception.NacosException;
-import com.alibaba.nacos.api.naming.NamingService;
 import com.properties.DubboProperties;
 import com.properties.MysqlProperties;
 import com.properties.RedisProperties;
@@ -57,7 +55,7 @@ public class AInitNacosConfig {
     public static void put(String dataId, String group, String content, ConfigService configService) {
         try {
             //log.info(dataId + group + content);
-            System.out.println(get(dataId,group,configService));
+            System.out.println(get(dataId, group, configService));
             //, ConfigType.PROPERTIES.getType()
             boolean isPublishOk = configService.publishConfig(dataId, group, content);
             System.out.println(isPublishOk);

@@ -1,11 +1,7 @@
 package com.redis;
 
-import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.common.utils.JsonUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
@@ -17,9 +13,6 @@ import redis.clients.jedis.params.SetParams;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -32,21 +25,16 @@ public class RedisServiceImpl implements RedisService {
 
     private static final String LOCK_SUCCESS = "OK";
     private static final Long RELEASE_SUCCESS = 1L;
-    private static JedisPool pool = null;
     private static final String KEY_PRE = "REDIS_LOCK_";
+    private static JedisPool pool = null;
     private final String OK_CODE = "OK";
     private final String OK_MULTI_CODE = "+OK";
     private int lockExpirseTime = 2;
-
     private int tryExpirseTime = 2;
-
 
     @Resource
     private Environment env;
 
-    private static <T> JavaType getCollectionType(Class<? extends Collection> collectionClazz, Class<T> elementClazz) {
-        return om.getTypeFactory().constructCollectionType(collectionClazz, elementClazz);
-    }
 
     /**
      * 初始化操作
@@ -84,13 +72,6 @@ public class RedisServiceImpl implements RedisService {
         } else {
             pool = new JedisPool(config, env.getProperty("spring.redis.host"), port, timeout, password);
         }
-
-        om.registerModule(new Jdk8Module());
-        JavaTimeModule module = new JavaTimeModule();
-        module.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        om.registerModule(module);
-
     }
 
     @Override
@@ -162,11 +143,7 @@ public class RedisServiceImpl implements RedisService {
             return null;
         }
         T obj = null;
-        try {
-            obj = om.readValue(value, clazz);
-        } catch (IOException e) {
-            log.error("Can not unserialize obj to [{}] with string [{}]", clazz.getName(), value);
-        }
+        obj = JsonUtil.toObj(value, clazz);
         return obj;
     }
 
@@ -197,9 +174,9 @@ public class RedisServiceImpl implements RedisService {
         }
         T obj;
         try {
-            obj = om.readValue(value, clazz);
+            obj = JsonUtil.toObj(value, clazz);
             redisResult.setResult(obj);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("Can not unserialize obj to [{}] with string [{}]", clazz.getName(), value);
             //到此步直接视为无值
             redisResult.setExist(false);
@@ -237,9 +214,9 @@ public class RedisServiceImpl implements RedisService {
 
         List<T> list;
         try {
-            list = om.readValue(value, getCollectionType(List.class, elementClazz));
+            list = JsonUtil.toList(value, elementClazz);
             redisResult.setListResult(list);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("getListResult error : {}", e);
             log.error("Can not unserialize list to [{}] with string [{}]", elementClazz.getName(), value);
             //到此步直接视为无值
@@ -257,8 +234,8 @@ public class RedisServiceImpl implements RedisService {
         String value = RedisService.BLANK_CONTENT;
         if (obj != null) {
             try {
-                value = RedisService.om.writeValueAsString(obj);
-            } catch (IOException e) {
+                value = JsonUtil.toJsonStr(obj);
+            } catch (Exception e) {
                 log.error("Can not write object to redis:" + obj.toString(), e);
             }
         }
@@ -301,8 +278,8 @@ public class RedisServiceImpl implements RedisService {
         String value = RedisService.BLANK_CONTENT;
         if (obj != null) {
             try {
-                value = RedisService.om.writeValueAsString(obj);
-            } catch (IOException e) {
+                value = JsonUtil.toJsonStr(obj);
+            } catch (Exception e) {
                 log.error("Can not write object to redis:" + obj.toString(), e);
             }
         }
@@ -843,14 +820,10 @@ public class RedisServiceImpl implements RedisService {
         if ((object instanceof Map) && CollectionUtils.isEmpty((Map) object)) {
             return BLANK_CONTENT;
         }
-
-        try {
-            return om.writeValueAsString(object);
-        } catch (IOException e) {
-            return null;
-        }
+        return JsonUtil.toJsonStr(object);
     }
 
+    @SneakyThrows
     @Override
     public String makeSerializedString(Object value) {
         if (value == null) {
@@ -866,7 +839,7 @@ public class RedisServiceImpl implements RedisService {
         }
 
 
-        return JSON.toJSONString(value);
+        return JsonUtil.toJsonStr(value);
     }
 
     /**
@@ -916,22 +889,24 @@ public class RedisServiceImpl implements RedisService {
         }
     }
 
+    @SneakyThrows
     @Override
     public void putHashValueWithExpireDate(String key, String field, Object value, int time, TimeUnit unit) {
         Jedis jedis = this.getResource();
         try {
-            jedis.hset(key, field, JSON.toJSONString(value));
+            jedis.hset(key, field, JsonUtil.toJsonStr(value));
             jedis.expire(key, (long) time);
         } finally {
             this.destroyResource(jedis);
         }
     }
 
+    @SneakyThrows
     @Override
     public void putHashValue(String key, String field, Object value) {
         Jedis jedis = this.getResource();
         try {
-            jedis.hset(key, field, JSON.toJSONString(value));
+            jedis.hset(key, field, JsonUtil.toJsonStr(value));
         } finally {
             this.destroyResource(jedis);
         }
@@ -950,6 +925,7 @@ public class RedisServiceImpl implements RedisService {
         }
     }
 
+    @SneakyThrows
     @Override
     public void putOrIncrHash(String key, String field, Integer num) {
         Jedis jedis = this.getResource();
@@ -957,13 +933,14 @@ public class RedisServiceImpl implements RedisService {
             if (jedis.hexists(key, field)) {
                 jedis.hincrBy(key, field, num);
             } else {
-                jedis.hset(key, field, JSON.toJSONString(num));
+                jedis.hset(key, field, JsonUtil.toJsonStr(num));
             }
         } finally {
             this.destroyResource(jedis);
         }
     }
 
+    @SneakyThrows
     @Override
     public <T> T getHashObject(String key, String field, Class<T> clazz) {
         Jedis jedis = this.getResource();
@@ -972,12 +949,13 @@ public class RedisServiceImpl implements RedisService {
                 return null;
             }
             String json = jedis.hget(key, field);
-            return json == null ? null : JSON.parseObject(json, clazz);
+            return json == null ? null : JsonUtil.toObj(json, clazz);
         } finally {
             this.destroyResource(jedis);
         }
     }
 
+    @SneakyThrows
     @Override
     public <T> List<T> getHashList(String key, String field, Class<T> clazz) {
         Jedis jedis = this.getResource();
@@ -986,7 +964,8 @@ public class RedisServiceImpl implements RedisService {
                 return null;
             }
             String json = jedis.hget(key, field);
-            return json == null ? null : JSON.parseArray(json, clazz);
+
+            return json == null ? null : JsonUtil.toList(json, clazz);
         } finally {
             this.destroyResource(jedis);
         }
@@ -1002,6 +981,7 @@ public class RedisServiceImpl implements RedisService {
         }
     }
 
+    @SneakyThrows
     @Override
     public String getStringFromHash(String key, String field) {
         Jedis jedis = this.getResource();
@@ -1010,7 +990,7 @@ public class RedisServiceImpl implements RedisService {
                 return null;
             }
             String json = jedis.hget(key, field);
-            return json == null ? null : JSON.parseObject(json, String.class);
+            return json == null ? null : JsonUtil.toObj(json, String.class);
         } finally {
             this.destroyResource(jedis);
         }

@@ -1,7 +1,7 @@
 package com.properties;
 
 public class RedisProperties {
-    public static final String properties="" +
+    public static final String properties = "" +
             "# Redis服务器地址\n" +
             "spring.redis.host=47.242.219.77\n" +
             "# Redis服务器连接端口\n" +

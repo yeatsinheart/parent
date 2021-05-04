@@ -1,6 +1,7 @@
 package com.db.sharding.strategy;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingAlgorithm;
 import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingValue;
@@ -19,12 +20,13 @@ public class Complex implements ComplexKeysShardingAlgorithm<Long> {
     // 租户——节点：用户
     private static final String defaultTable = "user_3";
 
+    @SneakyThrows
     @Override
     public Collection<String> doSharding(Collection<String> collection, ComplexKeysShardingValue<Long> shardingValue) {
         Collection<String> target = new HashSet<>();
-        log.warn(shardingValue.getLogicTableName() + "=>" + JSON.toJSONString(collection));
+        log.warn(shardingValue.getLogicTableName() + "=>" + new ObjectMapper().writeValueAsString(collection));
         // =, IN 查询
-        log.warn(JSON.toJSONString(shardingValue.getColumnNameAndShardingValuesMap()));
+        log.warn(new ObjectMapper().writeValueAsString(shardingValue.getColumnNameAndShardingValuesMap()));
         // 根据自身ID 决定在什么表
         Collection<Long> idParams = shardingValue.getColumnNameAndShardingValuesMap().get("id");
         // 根据租户决定在什么表
@@ -35,8 +37,7 @@ public class Complex implements ComplexKeysShardingAlgorithm<Long> {
         target.add(defaultTable);
         // 范围查询BETWEEN AND的分片操作支持
         // 没有时间范围，默认走当天的时间分片
-        log.warn(JSON.toJSONString(shardingValue.getColumnNameAndRangeValuesMap()));
-
+        log.warn(new ObjectMapper().writeValueAsString(shardingValue.getColumnNameAndRangeValuesMap()));
         /*Collection<Long> idValues = (Collection<Long>) complexKeysShardingValue.getColumnNameAndShardingValuesMap().get("id");
             Range<Long> timeValues = (Range<Long>) complexKeysShardingValue.getColumnNameAndRangeValuesMap().get("time");
         */

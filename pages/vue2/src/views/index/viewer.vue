@@ -8,7 +8,9 @@
 </style>
 <script>
 export default {
-  data(){return {}},
+  data() {
+    return {}
+  },
   components: {},
   mounted() {
     let initLanguage =

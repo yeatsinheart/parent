@@ -16,7 +16,7 @@ public class XssUtil {
         if (StringUtils.isEmpty(value)) {
             return false;
         }
-        if (value.contains("<") || value.contains(">") || value.contains("&")|| value.contains("'")|| value.contains("=")|| value.contains("*")) {
+        if (value.contains("<") || value.contains(">") || value.contains("&") || value.contains("'") || value.contains("=") || value.contains("*")) {
             return true;
         }
         // Avoid null characters

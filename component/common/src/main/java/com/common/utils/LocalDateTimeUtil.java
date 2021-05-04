@@ -67,7 +67,7 @@ public class LocalDateTimeUtil {
         System.out.println("当前时间  在 某个时区(地区)  显示为");
         System.out.println(utc());
         System.out.println(utc8());
-        System.out.println(timestamp10()+":"+timestamp10Str(timestamp10(),yyyyMMddHHmmssFormat)+"："+str2Time(timestamp10Str(timestamp10(),yyyyMMddHHmmssFormat),yyyyMMddHHmmssFormat));
-        System.out.println(timestamp13()+":"+timestamp13Str(timestamp13(),yyyyMMddHHmmssFormat)+"："+str2Time(timestamp13Str(timestamp13(),yyyyMMddHHmmssFormat),yyyyMMddHHmmssFormat));
+        System.out.println(timestamp10() + ":" + timestamp10Str(timestamp10(), yyyyMMddHHmmssFormat) + "：" + str2Time(timestamp10Str(timestamp10(), yyyyMMddHHmmssFormat), yyyyMMddHHmmssFormat));
+        System.out.println(timestamp13() + ":" + timestamp13Str(timestamp13(), yyyyMMddHHmmssFormat) + "：" + str2Time(timestamp13Str(timestamp13(), yyyyMMddHHmmssFormat), yyyyMMddHHmmssFormat));
     }
 }

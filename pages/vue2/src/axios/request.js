@@ -57,6 +57,7 @@ function initDatabase() {
             });
     });
 }
+
 function insert() {
     //执行sql脚本，插入数据
     db.transaction(function (trans) {
@@ -66,7 +67,8 @@ function insert() {
         });
     });
 }
-function select(){
+
+function select() {
     db.transaction(function (trans) {
         trans.executeSql("select * from Api ", [], function (ts, data) {
             if (data) {
@@ -74,7 +76,10 @@ function select(){
                     appendDataToTable(data.rows.item(i));//获取某行数据的json对象
                 }
             }
-        }, function (ts, message) {alert(message);var tst = message;});
+        }, function (ts, message) {
+            alert(message);
+            var tst = message;
+        });
     });
 }
 

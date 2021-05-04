@@ -27,7 +27,7 @@ public class DbFile {
         String dao = basePackage + File.separator + "daos";
         String baseDao = dao + File.separator + "BaseDao.java";
         FileUtil.mkdir(dao);
-       // FileUtil.write(baseDao, baseDao(project), true);
+        // FileUtil.write(baseDao, baseDao(project), true);
 
         String daoImpl = dao + File.separator + "impls";
         FileUtil.mkdir(daoImpl);

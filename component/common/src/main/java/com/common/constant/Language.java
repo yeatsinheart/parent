@@ -1,10 +1,10 @@
 package com.common.constant;
 
-public enum  Language {
+public enum Language {
     /**
      * 程序种的语言编码，文件后缀编码
-     *
-     ISO639-1编码-语言变体
+     * <p>
+     * ISO639-1编码-语言变体
      */
     中文("zh-CN"),
     英文("en-US"),
@@ -14,10 +14,6 @@ public enum  Language {
 
     Language(String code) {
         this.code = code;
-    }
-
-    public String getCode() {
-        return code;
     }
 
     public static Language getLanguage(String code) {
@@ -38,5 +34,9 @@ public enum  Language {
             }
         }
         return 中文.code;
+    }
+
+    public String getCode() {
+        return code;
     }
 }

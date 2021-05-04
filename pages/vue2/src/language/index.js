@@ -1,25 +1,26 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
+
 Vue.use(VueI18n)
 const i18n = new VueI18n({silentTranslationWarn: true})
 
 
 // 异步加载语言包
 async function loadLanguageAsync(lang) {
-  let langMsg = i18n.getLocaleMessage(lang)
-  // 加载所有views下页面，不加载别的版型客户端的
-  let langVueFiles = (require.context(`@/views/`, true, /\.vue$/, 'sync'))
-  langVueFiles.keys().forEach(langFile => {
-    let parames = langVueFiles(langFile).langMsg
-    if (parames  && parames[lang]) {
-      for (let attr in parames[lang]) {
-        langMsg[attr] = parames[lang][attr]
-      }
-    }
-  })
-  i18n.setLocaleMessage(lang, langMsg)
-  i18n.locale = lang
-  localStorage.setItem('choosed-language', lang)
+    let langMsg = i18n.getLocaleMessage(lang)
+    // 加载所有views下页面，不加载别的版型客户端的
+    let langVueFiles = (require.context(`@/views/`, true, /\.vue$/, 'sync'))
+    langVueFiles.keys().forEach(langFile => {
+        let parames = langVueFiles(langFile).langMsg
+        if (parames && parames[lang]) {
+            for (let attr in parames[lang]) {
+                langMsg[attr] = parames[lang][attr]
+            }
+        }
+    })
+    i18n.setLocaleMessage(lang, langMsg)
+    i18n.locale = lang
+    localStorage.setItem('choosed-language', lang)
 }
 
 

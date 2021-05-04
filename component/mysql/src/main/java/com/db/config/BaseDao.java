@@ -181,10 +181,11 @@ public abstract class BaseDao<M extends BaseMapper<T>, T> implements IService<T>
     public boolean remove(T query) {
         return SqlHelper.retBool(this.getBaseMapper().delete(new QueryWrapper(query)));
     }
+
     /**
      * 根据条件修改
      **/
-    public boolean update(T entity,T query) {
+    public boolean update(T entity, T query) {
         return SqlHelper.retBool(this.getBaseMapper().update(entity, new QueryWrapper(query)));
     }
 
@@ -195,6 +196,7 @@ public abstract class BaseDao<M extends BaseMapper<T>, T> implements IService<T>
         T entity = (T) this.getBaseMapper().selectOne(new QueryWrapper(query));
         return entity;
     }
+
     /**
      * 根据条件修改
      **/
@@ -223,12 +225,14 @@ public abstract class BaseDao<M extends BaseMapper<T>, T> implements IService<T>
      * 根据条件修改数据
      **/
     public int updateByQuery(T updateEntity, T query) {
-        int updatedNum = getBaseMapper().update(updateEntity,  new QueryWrapper(query));
+        int updatedNum = getBaseMapper().update(updateEntity, new QueryWrapper(query));
         return updatedNum;
     }
+
     public boolean saveOrUpdate(T entity, T query) {
         return this.update(entity, new QueryWrapper(query)) || this.saveOrUpdate(entity);
     }
+
     protected abstract Wrapper<T> getQueryWrapperNotNull(T query);
 
 }

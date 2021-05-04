@@ -4,7 +4,7 @@ import com.common.utils.LocalDateTimeUtil;
 import lombok.Data;
 
 @Data
-public  class AsyncEventIntention {
+public class AsyncEventIntention {
     public static final Integer FINISHED = 1;
     public static final Integer WAITTING = 0;
 

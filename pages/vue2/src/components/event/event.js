@@ -7,8 +7,8 @@ export default event
 /* 全局异步事件  跨页面事件发生时的处理 */
 const prompt = () => import('./prompt')
 event.$on('test', msg => {
-  prompt().then(o => {
-    o.default(msg)
-  })
+    prompt().then(o => {
+        o.default(msg)
+    })
 })
 

@@ -6,6 +6,7 @@ jQuery Gantt editor has been written by Roberto Bicchierai and Silvia Chelazzi
 <img src="http://twproject.s3.amazonaws.com/resources/gantt_github2.jpg" alt="Twproject jQuery Gantt" border="0" />
 
 These are some key features:
+
 * jQuery based 3.2
 * MIT licensed: you can reuse everywhere https://opensource.org/licenses/MIT
 * JSON import-export

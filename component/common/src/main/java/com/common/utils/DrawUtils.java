@@ -12,6 +12,12 @@ public class DrawUtils {
     // 3。遍历开奖结果，调用是否符合预期若符合，则在开奖结果添加相对应玩法字段，值为是否中奖
 
 
+    /**
+     * 计算n的阶乘：n! = n * (n-1) * (n-2) * ... *2 * 1
+     */
+    public static BigInteger one = new BigInteger("1");
+    public static BigInteger zero = new BigInteger("0");
+
     public static void main(String[] args) {
         // 假设成密码锁的个数
         int chooseNum = 7;
@@ -38,7 +44,6 @@ public class DrawUtils {
         String[] target = new String[carr.size()];
         getcode(target, carr, 0, false);
     }
-
 
     // 多组不同数量的得到的排列
     public static void getcode(String[] target, List<String[]> arr, int arrreadindex, boolean repeatable) {
@@ -81,12 +86,6 @@ public class DrawUtils {
         }
         return target;
     }
-
-    /**
-     * 计算n的阶乘：n! = n * (n-1) * (n-2) * ... *2 * 1
-     */
-    public static BigInteger one = new BigInteger("1");
-    public static BigInteger zero = new BigInteger("0");
 
     public static BigInteger factorial(BigInteger n) {
         return (n.compareTo(one) > 0) ? n.multiply(factorial(n.subtract(one))) : one;

@@ -29,12 +29,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class UDPChannel extends AbstractChannel {
     protected final ChannelMetadata metadata = new ChannelMetadata(false);
     protected final DefaultChannelConfig config = new DefaultChannelConfig(this);
-
-    private final ConcurrentLinkedQueue<ByteBuf> buffers = new ConcurrentLinkedQueue<ByteBuf>();
-
     protected final UDPServerChannel serverchannel;
     protected final InetSocketAddress remote;
-
+    private final ConcurrentLinkedQueue<ByteBuf> buffers = new ConcurrentLinkedQueue<ByteBuf>();
     private volatile boolean open = true;
     private boolean reading = false;
 

@@ -1,6 +1,5 @@
 package com.redis;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import redis.clients.jedis.JedisPubSub;
 import redis.clients.jedis.params.SetParams;
 
@@ -23,11 +22,11 @@ public interface RedisService {
      * 默认过期时间 ，3600(秒)一个小时
      */
     int DEFAULT_EXPIRE_TIME = 3600;
-    ObjectMapper om = new ObjectMapper();
     /**
      * 空白占位符
      */
     String BLANK_CONTENT = "__BLANK__";
+
     /**
      * 初始化操作
      */
@@ -125,7 +124,9 @@ public interface RedisService {
      * @return
      */
     String set(String key, String value, SetParams setParams, int expiredTime);
+
     String tryLock(String key, String value, int expiredTime);
+
     /**
      * 没有key时，才设定缓存内容
      *
