@@ -22,7 +22,7 @@ public class SpringExampleSmartListener implements SmartApplicationListener {
     }
 
     /**
-     * 指定支持发生事件所在的类型
+     * 指定支持发生事件所在的类型s t r
      */
     @Override
     public boolean supportsSourceType(Class<?> sourceType) {
