@@ -64,6 +64,10 @@
                     <artifactId>jackson-datatype-jsr310</artifactId>
                     <groupId>com.fasterxml.jackson.datatype</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>jackson-dataformat-yaml</artifactId>
+                    <groupId>com.fasterxml.jackson.dataformat</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
