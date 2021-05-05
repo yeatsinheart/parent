@@ -45,6 +45,10 @@
                     <artifactId>lombok</artifactId>
                     <groupId>org.projectlombok</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>jackson-dataformat-yaml</artifactId>
+                    <groupId>com.fasterxml.jackson.dataformat</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
