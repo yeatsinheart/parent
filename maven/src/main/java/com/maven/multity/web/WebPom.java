@@ -50,7 +50,8 @@ public class WebPom {
                 "                <configuration>\n" +
                 "                    <fork>\n" +
                 "                        true\n" +
-                "                    </fork>\n<classifier>execute</classifier>\n" +
+                "                    </fork>\n" +
+                "                    <classifier>execute</classifier>\n" +
                 "                    <includeSystemScope>true</includeSystemScope>\n" +
                 "                </configuration>\n" +
                 "                <executions>\n" +
