@@ -106,7 +106,7 @@ public class JsonUtil {
 
     @SneakyThrows
     public static <T> Map<String, T> toMap(String json, Class<T> type) {
-        return (Map) getMapper().readValue(json, new TypeReference<Map<String, T>>() {
+        return getMapper().readValue(json, new TypeReference<Map<String, T>>() {
         });
     }
 
@@ -118,7 +118,7 @@ public class JsonUtil {
     public static <T> List<T> toList(String json, Class<T> T) {
         ObjectMapper mapper = getMapper();
         CollectionType type = mapper.getTypeFactory().constructCollectionType(List.class, T);
-        return (List) mapper.readValue(json, type);
+        return mapper.readValue(json, type);
     }
 
     @SneakyThrows
