@@ -36,22 +36,9 @@ public class WebPom {
                 "           <version>${project.version}</version>\n" +
                 "       </dependency>\n" +
                 "       <dependency>\n" +
-                "           <groupId>org.springframework.boot</groupId>\n" +
-                "           <artifactId>spring-boot-starter-webflux</artifactId>\n" +
-                "       </dependency>\n" +
-                "       <dependency>\n" +
-                "           <groupId>org.springdoc</groupId>\n" +
-                "           <artifactId>springdoc-openapi-webflux-ui</artifactId>\n" +
-                "           <version>1.5.7</version>\n" +
-                "       </dependency>\n" +
-                "       <dependency>\n" +
-                "           <groupId>org.springdoc</groupId>\n" +
-                "           <artifactId>springdoc-openapi-webflux-core</artifactId>\n" +
-                "           <version>1.5.7</version>\n" +
-                "       </dependency>\n" +
-                "       <dependency>\n" +
-                "           <groupId>org.springframework.boot</groupId>\n" +
-                "           <artifactId>spring-boot-starter-thymeleaf</artifactId>\n" +
+                "           <groupId>code</groupId>\n" +
+                "           <artifactId>webflux</artifactId>\n" +
+                "           <version>${project.version}</version>\n" +
                 "       </dependency>\n" +
                 "   </dependencies>\n" +
                 "   <build>\n" +

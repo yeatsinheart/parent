@@ -12,13 +12,13 @@
     <artifactId>component</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>base</module>
+        <module>redis</module>
         <module>properties</module>
+        <module>nacos</module>
         <module>dubbo</module>
         <module>mysql</module>
-        <module>nacos</module>
-        <module>redis</module>
         <module>webflux</module>
-        <module>common</module>
     </modules>
 
 

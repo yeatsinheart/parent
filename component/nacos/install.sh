@@ -6,10 +6,11 @@
  PLACE="Downloads"
  mkdir -p $PLACE
  cd $PLACE
- VERSION="nacos-server-2.0.0.tar.gz"
+ VERSION="nacos-server-2.0.1.tar.gz"
  rm -rf $VERSION
- wget https://github.com/alibaba/nacos/releases/download/2.0.0-bugfix/$VERSION
+ wget https://github.com/alibaba/nacos/releases/download/2.0.1/nacos-server-2.0.1.tar.gz
  tar -zxf $VERSION
+ tar -zxf nacos-server-2.0.1.tar.gz
  #启动命令(standalone代表着单机模式运行，非集群模式):
  sh nacos/bin/startup.sh -m standalone
  cat nacos/logs/start.out

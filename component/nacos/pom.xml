@@ -9,8 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>nacos</artifactId>
-    <packaging>pom</packaging>
     <dependencies>
+        <dependency>
+            <groupId>code</groupId>
+            <artifactId>base</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>code</groupId>
             <artifactId>properties</artifactId>
@@ -27,8 +31,20 @@
             <version>0.2.7</version>
             <exclusions>
                 <exclusion>
+                    <artifactId>commons-io</artifactId>
+                    <groupId>commons-io</groupId>
+                </exclusion>
+                <exclusion>
                     <artifactId>spring-context-support</artifactId>
                     <groupId>com.alibaba.spring</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jackson-core</artifactId>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jackson-databind</artifactId>
+                    <groupId>com.fasterxml.jackson.core</groupId>
                 </exclusion>
                 <!--<exclusion>
                     <artifactId>nacos-client</artifactId>

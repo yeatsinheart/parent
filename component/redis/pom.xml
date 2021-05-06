@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>code</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>base</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
