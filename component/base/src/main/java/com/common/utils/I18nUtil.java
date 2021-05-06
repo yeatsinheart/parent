@@ -20,7 +20,7 @@ import java.util.Properties;
  */
 @Slf4j
 public class I18nUtil {
-    private static Map<String, Properties> i18Map = new HashMap<>();
+    private static final Map<String, Properties> i18Map = new HashMap<>();
 
     public static Properties loadI18nProp(String module, String languageCode) {
         Properties prop = null;

@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 public class SHAUtil {
     public static byte[] sha(String request, String algorithm) {
         request = request.trim();
-        byte value[];
+        byte[] value;
         try {
             value = request.getBytes(StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException e) {
@@ -35,7 +35,7 @@ public class SHAUtil {
     }
 
     // 十六进制
-    public static String toHex(byte input[]) {
+    public static String toHex(byte[] input) {
         if (input == null)
             return null;
         StringBuffer output = new StringBuffer(input.length * 2);

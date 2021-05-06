@@ -13,9 +13,9 @@ import java.util.Map;
 @Slf4j
 public class JwtUtils {
     //签名私钥
-    private static String key = "test";
+    private static final String key = "test";
     //签名有效时间
-    private static long ttl = 1000;
+    private static final long ttl = 1000;
 
     public static String createJwtToken(String userId, String name, Map<String, Object> map) {
         //设置失效时间

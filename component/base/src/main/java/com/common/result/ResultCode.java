@@ -16,8 +16,8 @@ public enum ResultCode {
     TOEKNUNVALIBLE(405, "登录失效"),//未认证（token错误）
     INVALID_PARAM(10000, "参数错误"),
     MAINTAIN(500, "系统维护中");
-    private int code;
-    private String message;
+    private final int code;
+    private final String message;
 
     ResultCode(int code, String message) {
         this.code = code;

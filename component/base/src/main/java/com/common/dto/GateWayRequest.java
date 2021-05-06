@@ -60,7 +60,7 @@ public class GateWayRequest implements Serializable {
     private Long requestTime = LocalDateTimeUtil.timestamp13();
 
     public static void main(String[] args) {
-        System.out.println(new GateWayRequest().toString());
+        System.out.println(new GateWayRequest());
     }
 
     @SneakyThrows

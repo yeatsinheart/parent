@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class ImgUitls {
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     // 图片转化成base64字符串
     public static String getImageToBase64(String imgFile) {

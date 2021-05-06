@@ -13,10 +13,10 @@ public class PageResult<T> implements Serializable {
     private int code;
     private String message;
     private T data;
-    private long total;
-    private long size;
-    private long current;
-    private long pages;
+    private final long total;
+    private final long size;
+    private final long current;
+    private final long pages;
 
     public PageResult(long size, long current, long total, long pages, T data, String language) {
         this.code = ResultCode.SUCCESS.getCode();

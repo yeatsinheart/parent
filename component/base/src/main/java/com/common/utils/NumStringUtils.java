@@ -16,9 +16,9 @@ public class NumStringUtils {
     private static final String upperCaseChar = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String lowerCaseChar = "0123456789abcdefghijklmnopqrstuvwxyz";
     private static final String fixedLowerCaseChar = "23456789abcdefghijkmnpqrstuvwxyz";
-    private static String[] units =
+    private static final String[] units =
             {"", "十", "百", "千", "万", "十万", "百万", "千万", "亿", "十亿", "百亿", "千亿", "万亿"};
-    private static char[] numArray = {'零', '一', '二', '三', '四', '五', '六', '七', '八', '九'};
+    private static final char[] numArray = {'零', '一', '二', '三', '四', '五', '六', '七', '八', '九'};
 
     /**
      * 数字转汉字
@@ -198,7 +198,7 @@ public class NumStringUtils {
             return str;
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(str.substring(0, from));
+        sb.append(str, 0, from);
         if (len <= end) {
             for (int i = 0; i < len - from; i++) {
                 sb.append("*");
@@ -207,7 +207,7 @@ public class NumStringUtils {
             for (int i = 0; i < end - from; i++) {
                 sb.append("*");
             }
-            sb.append(str.substring(end, str.length()));
+            sb.append(str.substring(end));
         }
         return sb.toString();
     }
@@ -242,7 +242,7 @@ public class NumStringUtils {
      */
     public static boolean isChineseStr(String str) {
         Pattern pattern = Pattern.compile("[\u4e00-\u9fa5]");
-        char c[] = str.toCharArray();
+        char[] c = str.toCharArray();
         for (int i = 0; i < c.length; i++) {
             Matcher matcher = pattern.matcher(String.valueOf(c[i]));
             if (!matcher.matches()) {
@@ -257,7 +257,7 @@ public class NumStringUtils {
         Random r = new Random();
         for (int i = 0; i < len; i++) {
             int idx = r.nextInt(fixedLowerCaseChar.length());
-            res.append(String.valueOf(fixedLowerCaseChar.charAt(idx)));
+            res.append(fixedLowerCaseChar.charAt(idx));
         }
         return res.toString();
     }

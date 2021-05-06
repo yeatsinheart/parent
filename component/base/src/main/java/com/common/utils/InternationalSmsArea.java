@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InternationalSmsArea {
-    private static Map<String, String> areaMap = new HashMap<>();
-    private static Map<String, String> areaEngMap = new HashMap<>();
+    private static final Map<String, String> areaMap = new HashMap<>();
+    private static final Map<String, String> areaEngMap = new HashMap<>();
 
     static {
         areaMap.put("+1", "美国/加拿大");

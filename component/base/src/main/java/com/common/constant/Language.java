@@ -10,7 +10,7 @@ public enum Language {
     英文("en-US"),
     台湾("zh-TW"),
     越南("vi-VN");
-    private String code;
+    private final String code;
 
     Language(String code) {
         this.code = code;

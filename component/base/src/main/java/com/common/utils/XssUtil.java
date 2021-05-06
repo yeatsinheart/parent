@@ -32,7 +32,7 @@ public class XssUtil {
             return result;
 
         // Avoid anything in a src='...' type of expression
-        scriptPattern = Pattern.compile("src[\r\n]*=[\r\n]*\\\'(.*?)\\\'",
+        scriptPattern = Pattern.compile("src[\r\n]*=[\r\n]*\\'(.*?)\\'",
                 Pattern.CASE_INSENSITIVE | Pattern.MULTILINE
                         | Pattern.DOTALL);
         result = scriptPattern.matcher(value).find();// .replaceAll("");

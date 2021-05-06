@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Slf4j
 public class Result<T> implements Serializable {
     private int code;
-    private String message;
+    private final String message;
     private T data;
 
     public Result(ResultCode resultCode, String language) {

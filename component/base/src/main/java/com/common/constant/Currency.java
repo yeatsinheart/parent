@@ -3,7 +3,7 @@ package com.common.constant;
 public enum Currency {
     CNY("CNY"),
     TEST("TEST");
-    private String code;
+    private final String code;
 
     Currency(String code) {
         this.code = code;

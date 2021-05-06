@@ -31,7 +31,7 @@ public class ApiPom {
                 "    <dependencies>\n" +
                 "        <dependency>\n" +
                 "           <groupId>code</groupId>\n" +
-                "           <artifactId>common</artifactId>\n" +
+                "           <artifactId>base</artifactId>\n" +
                 "           <version>${project.version}</version>\n" +
                 "        </dependency>\n" +
                 "    </dependencies>\n" +

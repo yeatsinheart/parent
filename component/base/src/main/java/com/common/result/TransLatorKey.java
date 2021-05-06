@@ -7,7 +7,7 @@ public enum TransLatorKey {
     成功("success"),
     系统繁忙请稍后再试("bussy"),
     调用失败("fail");
-    private String key;
+    private final String key;
 
     TransLatorKey(String content) {
         this.key = content;

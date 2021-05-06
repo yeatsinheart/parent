@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 public class EncodingTool {
     public static String encodeStr(String str) {
         try {
-            return new String(str.getBytes("ISO-8859-1"), StandardCharsets.UTF_8.name());
+            return new String(str.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return null;

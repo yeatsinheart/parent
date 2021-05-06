@@ -55,7 +55,7 @@ public class NameConvertor {
     }
 
     public static boolean matches(String regex, String input) {
-        return null != regex && null != input ? Pattern.matches(regex, input) : false;
+        return null != regex && null != input && Pattern.matches(regex, input);
     }
 
     /**
