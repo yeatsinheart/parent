@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
+//组合 排列
 public class DrawUtils {
     // 1。提前列举所有开奖结果，落库获取ID
     // 2。提前具体玩法的所有投注可能，落库获取ID，并提供判断开奖结果是否符合预期的方法
     // 3。遍历开奖结果，调用是否符合预期若符合，则在开奖结果添加相对应玩法字段，值为是否中奖
-
-
     /**
      * 计算n的阶乘：n! = n * (n-1) * (n-2) * ... *2 * 1
      */
