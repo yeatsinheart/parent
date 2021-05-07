@@ -16,6 +16,12 @@ mvn versions:use-latest-releases
 
 cd ../..
 cd component
+
+cd ..
+cd base
+mvn versions:use-latest-releases
+
+cd ..
 cd mysql
 mvn versions:use-latest-releases
 
@@ -31,9 +37,6 @@ cd ..
 cd dubbo
 mvn versions:use-latest-releases
 
-cd ..
-cd common
-mvn versions:use-latest-releases
 
 cd ..
 cd nacos

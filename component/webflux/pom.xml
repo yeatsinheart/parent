@@ -32,6 +32,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--https://hellopz.com/2020/07/27/webflux-%E4%B8%AD%E4%BD%BF%E7%94%A8-swagger/ -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-webflux-ui</artifactId>

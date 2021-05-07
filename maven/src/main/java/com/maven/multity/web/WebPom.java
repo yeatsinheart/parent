@@ -28,7 +28,6 @@ public class WebPom {
                 "\n" +
                 "    <artifactId>" + project + "-" + level + "</artifactId>\n" +
                 "    <version>1.0-SNAPSHOT</version>\n" +
-                "<!--https://hellopz.com/2020/07/27/webflux-%E4%B8%AD%E4%BD%BF%E7%94%A8-swagger/ -->\n" +
                 "    <dependencies>\n" +
                 "       <dependency>\n" +
                 "           <groupId>code." + business + "</groupId>\n" +

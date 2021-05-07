@@ -18,7 +18,15 @@ import java.util.List;
 public class MavenProjectCreater {
 
     public static void main(String[] args) {
-        create(Arrays.asList("tenant", "user"), "business");
+        casino();
+    }
+
+    public static void casino() {
+        create(Arrays.asList("tenant", "user", "cms",
+                "bus",
+                "cost","pay","game",
+                "report"
+        ), "business");
     }
 
     public static void create(List<String> modules, String business) {

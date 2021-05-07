@@ -17,6 +17,10 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.reactive.function.server.RequestPredicates;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.RouterFunctions;
+import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -40,10 +44,10 @@ public class TestController {
         return Mono.create(monoSink -> monoSink.success(path));
     }
 
-    @GetMapping("/db")
-    public Mono<String> db(final Model model) {
+    @GetMapping("/")
+    public String index() {
         String path = "db";
-        return Mono.create(monoSink -> monoSink.success(path));
+        return path;
     }
 
     // 获取数据库信息
