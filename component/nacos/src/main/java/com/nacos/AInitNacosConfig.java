@@ -39,7 +39,7 @@ public class AInitNacosConfig {
             log.error("{}", e);
         }
     }
-
+    // http://172.20.10.4:8848/nacos/v1/cs/configs?dataId=application&group=DEFAULT_GROUP
     public static String get(String dataId, String group, ConfigService configService) {
         try {
             String content = configService.getConfig(dataId, group, 3000);
