@@ -272,7 +272,6 @@ public class Http {
      * @param headers
      * @param params
      */
-    @Override
     public String postWithHeaders(String url, Map<String, String> headers, Map<String, Object> params) {
         FormBody.Builder builder = new FormBody.Builder();
         //添加参数
@@ -315,7 +314,6 @@ public class Http {
      * @param headers
      * @param jsonParams
      */
-    @Override
     public String postJSONWithHeaders(String url, Map<String, String> headers, String jsonParams) {
         RequestBody requestBody = RequestBody.create(jsonParams, MediaType.parse("application/json; charset=utf-8"));
         Request request = new Request.Builder()
