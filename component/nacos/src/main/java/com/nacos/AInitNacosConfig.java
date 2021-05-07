@@ -14,6 +14,15 @@ import java.util.Properties;
 
 @Slf4j
 public class AInitNacosConfig {
+
+    /**
+     * 各应用启动后，
+     * 当nacos中没有配置时，初始化对应的nacos配置信息  config
+     * 当nacos中存在值时，进行更新操作 config
+     * <p>
+     * 启动配置；env，
+     * 其它配置：config
+     */
     public static String GROUP = "DEFAULT_GROUP";
     public static String NAME_SPACE = "public";
     public static String serverAddr = "172.20.10.4:8848";
@@ -56,7 +65,9 @@ public class AInitNacosConfig {
         try {
             //log.info(dataId + group + content);
             System.out.println(get(dataId, group, configService));
-            //, ConfigType.PROPERTIES.getType()
+            //, ConfigType.PROPERTIES.getType
+            //   /nacos/v1/cs/configs
+            //  curl -X POST 'http://127.0.0.1:8848/nacos/v1/cs/configs' -d 'dataId=nacos.example&group=com.alibaba.nacos&content=contentTest'
             boolean isPublishOk = configService.publishConfig(dataId, group, content);
             System.out.println(isPublishOk);
         } catch (NacosException e) {
