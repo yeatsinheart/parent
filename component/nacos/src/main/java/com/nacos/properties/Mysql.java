@@ -17,10 +17,7 @@ public class Mysql {
             "#spring.datasource.url=jdbc:p6spy:mysql://47.242.219.77:3306/chzx_chat?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true\n" +
             "#spring.datasource.username=root\n" +
             "#spring.datasource.password=IQdtJcwVuspR0WT6\n" +
-            "\n" +
-            "\n" +
             "spring.shardingsphere.datasource.names=code\n" +
-            "\n" +
             "spring.shardingsphere.datasource.code.type=com.zaxxer.hikari.HikariDataSource\n" +
             "spring.shardingsphere.datasource.code.driver-class-name=com.mysql.cj.jdbc.Driver\n" +
             "spring.shardingsphere.datasource.code.jdbc-url=jdbc:mysql://localhost:3306/code\n" +
@@ -28,7 +25,6 @@ public class Mysql {
             "#spring.shardingsphere.datasource.code.url=jdbc:mysql://localhost:3306/code\n" +
             "spring.shardingsphere.datasource.code.username=root\n" +
             "spring.shardingsphere.datasource.code.password=zdc1991\n" +
-            "\n" +
             "spring.shardingsphere.sharding.tables.user.actual-data-nodes=code.user\n" +
             "spring.shardingsphere.sharding.tables.user.table-strategy.complex.sharding-columns=id,tenant_id\n" +
             "spring.shardingsphere.sharding.tables.user.table-strategy.complex.algorithm-class-name=com.db.sharding.strategy.Complex\n";

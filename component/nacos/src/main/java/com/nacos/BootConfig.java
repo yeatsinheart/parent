@@ -6,9 +6,11 @@ import com.nacos.properties.Redis;
 
 public class BootConfig {
     public static void main(String[] args) {
+
+        // todo &符号不能搞啊
         InitNacosConfig.put(
                 Dubbo.properties + Redis.properties + Mysql.properties, "properties",
-                "application",
+                "app",
                 "DEFAULT_GROUP",
                 "",
                 "localhost:8848"
