@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class Http {
-    private static OkHttpClient okHttpClient = new OkHttpClient.Builder()
+    private static final OkHttpClient okHttpClient = new OkHttpClient.Builder()
             .sslSocketFactory(sslSocketFactory(), x509TrustManager())
             .retryOnConnectionFailure(false)//是否开启缓存
             .connectionPool(pool())//连接池
@@ -91,7 +91,7 @@ public class Http {
      * @param request
      * @return
      */
-    public String execNewCall(Request request) {
+    public static String execNewCall(Request request) {
         Response response = null;
         try {
             //response = okHttpClient.newCall(request).execute();
@@ -113,7 +113,7 @@ public class Http {
      * @param request
      * @return
      */
-    public String execNewCall(Request request, long timeOutSeconds) {
+    public static String execNewCall(Request request, long timeOutSeconds) {
         Response response = null;
         try {
             OkHttpClient client = okHttpClient.newBuilder()
@@ -145,7 +145,7 @@ public class Http {
      * @param url 请求的url
      * @return
      */
-    public String get(String url) {
+    public static String get(String url) {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -159,7 +159,7 @@ public class Http {
      * @param timeOutSeconds 超時秒數
      * @return
      */
-    public String get(String url, long timeOutSeconds) {
+    public static String get(String url, long timeOutSeconds) {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -173,7 +173,7 @@ public class Http {
      * @param queries 请求的参数，在浏览器？后面的数据，没有可以传null
      * @return
      */
-    public String get(String url, Map<String, String> queries) {
+    public static String get(String url, Map<String, String> queries) {
         StringBuffer sb = getQueryString(url, queries);
         Request request = new Request.Builder()
                 .url(sb.toString())
@@ -188,7 +188,7 @@ public class Http {
      * @param headers 请求头参数
      * @return
      */
-    public String getWithHeaders(String url, Map<String, String> headers) {
+    public static String getWithHeaders(String url, Map<String, String> headers) {
         Request request = new Request.Builder()
                 .headers(Headers.of(headers))
                 .url(url)
@@ -203,7 +203,7 @@ public class Http {
      * @param params post form 提交的参数
      * @return
      */
-    public String post(String url, Map<String, String> params) {
+    public static String post(String url, Map<String, String> params) {
         FormBody.Builder builder = new FormBody.Builder();
         //添加参数
         if (params != null && params.keySet().size() > 0) {
@@ -225,7 +225,7 @@ public class Http {
      * @param params post form 提交的参数
      * @return
      */
-    public String post(String url, Map<String, String> params, long timeOutSeconds) {
+    public static String post(String url, Map<String, String> params, long timeOutSeconds) {
         FormBody.Builder builder = new FormBody.Builder();
         //添加参数
         if (params != null && params.keySet().size() > 0) {
@@ -247,7 +247,7 @@ public class Http {
      * @param params post form 提交的参数
      * @return
      */
-    public String post2(String url, Map<String, Object> params) {
+    public static String post2(String url, Map<String, Object> params) {
         FormBody.Builder builder = new FormBody.Builder();
         //添加参数
         if (params != null && params.keySet().size() > 0) {
@@ -272,7 +272,7 @@ public class Http {
      * @param headers
      * @param params
      */
-    public String postWithHeaders(String url, Map<String, String> headers, Map<String, Object> params) {
+    public static String postWithHeaders(String url, Map<String, String> headers, Map<String, Object> params) {
         FormBody.Builder builder = new FormBody.Builder();
         //添加参数
         if (params != null && params.keySet().size() > 0) {
@@ -295,7 +295,7 @@ public class Http {
      * 参数二：请求的JSON
      * 参数三：请求回调
      */
-    public String postJSON(String url, String jsonParams) {
+    public static String postJSON(String url, String jsonParams) {
         RequestBody requestBody = RequestBody.create(jsonParams, MediaType.parse("application/json; charset=utf-8"));
         Request request = new Request.Builder()
                 .url(url)
@@ -314,7 +314,7 @@ public class Http {
      * @param headers
      * @param jsonParams
      */
-    public String postJSONWithHeaders(String url, Map<String, String> headers, String jsonParams) {
+    public static String postJSONWithHeaders(String url, Map<String, String> headers, String jsonParams) {
         RequestBody requestBody = RequestBody.create(jsonParams, MediaType.parse("application/json; charset=utf-8"));
         Request request = new Request.Builder()
                 .url(url)
@@ -324,7 +324,7 @@ public class Http {
         return execNewCall(request);
     }
 
-    public String patchJSON(String url, String jsonParams) {
+    public static String patchJSON(String url, String jsonParams) {
         RequestBody requestBody = RequestBody.create(jsonParams, MediaType.parse("application/json; charset=utf-8"));
         Request request = new Request.Builder()
                 .url(url)
@@ -333,7 +333,7 @@ public class Http {
         return execNewCall(request);
     }
 
-    public String postText(String url, String text, Map<String, String> headers) throws Exception {
+    public static String postText(String url, String text, Map<String, String> headers) throws Exception {
 
         Headers okHeaders = Headers.of(headers);
         RequestBody requestBody = RequestBody.create(text, MediaType.parse("text/plain"));
@@ -351,7 +351,7 @@ public class Http {
      * 参数二：请求的JSON
      * 参数三：请求回调
      */
-    public String putJSON(String url, String jsonParams, String type) {
+    public static String putJSON(String url, String jsonParams, String type) {
 
         Map<String, String> headers = new HashMap<>();
         if (type != null) {
@@ -376,7 +376,7 @@ public class Http {
      * 参数二：请求的JSON
      * 参数三：请求回调
      */
-    public String putJSON(String url, String jsonParams) {
+    public static String putJSON(String url, String jsonParams) {
 
         RequestBody requestBody = RequestBody.create(jsonParams, MediaType.parse("application/json; charset=utf-8"));
         Request request = new Request.Builder()
@@ -392,12 +392,16 @@ public class Http {
      * 参数二：请求的xmlString
      * 参数三：请求回调
      */
-    public String postXml(String url, String xml) {
+    public static String postXml(String url, String xml) {
         RequestBody requestBody = RequestBody.create(xml, MediaType.parse("application/xml; charset=utf-8"));
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .build();
         return execNewCall(request);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(get("http://www.baidu.com"));
     }
 }

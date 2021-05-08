@@ -14,9 +14,10 @@
         <module>component</module>
         <module>business</module>
         <module>pages</module>
+        <module>config</module>
     </modules>
     <properties>
-        <java.version>8</java.version>
+        <java.version>11</java.version>
         <encoding>UTF-8</encoding>
     </properties>
 
