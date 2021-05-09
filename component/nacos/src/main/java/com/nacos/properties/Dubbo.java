@@ -1,7 +1,7 @@
 package com.nacos.properties;
 
 public class Dubbo {
-    public static final String properties = "dubbo.scan.base-packages=service.demo.services.impls,service.testb.services.impls,com.gateway.Notify,service.user.services.impls\n" +
+    public static final String properties = "dubbo.scan.base-packages=service.tenantservices.impls,service.userservices.impls,service.cmsservices.impls,service.busservices.impls,service.costservices.impls,service.payservices.impls,service.gameservices.impls,service.reportservices.impls,com.gateway.Notify\n" +
             "dubbo.consumer.check=false\n" +
             "dubbo.protocol.name=dubbo\n" +
             "dubbo.protocol.port=-1\n" +

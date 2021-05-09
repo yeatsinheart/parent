@@ -1,19 +1,17 @@
 package com.nacos;
 
-import com.alibaba.nacos.api.NacosFactory;
-import com.alibaba.nacos.api.PropertyKeyConst;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.common.utils.HttpUtils;
-import com.properties.DubboProperties;
-import com.properties.MysqlProperties;
-import com.properties.RedisProperties;
+import com.nacos.properties.Dubbo;
+import com.nacos.properties.Mysql;
+import com.nacos.properties.Redis;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StringUtils;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 @Slf4j
 public class InitNacosConfig {
@@ -35,6 +33,14 @@ public class InitNacosConfig {
     public static void main(String[] args) {
         get("app", GROUP, null, serverAddr);
         put("test=test", "properties", "app", GROUP, "test", serverAddr);
+        put(
+                Dubbo.properties + Redis.properties + Mysql.properties,
+                "properties",
+                "app",
+                "DEFAULT_GROUP",
+                "",
+                "localhost:8848"
+        );
     }
 
     // 获取配置
@@ -47,12 +53,22 @@ public class InitNacosConfig {
         return config;
     }
 
+    public static String urlencode(String args) {
+        try {
+            return URLEncoder.encode(args, StandardCharsets.UTF_8.name());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+
+    }
+
     public static String put(String content, String type, String dataId, String group, String namespaceId, String url) {
         Map<String, Object> params = new HashMap<>();
         params.put("tenant", namespaceId);
         params.put("dataId", dataId);
         params.put("group", group);
-        params.put("content", content);
+        params.put("content", urlencode(content));
         params.put("type", type);
         String putted = HttpUtils.postByForm("http://" + url + "/nacos/v1/cs/configs" + "", params, null);
         System.out.println(putted);

@@ -14,6 +14,7 @@ public class AllInOneUtil {
                 "report"
         );
         String base = "business";
+        System.out.println(dubboScan(modules, base));
         FileUtil.write(base + File.separator + "all" + File.separator + "pom.xml", writetoAll(modules, base), true);
         FileUtil.write(base + File.separator + "pom.xml", writetoBase(modules, base), true);
         FileUtil.write(base + File.separator + "all" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + "com" + File.separator + "all" + File.separator + "AllApplication.java", componentScan(modules, base), true);
@@ -44,6 +45,17 @@ public class AllInOneUtil {
                 "nacos.config.config-long-poll-timeout=46000\n" +
                 "# 主配置 开启注册监听器预加载配置服务（除非特殊业务需求，否则不推荐打开该参数）\n" +
                 "nacos.config.enable-remote-sync-config=true\n";
+    }
+
+    public static String dubboScan(List<String> modules, String base) {
+        StringBuffer sb = new StringBuffer();
+        for (String m : modules) {
+            sb.append("service.");
+            sb.append(m);
+            sb.append("services.impls");
+            sb.append(",");
+        }
+        return sb.toString();
     }
 
     public static String componentScan(List<String> modules, String base) {

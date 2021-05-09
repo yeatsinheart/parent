@@ -1,16 +1,19 @@
 package com.all;
+
 import com.common.utils.ShutDown;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy(proxyTargetClass = true,exposeProxy = true)
 @ComponentScan(basePackages={
+
         "service.tenant.services",
         "db.tenant.daos.impls",
         "service.user.services",
@@ -34,6 +37,7 @@ import java.sql.Connection;
         "com.common.event",
 })
 public class AllApplication {
+
     public static void main(String[] args) {
         Runtime.getRuntime().addShutdownHook(new ShutDown());
         ConfigurableApplicationContext applicationContext = SpringApplication.run(AllApplication.class, args);
