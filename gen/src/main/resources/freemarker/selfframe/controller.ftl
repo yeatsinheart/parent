@@ -49,8 +49,7 @@ private ${service.className} ${service.className?uncap_first};
 /**
 * 新增数据
 */
-@Operation(summary = "新增数据",
-description = "数据库中新增该记录",
+@Operation(summary = "新增数据",description = "数据库中新增该记录",
 responses = {
 @ApiResponse(description = "返回的是json数据",
 content = @Content(mediaType = "application/json",

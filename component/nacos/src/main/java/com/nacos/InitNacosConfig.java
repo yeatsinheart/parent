@@ -31,8 +31,8 @@ public class InitNacosConfig {
     public static String serverAddr = "localhost:8848";
 
     public static void main(String[] args) {
-        get("app", GROUP, null, serverAddr);
-        put("test=test", "properties", "app", GROUP, "test", serverAddr);
+        //get("app", GROUP, null, serverAddr);
+        //put("test=test", "properties", "app", GROUP, "test", serverAddr);
         put(
                 Dubbo.properties + Redis.properties + Mysql.properties,
                 "properties",

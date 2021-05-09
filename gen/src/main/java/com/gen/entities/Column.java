@@ -19,11 +19,11 @@ public class Column implements Serializable {
      */
     private String name;
     /**
-     * 类型
+     * 类型 字段类型
      */
     private String raw_type;
     /**
-     * 类型
+     * 类型 长度加类型
      */
     private String type;
     /**
