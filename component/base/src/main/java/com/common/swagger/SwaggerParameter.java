@@ -12,6 +12,5 @@ public class SwaggerParameter {
     private String type;
     private String example;
     private boolean required;
-    private boolean hidden;
     private List<SwaggerParameter> inner;
 }

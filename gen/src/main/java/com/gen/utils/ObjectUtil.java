@@ -1,14 +1,16 @@
 package com.gen.utils;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.common.constant.Language;
+import com.common.result.Result;
+import com.common.result.ResultCode;
+import com.common.utils.JsonUtil;
 
 public class ObjectUtil {
-    static Map<String, List<String>> moduleTables = new HashMap<>();
+    public static void main(String[] args) {
+        Result<Integer> t = new Result<Integer>(ResultCode.FAIL, 404, Language.中文.getCode());
+        Class clazz = t.getClass();
+        System.out.println(clazz);
 
-    static {
-        moduleTables.put("tenant", Arrays.asList(""));
+        System.out.println(JsonUtil.toJsonStr(clazz));
     }
 }

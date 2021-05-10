@@ -2,7 +2,7 @@ package com.common.result;
 
 
 import com.common.utils.JsonUtil;
-import lombok.SneakyThrows;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
@@ -12,16 +12,19 @@ import java.io.Serializable;
  */
 @Slf4j
 public class Result<T> implements Serializable {
-    private int code;
+    @Parameter(description = "提示", example = "重复登陆", required = true)
     private final String message;
+    @Parameter(description = "状态码", example = "1", required = true)
+    private int code;
+    @Parameter(description = "具体对象", example = "{}", required = true)
     private T data;
 
-    public Result(ResultCode resultCode, String language) {
+    public <U extends T> Result(ResultCode resultCode, String language) {
         this.code = resultCode.getCode();
         this.message = resultCode.getMessage(language);
     }
 
-    public Result(ResultCode resultCode, T data, String language) {
+    public <U extends T> Result(ResultCode resultCode, U data, String language) {
         this.code = resultCode.getCode();
         this.message = resultCode.getMessage(language);
         this.data = data;
@@ -44,12 +47,11 @@ public class Result<T> implements Serializable {
         return data;
     }
 
-    public Result setData(T data) {
+    public Result<T> setData(T data) {
         this.data = data;
         return this;
     }
 
-    @SneakyThrows
     @Override
     public String toString() {
         return JsonUtil.toJsonStr(this);

@@ -1,13 +1,13 @@
 package com.common.utils;
 
+import com.common.dto.BaseRequest;
+import com.common.result.Result;
 import com.common.swagger.SwaggerOperation;
 import com.common.swagger.SwaggerParameter;
 import com.common.swagger.SwaggerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
@@ -16,7 +16,10 @@ import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Tag(name = "swagger文档工具类")
@@ -55,7 +58,7 @@ public class SwaggerUtil {
             for (Method method : methods) {
                 SwaggerOperation operation = new SwaggerOperation();
                 methodAnnotation(method, operation);
-                if (!StringUtils.isEmpty(operation.getDescription())) {
+                if (!StringUtils.isEmpty(operation.getSummary())) {
                     service.addOperation(operation);
                 }
             }
@@ -65,24 +68,34 @@ public class SwaggerUtil {
         }
     }
 
-    public static void responseAnnotation(ApiResponse[] responses) {
-
+    public static void responseAnnotation(Class response) {
+        //范型
     }
 
     public static List<SwaggerParameter> modules(Class module) {
         List<SwaggerParameter> params = new ArrayList<>();
-        Field[] fields = module.getFields();
+        // Field[] fields = module.getFields();
+        List<Field> fields = new ArrayList<>();
+        Class tempClass = module;
+        while (tempClass != null) {//当父类为null的时候说明到达了最上层的父类(Object类).
+            fields.addAll(Arrays.asList(tempClass.getDeclaredFields()));
+            tempClass = tempClass.getSuperclass(); //得到父类,然后赋给自己
+        }
         for (Field field : fields) {
+            field.setAccessible(true);
             Annotation[] annotations = field.getAnnotations();
             for (Annotation annotation : annotations) {
                 if (annotation instanceof Parameter) {
                     Parameter parameterAnnotation = (Parameter) annotation;
                     SwaggerParameter parameter = new SwaggerParameter();
-                    parameter.setName(parameterAnnotation.name());
+                    parameter.setName(field.getName());
                     parameter.setDescription(parameterAnnotation.description());
                     parameter.setRequired(parameterAnnotation.required());
-                    parameter.setHidden(parameterAnnotation.hidden());
+                    if (parameterAnnotation.hidden()) {
+                        continue;
+                    }
                     parameter.setExample(parameterAnnotation.example());
+                    parameter.setType(field.getType().getSimpleName());
                     Schema schema = parameterAnnotation.schema();
                     Class<?> implementation = schema.implementation();
                     if (!implementation.equals(Void.class)) {
@@ -96,10 +109,7 @@ public class SwaggerUtil {
                     params.add(parameter);
                 }
             }
-
-
         }
-
         return params;
     }
 
@@ -111,7 +121,6 @@ public class SwaggerUtil {
             parameter.setName(parameterAnnotation.name());
             parameter.setDescription(parameterAnnotation.description());
             parameter.setRequired(parameterAnnotation.required());
-            parameter.setHidden(parameterAnnotation.hidden());
             parameter.setExample(parameterAnnotation.example());
             Schema schema = parameterAnnotation.schema();
             Class<?> implementation = schema.implementation();
@@ -132,41 +141,77 @@ public class SwaggerUtil {
         Annotation[] annotations = method.getAnnotations();
         for (Annotation annotation : annotations) {
             if (annotation instanceof Operation) {
-                System.out.println(method);
                 Operation operationAnnotation = (Operation) annotation;
                 String operationId = operationAnnotation.operationId();
                 String summary = operationAnnotation.summary();
-                String description = operationAnnotation.description();
-                boolean hidden = operationAnnotation.hidden();
                 operation.setOperationId(operationId);
                 operation.setSummary(summary);
-                operation.setDescription(description);
-                operation.setHidden(hidden);
+                if (operationAnnotation.hidden()) {
+                    continue;
+                }
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                // 限定只能一个对象参数哦
+                for (Class parameterType : parameterTypes) {
+                    List<SwaggerParameter> inner = modules(parameterType);
+                    if (!CollectionUtils.isEmpty(inner)) {
+                        operation.setParameters(inner);
+                    }
+                }
+                if (CollectionUtils.isEmpty(operation.getParameters())) {
+
+                }
+
+                //获取泛型信息
+                Type type = method.getGenericReturnType();
+                System.out.println("返回参数" + JsonUtil.toJsonStr(type));
+                try {
+                    ParameterizedType pType = (ParameterizedType) type;
+                    if (pType.getRawType().getTypeName().equals(Result.class.getTypeName())) {
+                        List<SwaggerParameter> results = modules(Result.class);
+                        Type[] types = pType.getActualTypeArguments();
+                        List<SwaggerParameter> data = null;
+                        for (Type type2 : types) {
+                            System.out.println("泛型具体类型" + type2);//class java.lang.String
+                            Class tar = Class.forName(type2.getTypeName());
+                            data = modules(tar);
+                            //class java.lang.Object   泛型类型
+                            for (SwaggerParameter result : results) {
+                                if (result.getName().equals("data")) {
+                                    if (CollectionUtils.isEmpty(data)) {
+                                        result.setType(type2.getTypeName());
+                                    } else {
+                                        result.setInner(data);
+                                    }
+                                }
+                            }
+                        }
+
+                        operation.setResponses(results);
+                    }
+                } catch (Exception e) {
+
+                }
+
+
+/*
                 Parameter[] parameters = operationAnnotation.parameters();
                 operation.setParameters(paramAnnotation(parameters));
-                ApiResponse[] responses = operationAnnotation.responses();
+                ApiResponse[] responses = operationAnnotation.responses();*/
             }
         }
     }
 
-    @Operation(operationId = "1", summary = "查找所有api文件", description = "查找所有api文件",
-            parameters = {
-                    @Parameter(name = "file", description = "服务类", required = true, schema = @Schema(implementation = File.class)),
-                    @Parameter(name = "module", description = "项目", required = true, schema = @Schema(implementation = String.class)),
-                    @Parameter(name = "suffix", description = "后缀", required = true, schema = @Schema(implementation = String.class))
-            },
-            responses = {
-                    @ApiResponse(description = "返回的是页面",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = String.class))),
-                    @ApiResponse(responseCode = "400", description = "返回400时候错误的原因")}
-    )
+    @Operation(operationId = "2", summary = "测试")
+    public static Result<BaseRequest> test(BaseRequest args) {
+        return null;
+    }
+
+    @Operation(operationId = "1", summary = "查找所有api文件")
     public static void listAllFiles(File file, String module, String suffix) {
         if (file.isFile()) {
             if (StringUtils.isEmpty(suffix)) {
                 files.add(file);
             } else if (file.getAbsolutePath().contains("-" + module) && file.getName().endsWith(suffix)) {
-                System.out.println(file);
                 files.add(file);
             }
         } else if (file.exists() && file.isDirectory()) {
