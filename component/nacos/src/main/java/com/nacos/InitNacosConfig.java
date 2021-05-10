@@ -78,6 +78,20 @@ public class InitNacosConfig {
         return putted;
     }
 
+    public static String namespace(String url, String namespaceId) {
+        HttpUtils.get("http://" + url + "/nacos/v1/console/namespaces", null);
+        Map<String, Object> params = new HashMap<>();
+        //命名空间ID
+        params.put("customNamespaceId", namespaceId);
+        //命名空间名
+        params.put("namespaceName", namespaceId);
+
+        String putted = HttpUtils.postByForm("http://" + url + "/nacos/v1/console/namespaces" + "", params, null);
+        System.out.println(putted);
+
+        return putted;
+    }
+
     public static void remove(String dataId, String group, ConfigService configService) {
         try {
             boolean isRemoveOk = configService.removeConfig(dataId, group);
