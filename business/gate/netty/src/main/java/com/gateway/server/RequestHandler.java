@@ -100,7 +100,7 @@ public class RequestHandler {
         return null;
     }
 
-    // 统一请求处理入口
+    // 统一请求处理入口 避免netty工作线程占用，额外开启线程。
     public String dispatch(ChannelHandlerContext ctx, String route, String paramsString) {
         if (StringUtils.isEmpty(paramsString)) {
             log.info("收到空信息,直接结束对话，还是保持session？");

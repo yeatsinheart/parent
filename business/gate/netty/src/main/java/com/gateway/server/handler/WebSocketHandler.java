@@ -27,13 +27,16 @@ import java.util.Map;
 @ChannelHandler.Sharable
 @Component("websocket")
 public class WebSocketHandler extends AbstractRequestHandler<WebSocketRequestDTO> {
-
     private final WebSocketServerHandshakerFactory wsFactory =
             new WebSocketServerHandshakerFactory(null, null, true, 65536 * 5);
-
-
     @Autowired
     RequestHandler requestHandler;
+
+
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        SessionHolder.setProto(ctx.channel(), "ws");
+        super.channelActive(ctx);
+    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, WebSocketRequestDTO request) throws Exception {

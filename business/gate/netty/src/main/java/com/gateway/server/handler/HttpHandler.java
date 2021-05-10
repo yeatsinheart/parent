@@ -7,7 +7,6 @@ import com.gateway.server.SessionHolder;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,11 @@ import org.springframework.stereotype.Component;
 @ChannelHandler.Sharable
 @Component("http")
 public class HttpHandler extends AbstractRequestHandler<FullHttpRequest> {
-    @SneakyThrows
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        SessionHolder.setProto(ctx.channel(), "http");
+        super.channelActive(ctx);
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest httpRequest) {
         SessionHolder.setIP(ctx.channel());
