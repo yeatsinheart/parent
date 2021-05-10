@@ -1,5 +1,4 @@
 package com.all;
-
 import com.common.utils.ShutDown;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +12,7 @@ import java.sql.Connection;
 @SpringBootApplication
 @EnableAspectJAutoProxy(proxyTargetClass = true,exposeProxy = true)
 @ComponentScan(basePackages={
+
 
         "service.tenant.services",
         "db.tenant.daos.impls",

@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
@@ -38,7 +39,7 @@ public class SwaggerUtil {
         String fileName = f.getAbsolutePath();
         String className = fileName.substring(fileName.indexOf("main/java") + 10).replaceAll("/", ".").replaceAll(".java", "");
         String project = className.split("\\.")[1];
-        className = "com.common.utils.SwaggerUtis";
+        className = "com.common.utils.SwaggerUtil";
         try {
             SwaggerService service = new SwaggerService();
             Class<?> clazz = Class.forName(className);
@@ -54,8 +55,11 @@ public class SwaggerUtil {
             for (Method method : methods) {
                 SwaggerOperation operation = new SwaggerOperation();
                 methodAnnotation(method, operation);
-                service.addOperation(operation);
+                if (!StringUtils.isEmpty(operation.getDescription())) {
+                    service.addOperation(operation);
+                }
             }
+            System.out.println(JsonUtil.toJsonStr(service));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,8 +86,12 @@ public class SwaggerUtil {
                     Schema schema = parameterAnnotation.schema();
                     Class<?> implementation = schema.implementation();
                     if (!implementation.equals(Void.class)) {
-                        SwaggerParameter innerparameter = new SwaggerParameter();
-                        parameter.setInner(modules(implementation));
+                        List<SwaggerParameter> inner = modules(implementation);
+                        if (!CollectionUtils.isEmpty(inner)) {
+                            parameter.setInner(inner);
+                        } else {
+                            parameter.setType(implementation.getSimpleName());
+                        }
                     }
                     params.add(parameter);
                 }
@@ -108,8 +116,12 @@ public class SwaggerUtil {
             Schema schema = parameterAnnotation.schema();
             Class<?> implementation = schema.implementation();
             if (!implementation.equals(Void.class)) {
-                SwaggerParameter innerparameter = new SwaggerParameter();
-                parameter.setInner(modules(implementation));
+                List<SwaggerParameter> inner = modules(implementation);
+                if (!CollectionUtils.isEmpty(inner)) {
+                    parameter.setInner(inner);
+                } else {
+                    parameter.setType(implementation.getSimpleName());
+                }
             }
             params.add(parameter);
         }
@@ -130,18 +142,18 @@ public class SwaggerUtil {
                 operation.setSummary(summary);
                 operation.setDescription(description);
                 operation.setHidden(hidden);
-
                 Parameter[] parameters = operationAnnotation.parameters();
                 operation.setParameters(paramAnnotation(parameters));
                 ApiResponse[] responses = operationAnnotation.responses();
-
             }
         }
     }
 
     @Operation(operationId = "1", summary = "查找所有api文件", description = "查找所有api文件",
             parameters = {
-                    @Parameter(schema = @Schema(implementation = String.class))
+                    @Parameter(name = "file", description = "服务类", required = true, schema = @Schema(implementation = File.class)),
+                    @Parameter(name = "module", description = "项目", required = true, schema = @Schema(implementation = String.class)),
+                    @Parameter(name = "suffix", description = "后缀", required = true, schema = @Schema(implementation = String.class))
             },
             responses = {
                     @ApiResponse(description = "返回的是页面",
@@ -149,7 +161,7 @@ public class SwaggerUtil {
                                     schema = @Schema(implementation = String.class))),
                     @ApiResponse(responseCode = "400", description = "返回400时候错误的原因")}
     )
-    public static void listAllFiles(@Parameter(name = "file", description = "位置", required = true) File file, @Parameter String module, @Parameter String suffix) {
+    public static void listAllFiles(File file, String module, String suffix) {
         if (file.isFile()) {
             if (StringUtils.isEmpty(suffix)) {
                 files.add(file);
