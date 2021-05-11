@@ -1,8 +1,66 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import {getRoute, url} from '@/views/admin/router/url/index'
 //if (!window.VueRouter)
 Vue.use(VueRouter)
+
+const url = {
+    "/": {
+        "page": {"default": "home/home.vue"},
+        "meta": {"needLogin": false, "withHeader": true, "withFooter": true}
+    },
+    "/found": {
+        "page": {"default": "home/home.vue"},
+        "meta": {"needLogin": false, "withHeader": true, "withFooter": true}
+    },
+    "/welfare": {
+        "page": {"default": "home/home.vue"},
+        "meta": {"needLogin": false, "withHeader": true, "withFooter": true}
+    },
+    "/login": {
+        "page": {"default": "login/login.vue"},
+        "meta": {"needLogin": false, "withHeader": false, "withFooter": false}
+    },
+    "/user": {
+        "page": {"default": "user/user.vue"},
+        "meta": {"needLogin": false, "withHeader": true, "withFooter": true}
+    }
+}
+
+function getRealPath(path, frame) {
+    const obj = {};
+    if (url[path]) {
+        obj.path = path;
+        obj.meta = url[path]["meta"]
+        let realPagePath = "";
+        if (url[path]["page"][frame]) {
+            realPagePath = url[path]["page"]["default"] + url[path]["page"][frame];
+        } else {
+            realPagePath = url[path]["page"]["default"];
+        }
+        return realPagePath;
+    } else {
+        return null;
+    }
+}
+
+function getRoute(path, frame) {
+    const obj = {};
+    if (url[path]) {
+        obj.path = path;
+        obj.meta = url[path]["meta"]
+        let realPagePath = "";
+        if (url[path]["page"][frame]) {
+            realPagePath = url[path]["page"]["default"] + url[path]["page"][frame];
+        } else {
+            realPagePath = url[path]["page"]["default"];
+        }
+        obj.component = () => import(`../pages/${realPagePath}`);
+        return obj;
+    } else {
+        return null;
+    }
+}
+
 
 let routes = []
 for (const key in url) {
@@ -20,20 +78,13 @@ const router = new VueRouter({
     routes
 })
 router.beforeEach((to, from, next) => {
-    console.log(to)
-    let page = "admin.html"
-    let path = to.path.replace(page, "")
     // 登陆拦截
     if (to.meta && to.meta.needLogin && to.meta.needLogin === true) {
         console.log(to)
         console.log("需要登陆")
         next({path: '/login'})
     }
-    if (to.path.indexOf(page) != -1) {
-        console.log("包含入口后缀")
-        next({path: to.path.replace(page, "")})
-    }
-    console.log("没有入口后缀" + to.path + path.indexOf(page))
     next()
 })
+export {getRealPath}
 export default router

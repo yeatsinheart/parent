@@ -101,9 +101,12 @@ module.exports = {
                 'https://cdn.bootcss.com/vuex/3.1.3/vuex.min.js',
                 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js',
                 'https://cdn.bootcss.com/vue-i18n/8.17.0/vue-i18n.min.js',
-                '//code.jquery.com/jquery-3.5.1.slim.min.js'
+                '//code.jquery.com/jquery-3.5.1.slim.min.js',
+                'https://unpkg.com/element-ui/lib/index.js'
             ],
-            css: []
+            css: [
+                'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
+            ]
         };
 
 
@@ -134,7 +137,7 @@ module.exports = {
         config.output.chunkFilename('js/[name].js?v=[hash]').end();
 
 
-        const projects = ["index"]
+        const projects = ["index", "admin"]
         projects.forEach((project) => {
             config.plugins.delete('preload-' + project);
             config.plugins.delete('prefetch-' + project);
@@ -156,6 +159,17 @@ module.exports = {
             entry: `./views/projects/index/main.js`, //
             filename: 'index.html', // 在 dist/h5.html 的输出
             chunks: ['chunk-vendors', 'chunk-common', 'index'],
+            template: `${process.env.VUE_APP_TEMPLATE}`, //  模板来源
+            // 当使用 title 选项时，template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
+            title: process.env.VUE_APP_NAME,
+            // 在这个页面中包含的块，默认情况下会包含 提取出来的通用 chunk 和 vendor chunk。
+            favicon: process.env.VUE_APP_FAVICON
+        },
+        admin: {
+            // page 的入口
+            entry: `./views/projects/admin/main.js`, //
+            filename: 'admin.html', // 在 dist/h5.html 的输出
+            chunks: ['chunk-vendors', 'chunk-common', 'admin'],
             template: `${process.env.VUE_APP_TEMPLATE}`, //  模板来源
             // 当使用 title 选项时，template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
             title: process.env.VUE_APP_NAME,
