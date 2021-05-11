@@ -8,21 +8,9 @@ const url = {
         "page": {"default": "home/home.vue"},
         "meta": {"needLogin": false, "withHeader": true, "withFooter": true}
     },
-    "/found": {
-        "page": {"default": "home/home.vue"},
-        "meta": {"needLogin": false, "withHeader": true, "withFooter": true}
-    },
-    "/welfare": {
-        "page": {"default": "home/home.vue"},
-        "meta": {"needLogin": false, "withHeader": true, "withFooter": true}
-    },
     "/login": {
         "page": {"default": "login/login.vue"},
         "meta": {"needLogin": false, "withHeader": false, "withFooter": false}
-    },
-    "/user": {
-        "page": {"default": "user/user.vue"},
-        "meta": {"needLogin": false, "withHeader": true, "withFooter": true}
     }
 }
 

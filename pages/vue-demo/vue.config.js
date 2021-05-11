@@ -102,10 +102,10 @@ module.exports = {
                 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js',
                 'https://cdn.bootcss.com/vue-i18n/8.17.0/vue-i18n.min.js',
                 '//code.jquery.com/jquery-3.5.1.slim.min.js',
-                'https://unpkg.com/element-ui/lib/index.js'
+                'https://unpkg.com/element-ui@2.15.1/lib/index.js'
             ],
             css: [
-                'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
+                'https://unpkg.com/element-ui@2.15.1/lib/theme-chalk/index.css'
             ]
         };
 

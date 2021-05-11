@@ -69,6 +69,7 @@ public class Mysql {
             String outStr;
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(dbName + ".sql"), StandardCharsets.UTF_8));
             while ((inStr = br.readLine()) != null) {
+                System.out.println(inStr);
                 sb.append(inStr + "\r\n");
             }
             outStr = sb.toString();
@@ -90,9 +91,10 @@ public class Mysql {
 
     public static void main(String[] args) {
         String user = "root";
-        String pwd = "zane";
-        String db = "code1";
+        //String pwd = "zane";
+        //String pwd = "zdc1991";
+        String db = "code";
         //dbBackUp(user,pwd,db, new String[]{});
-        recovery(user, pwd, db);
+        //recovery(user, pwd, db);
     }
 }

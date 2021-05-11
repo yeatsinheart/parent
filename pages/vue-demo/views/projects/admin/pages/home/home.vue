@@ -1,11 +1,62 @@
 <template>
   <div id="content" class="box-size">
-    <!-- 默认满视图，各个单独页面自己图片填充头部位置 -->
-    首页哦
-    {{ $t('home.msg') }}
+    <div style="width: 100%">
+      <div id="left">
+        <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
+          <el-radio-button :label="false">展开</el-radio-button>
+          <el-radio-button :label="true">收起</el-radio-button>
+        </el-radio-group>
+        <el-menu :collapse="isCollapse" active-text-color="#ffd04b" background-color="#545c64"
+                 class="el-menu-vertical-demo"
+                 default-active="1"
+                 text-color="#fff"
+                 unique-opened="true"
+                 @close="handleClose"
+                 @open="handleOpen">
+          <el-submenu index="1">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span slot="title">导航一</span>
+            </template>
+            <el-menu-item-group>
+              <span slot="title">分组一</span>
+              <el-menu-item index="1-1">选项1</el-menu-item>
+              <el-menu-item index="1-2">选项2</el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group title="分组2">
+              <el-menu-item index="1-3">选项3</el-menu-item>
+            </el-menu-item-group>
+            <el-submenu index="1-4">
+              <span slot="title">选项4</span>
+              <el-menu-item index="1-4-1">选项1</el-menu-item>
+            </el-submenu>
+          </el-submenu>
+          <el-menu-item index="2">
+            <i class="el-icon-menu"></i>
+            <span slot="title">导航二</span>
+          </el-menu-item>
+          <el-menu-item disabled index="3">
+            <i class="el-icon-document"></i>
+            <span slot="title">导航三</span>
+          </el-menu-item>
+          <el-menu-item index="4">
+            <i class="el-icon-setting"></i>
+            <span slot="title">导航四</span>
+          </el-menu-item>
+        </el-menu>
+      </div>
+      <div style="border:1px solid red">
+        <div id="top"></div>
+        <div id="tags"></div>
+        <div id="view"></div>
+      </div>
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
+#left {
+  max-width: 300px;
+}
 </style>
 <script>
 export const langMsg = {
@@ -17,16 +68,19 @@ export const langMsg = {
 }
 export default {
   data() {
-    return {}
+    return {
+      isCollapse: true
+    };
   },
   components: {},
-  mounted() {
-    let initLanguage =
-        localStorage.getItem("choosed-language") ||
-        localStorage.getItem("application-default-language") ||
-        process.env.VUE_APP_DEFAULT_LANGUAGE;
-    this.$languageChange(initLanguage);
-  },
   computed: {},
+  methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    }
+  }
 };
 </script>
