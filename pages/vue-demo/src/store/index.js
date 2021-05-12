@@ -23,7 +23,7 @@ export default new Vuex.Store({
             console.log("新增标签", tag)
             let isIn = state.tagsList.some(item => {
                 //判断标签是否存在
-                return item.title === tag.title;
+                return item.id === tag.id;
             });
             state.tagActive = tag;
             //不存在
@@ -33,7 +33,8 @@ export default new Vuex.Store({
                     // messages("warning", "当标签大于10个，请关闭后再打开");
                 } else {
                     state.tagsList.push({
-                        title: tag.title,
+                        id: tag.id,
+                        name: tag.name,
                         url: tag.url
                     });
 
@@ -41,6 +42,7 @@ export default new Vuex.Store({
             }
         },
         activeTag(state, tag) {
+            console.log("激活标签", tag)
             state.tagActive = tag;
         }
     }, actions: {}, modules: {}

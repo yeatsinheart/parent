@@ -7,7 +7,7 @@
         <tags/>
         <div class="frame">
           <template v-for="(item,index) in tagsList">
-            <div :key="index" :class="isActive(item.title)?'active':'hidden'" class="page">
+            <div :key="index" :class="isActive(item.id)?'active':'hidden'" class="page">
               <iframe :src="item.url" border="0" height="100%" scrolling="no" width="100%"/>
             </div>
           </template>
@@ -39,9 +39,9 @@ export default {
     ...mapState(["tagsList"]),
   }, methods: {
     //选中的高亮
-    isActive(title) {
+    isActive(id) {
       if (this.$store.state.tagActive) {
-        return title === this.$store.state.tagActive.title;
+        return id === this.$store.state.tagActive.id;
       }
       return false;
     }

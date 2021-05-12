@@ -2,9 +2,9 @@
   <!-- 打开标签的容器 -->
   <div class="tags">
     <ul>
-      <li v-for="(item,index) in tagsList" :key="index" :class="{'active': isActive(item.title)}" class="tags-li">
+      <li v-for="(item,index) in tagsList" :key="index" :class="{'active': isActive(item.id)}" class="tags-li">
         <el-dropdown>
-          <span :frameid="item.url" class="tags-li-title" @click="active(item)">{{ item.title }}</span>
+          <span :frameid="item.url" class="tags-li-title" @click="active(item)">{{ item.name }}</span>
           <span class="tags-li-icon" @click="closeTags(index)"><i class="el-icon-close"></i></span>
           <el-dropdown-menu slot="dropdown" size="small">
             <el-dropdown-item @click.native="save(index)">关闭其他</el-dropdown-item>
@@ -57,9 +57,9 @@ export default {
   },
   methods: {
     //选中的高亮
-    isActive(title) {
+    isActive(id) {
       if (this.$store.state.tagActive) {
-        return title === this.$store.state.tagActive.title;
+        return id === this.$store.state.tagActive.id;
       }
       return false;
     },
@@ -105,7 +105,9 @@ export default {
     save(index) {
       let total = this.tagsList.length - 1;
       if (index !== total) {
-        this.tagsList.splice(0, index + 1);
+        if (index !== 0) {
+          this.tagsList.splice(0, index + 1);
+        }
         this.tagsList.splice(index + 1);
       } else {
         this.tagsList.splice(0, index);
@@ -120,8 +122,8 @@ export default {
       }
       // 操作后会导致所有的tags重新刷一遍
       let tags = this.tagsList.splice(index, 1);
-      console.log("当前激活", this.$store.state.tagActive.title, tags[0], this.isActive(tags[0].title))
-      if (!this.isActive(tags[0].title)) {
+      console.log("当前激活", this.$store.state.tagActive.id, tags[0], this.isActive(tags[0].title))
+      if (!this.isActive(tags[0].id)) {
         return;
       }
       let total = this.tagsList.length;

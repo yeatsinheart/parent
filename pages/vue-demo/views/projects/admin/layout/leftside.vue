@@ -10,28 +10,28 @@
     >
       <template v-for="item in items">
         <template v-if="item.subs">
-          <el-submenu :key="item.index" :index="item.index">
+          <el-submenu :key="item.id" :index="item.id">
             <template slot="title">
               <i :class="item.icon"></i>
-              <span slot="title">{{ item.title }}</span>
+              <span slot="title">{{ item.name }}</span>
             </template>
             <template v-for="subItem in item.subs">
-              <el-submenu v-if="subItem.subs" :key="subItem.index" :index="subItem.index">
-                <template slot="title">{{ subItem.title }}</template>
-                <el-menu-item v-for="(threeItem,i) in subItem.subs" :key="i" :index="threeItem.index">
-                  {{ threeItem.title }}
+              <el-submenu v-if="subItem.subs" :key="subItem.id" :index="subItem.id">
+                <template slot="title">{{ subItem.name }}</template>
+                <el-menu-item v-for="(threeItem,i) in subItem.subs" :key="i" :index="threeItem.id">
+                  {{ threeItem.name }}
                 </el-menu-item>
               </el-submenu>
-              <el-menu-item v-else :key="subItem.index" :index="subItem.index">
-                {{ subItem.title }}
+              <el-menu-item v-else :key="subItem.id" :index="subItem.id">
+                {{ subItem.name }}
               </el-menu-item>
             </template>
           </el-submenu>
         </template>
         <template v-else>
-          <el-menu-item :key="item.index" :index="item.index">
+          <el-menu-item :key="item.id" :index="item.id">
             <i :class="item.icon"></i>
-            <span slot="title">{{ item.title }}</span>
+            <span slot="title">{{ item.name }}</span>
           </el-menu-item>
         </template>
       </template>
@@ -68,95 +68,14 @@
 <script>
 
 import {mapState} from "vuex";
+import adminMenuService from "@/core/service/AdminMenuService";
 
 export default {
   data() {
     return {
+
       //配置目录
-      items: [
-        {
-          icon: "el-icon-edit-outline",
-          index: "icon",
-          url: "http://www.baidu.com",
-          title: "自定义图标"
-        },
-        {
-          icon: "el-icon-edit-outline",
-          index: "component",
-          title: "组件",
-          subs: [
-            {
-              index: "editor",
-              url: "http://www.taobao.com",
-              title: "富文本编译器"
-            },
-            {
-              index: "countTo",
-              url: "http://www.sogou.com",
-              title: "数字滚动"
-            },
-            {
-              index: "trees",
-              title: "树形控件",
-              subs: [
-                {
-                  index: "tree",
-                  title: "自定义树"
-                },
-                {
-                  index: "treeSelect",
-                  title: "下拉树"
-                }
-                // ,{
-                //   index:'treeTable',
-                //   title:'表格树',
-                // }
-              ]
-            },
-          ]
-        },
-        {
-          icon: "el-icon-edit-outline",
-          index: "draggable",
-          title: "拖拽",
-          subs: [
-            {
-              index: "draglist",
-              title: "拖拽列表"
-            },
-            {
-              index: "dragtable",
-              title: "拖拽表格"
-            }
-          ]
-        },
-        {
-          icon: "el-icon-edit-outline",
-          index: "charts",
-          title: "图表",
-          subs: [
-            {
-              index: "cricle",
-              title: "饼图"
-            },
-          ]
-        },
-        {
-          icon: "el-icon-edit-outline",
-          index: "7",
-          title: "错误处理",
-          subs: [
-            {
-              index: "permission",
-              title: "权限测试"
-            },
-            {
-              index: "404",
-              title: "404页面"
-            }
-          ]
-        },
-      ],
+      items: [],
     };
   },
   computed: {
@@ -164,6 +83,12 @@ export default {
     onRoutes() {
       return this.$route.path.replace("/", "");
     },
+  },
+  mounted() {
+    adminMenuService.getMenu().then(response => {
+      console.log(response)
+      this.items = response
+    })
   },
   methods: {
     //sub-menu 展开的回调	index: 打开的 sub-menu 的 index， indexPath: 打开的 sub-menu 的 index path
@@ -178,7 +103,9 @@ export default {
       // 选中
       //菜单激活回调	index: 选中菜单项的 index, indexPath: 选中菜单项的 index path
       console.log("跳转页面", index, indexPath);
-      this.$store.commit('taglist', {'id': index, 'title': index, "url": "http://www.baidu.com"})
+      let clickNode = adminMenuService.findNode(this.items, indexPath);
+      console.log("跳转页面", clickNode);
+      this.$store.commit('taglist', {'id': clickNode.id, 'name': clickNode.name, "url": clickNode.url})
 
     }
   }
