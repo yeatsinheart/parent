@@ -1,19 +1,21 @@
 <template>
   <div class="wrapper">
     <Aside class="aside-container"/>
-    <div :class="isCollapse==true?'container_collapse':''" class="main-container">
+    <div :class="isCollapse==true?'container_collapse':''" class="maincontainer">
       <Header/>
       <div class="container">
         <tags/>
-        <template class="contents">
-          <transition mode="out-in" name="fade-transform">
-            <template v-for="(item,index) in tagsList">
-              <div :key="index" :class="isActive(item.title)?'active':'hidden'" class="page">
-                <iframe :src="item.url" border="0" height="100%" width="100%"/>
-              </div>
-            </template>
-          </transition>
-        </template>
+        <div class="frame">
+          <template v-for="(item,index) in tagsList">
+            <div :key="index" :class="isActive(item.title)?'active':'hidden'" class="page">
+              <iframe :src="item.url" border="0" height="100%" scrolling="no" width="100%"/>
+            </div>
+          </template>
+        </div>
+        <!--        <template class="contents">
+                  <transition mode="out-in" name="fade-transform">
+                  </transition>
+                </template>-->
       </div>
     </div>
   </div>
@@ -34,20 +36,14 @@ export default {
   },
   computed: {
     ...mapState(["isCollapse"]),
-    tagsList: {
-      get: function () {
-        return this.$store.state.tagsList;
-      },
-      set: function (newValue) {
-        this.$store.commit("TAGES_LIST", newValue);
-        // this.$store.state.tagsList = newValue;
-      }
-    }
+    ...mapState(["tagsList"]),
   }, methods: {
     //选中的高亮
     isActive(title) {
-      console.log(title, title === "icon")
-      return title === "icon";
+      if (this.$store.state.tagActive) {
+        return title === this.$store.state.tagActive.title;
+      }
+      return false;
     }
   }
 };
@@ -58,27 +54,36 @@ export default {
   height: 100%;
   width: 100%;
 
-  .main-container {
-    min-height: 100%;
+  .maincontainer {
+    height: 100%;
     -webkit-transition: margin-left 0.28s;
     transition: margin-left 0.28s;
     margin-left: 180px;
     position: relative;
 
     .container {
-      min-height: 100%;
+      position: absolute;
+      width: 100%;
+      height: calc(100% - 20px);
 
-      .page {
+      .frame {
+        position: absolute;
         width: 100%;
-        min-height: 100%;
-      }
+        height: calc(100% - 30px);
 
-      .active {
-        display: block;
-      }
+        .page {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+        }
 
-      .hidden {
-        //display: none;
+        .active {
+          display: block;
+        }
+
+        .hidden {
+          display: none;
+        }
       }
     }
   }

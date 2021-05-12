@@ -3,7 +3,7 @@
   <div class="tags">
     <ul>
       <li v-for="(item,index) in tagsList" :key="index" :class="{'active': isActive(item.title)}" class="tags-li">
-        <span :frameid="item.url" class="tags-li-title">{{ item.title }}</span>
+        <span :frameid="item.url" class="tags-li-title" @click="active(item)">{{ item.title }}</span>
         <span class="tags-li-icon" @click="closeTags(index)"><i class="el-icon-close"></i></span>
       </li>
     </ul>
@@ -51,8 +51,15 @@ export default {
   },
   methods: {
     //选中的高亮
-    isActive(path) {
-      return path === this.$route.fullPath;
+    isActive(title) {
+      console.log("当前激活", this.$store.state.tagActive);
+      if (this.$store.state.tagActive) {
+        return title === this.$store.state.tagActive.title;
+      }
+      return false;
+    },
+    active(item) {
+      this.$store.commit('activeTag', item)
     },
     handleCommand(command) {
       if (command == "closeOther") {
@@ -101,7 +108,8 @@ export default {
 <style lang="scss" scoped>
 .tags {
   position: relative;
-  height: 25px;
+  width: 100%;
+  height: 30px;
   overflow: hidden;
   background: #ffffff;
   padding-right: 100px;
@@ -134,9 +142,12 @@ export default {
 }
 
 .tags-li:not(.active):hover {
+  background: #fff;
 }
 
 .tags-li.active {
+  background-color: rgb(24, 144, 255);
+  border-color: rgb(24, 144, 255);
 }
 
 .tags-li-title {

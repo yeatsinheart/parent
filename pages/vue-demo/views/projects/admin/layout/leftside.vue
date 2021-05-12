@@ -76,12 +76,8 @@ export default {
       items: [
         {
           icon: "el-icon-edit-outline",
-          index: "home",
-          title: "系统首页"
-        },
-        {
-          icon: "el-icon-edit-outline",
           index: "icon",
+          url: "http://www.baidu.com",
           title: "自定义图标"
         },
         {
@@ -91,10 +87,12 @@ export default {
           subs: [
             {
               index: "editor",
+              url: "http://www.taobao.com",
               title: "富文本编译器"
             },
             {
               index: "countTo",
+              url: "http://www.sogou.com",
               title: "数字滚动"
             },
             {

@@ -9,7 +9,7 @@ export default new Vuex.Store({
         choosedLanguage: localStorage.getItem('choosed-language') || localStorage.getItem('application-default-language') || process.env.VUE_APP_LANGUAGE,
         user: null,
         tagsList: [], //打开的标签页个数,
-        tagActive: [], //打开的标签页个数,
+        tagActive: null, //打开的标签页个数,
         isCollapse: false, //侧边导航是否折叠
     }, mutations: {
         changeTheme: function (state, theme) {
@@ -25,6 +25,7 @@ export default new Vuex.Store({
                 //判断标签是否存在
                 return item.title === tag.title;
             });
+            state.tagActive = tag;
             //不存在
             if (!isIn) {
                 // 判断当前的标签个数
@@ -38,6 +39,9 @@ export default new Vuex.Store({
 
                 }
             }
+        },
+        activeTag(state, tag) {
+            state.tagActive = tag;
         }
     }, actions: {}, modules: {}
 })

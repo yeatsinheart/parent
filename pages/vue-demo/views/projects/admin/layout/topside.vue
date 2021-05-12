@@ -1,5 +1,5 @@
 <template>
-  <div class="head-container clearfix">
+  <div class="head-container">
     <div class="header-left">
       <showAside :toggle-click="toggleClick"/>
     </div>
@@ -111,8 +111,8 @@ export default {
 
 <style lang="scss" scoped>
 .head-container {
-  //height: 30px;
-  //line-height: 30px;
+  height: 20px;
+  line-height: 20px;
   -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
   0 0 3px 0 rgba(0, 0, 0, 0.04);
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
