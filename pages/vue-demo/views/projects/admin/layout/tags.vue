@@ -3,22 +3,28 @@
   <div class="tags">
     <ul>
       <li v-for="(item,index) in tagsList" :key="index" :class="{'active': isActive(item.title)}" class="tags-li">
-        <span :frameid="item.url" class="tags-li-title" @click="active(item)">{{ item.title }}</span>
-        <span class="tags-li-icon" @click="closeTags(index)"><i class="el-icon-close"></i></span>
+        <el-dropdown>
+          <span :frameid="item.url" class="tags-li-title" @click="active(item)">{{ item.title }}</span>
+          <span class="tags-li-icon" @click="closeTags(index)"><i class="el-icon-close"></i></span>
+          <el-dropdown-menu slot="dropdown" size="small">
+            <el-dropdown-item @click.native="save(index)">关闭其他</el-dropdown-item>
+            <el-dropdown-item @click.native="closeTags()">关闭所有</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </li>
     </ul>
-    <div class="tags-close-box">
-      <el-dropdown @command="handleCommand">
-        <el-button size="mini" type="primary">
-          标签操作
-          <i class="el-icon-arrow-down el-icon--right"></i>
-        </el-button>
-        <el-dropdown-menu slot="dropdown" size="small">
-          <el-dropdown-item command="closeOther">关闭其他</el-dropdown-item>
-          <el-dropdown-item command="all">关闭所有</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </div>
+    <!--    <div class="tags-close-box">
+          <el-dropdown @command="handleCommand">
+            <el-button size="mini" type="primary">
+              标签操作
+              <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown" size="small">
+              <el-dropdown-item command="closeOther">关闭其他</el-dropdown-item>
+              <el-dropdown-item command="all">关闭所有</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>-->
   </div>
 </template>
 <script>
@@ -61,12 +67,18 @@ export default {
       this.$store.commit('activeTag', item)
     },
     handleCommand(command) {
-      if (command == "closeOther") {
-        // 关闭其他标签
-        const curItem = this.tagsList.filter(item => {
-          return item.path === this.$route.fullPath;
-        });
-        this.tagsList = curItem;
+      console.log(command)
+      if (command === "closeOther") {
+        if (this.$store.state.tagActive) {
+          //let title = this.$store.state.tagActive.title;
+          // 关闭其他标签
+          this.tagsList.splice(0, 1)
+
+        } else {
+          this.tagsList.splice(0)
+        }
+      } else {
+        this.tagsList.splice(0)
       }
     },
     //添加标签
@@ -90,7 +102,22 @@ export default {
         }
       }
     },
+    save(index) {
+      let total = this.tagsList.length - 1;
+      if (index !== total) {
+        this.tagsList.splice(0, index + 1);
+        this.tagsList.splice(index + 1);
+      } else {
+        this.tagsList.splice(0, index);
+      }
+      this.active(this.tagsList[0])
+    },
     closeTags(index) {
+      // 关闭所有
+      if (!index) {
+        this.tagsList.splice(0);
+        return;
+      }
       // 操作后会导致所有的tags重新刷一遍
       let tags = this.tagsList.splice(index, 1);
       console.log("当前激活", this.$store.state.tagActive.title, tags[0], this.isActive(tags[0].title))
