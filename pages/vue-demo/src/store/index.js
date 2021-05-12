@@ -9,6 +9,7 @@ export default new Vuex.Store({
         choosedLanguage: localStorage.getItem('choosed-language') || localStorage.getItem('application-default-language') || process.env.VUE_APP_LANGUAGE,
         user: null,
         tagsList: [], //打开的标签页个数,
+        tagActive: [], //打开的标签页个数,
         isCollapse: false, //侧边导航是否折叠
     }, mutations: {
         changeTheme: function (state, theme) {

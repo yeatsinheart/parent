@@ -5,11 +5,15 @@
       <Header/>
       <div class="container">
         <tags/>
-        <div class="contents">
+        <template class="contents">
           <transition mode="out-in" name="fade-transform">
-            <router-view></router-view>
+            <template v-for="(item,index) in tagsList">
+              <div :key="index" :class="isActive(item.title)?'active':'hidden'" class="page">
+                <iframe :src="item.url" border="0" height="100%" width="100%"/>
+              </div>
+            </template>
           </transition>
-        </div>
+        </template>
       </div>
     </div>
   </div>
@@ -28,7 +32,24 @@ export default {
     Header,
     Tags,
   },
-  computed: {...mapState(["isCollapse"])}
+  computed: {
+    ...mapState(["isCollapse"]),
+    tagsList: {
+      get: function () {
+        return this.$store.state.tagsList;
+      },
+      set: function (newValue) {
+        this.$store.commit("TAGES_LIST", newValue);
+        // this.$store.state.tagsList = newValue;
+      }
+    }
+  }, methods: {
+    //选中的高亮
+    isActive(title) {
+      console.log(title, title === "icon")
+      return title === "icon";
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -43,6 +64,23 @@ export default {
     transition: margin-left 0.28s;
     margin-left: 180px;
     position: relative;
+
+    .container {
+      min-height: 100%;
+
+      .page {
+        width: 100%;
+        min-height: 100%;
+      }
+
+      .active {
+        display: block;
+      }
+
+      .hidden {
+        //display: none;
+      }
+    }
   }
 
   .container_collapse {

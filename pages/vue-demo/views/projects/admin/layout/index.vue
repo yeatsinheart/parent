@@ -7,7 +7,9 @@
         <tags/>
         <div class="contents">
           <transition mode="out-in" name="fade-transform">
-            <router-view></router-view>
+
+          <router-view></router-view>
+
           </transition>
         </div>
       </div>

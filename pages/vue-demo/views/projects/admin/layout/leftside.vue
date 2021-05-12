@@ -51,17 +51,14 @@
   left: 0;
   z-index: 1001;
   overflow: hidden;
-
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 180px;
     height: 100%;
     text-align: left;
   }
-
   .el-menu--collapse {
     height: 100%;
   }
-
   ::v-deep .el-menu-item, ::v-deep .el-submenu__title {
     height: 20px;
     line-height: 20px;
@@ -183,7 +180,7 @@ export default {
       // 选中
       //菜单激活回调	index: 选中菜单项的 index, indexPath: 选中菜单项的 index path
       console.log("跳转页面", index, indexPath);
-      this.$store.commit('taglist', {'id': index, 'title': index, "url": "www.baidu.com"})
+      this.$store.commit('taglist', {'id': index, 'title': index, "url": "http://www.baidu.com"})
 
     }
   }
