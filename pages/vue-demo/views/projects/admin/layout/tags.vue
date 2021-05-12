@@ -52,7 +52,6 @@ export default {
   methods: {
     //选中的高亮
     isActive(title) {
-      console.log("当前激活", this.$store.state.tagActive);
       if (this.$store.state.tagActive) {
         return title === this.$store.state.tagActive.title;
       }
@@ -92,15 +91,25 @@ export default {
       }
     },
     closeTags(index) {
-      console.log(this.tagsList.length);
-      if (this.tagsList.length == 1) {
-        // messages("warning", "不可全都关闭");
-      } else {
-        //删除当前
-        let tags = this.tagsList.splice(index, 1);
-        console.log(tags)
-        this.$store.commit("TAGES_LIST", this.tagsList);
+      // 操作后会导致所有的tags重新刷一遍
+      let tags = this.tagsList.splice(index, 1);
+      console.log("当前激活", this.$store.state.tagActive.title, tags[0], this.isActive(tags[0].title))
+      if (!this.isActive(tags[0].title)) {
+        return;
       }
+      let total = this.tagsList.length;
+      if (total === 0) {
+        return;
+      }
+      console.log("剩下", total, index)
+      if (index < total) {
+        console.log("激活这个", this.tagsList[index])
+        this.active(this.tagsList[index])
+      } else {
+        console.log("激活这个", this.tagsList[total - 1])
+        this.active(this.tagsList[total - 1])
+      }
+      console.log(tags)
     }
   }
 };
