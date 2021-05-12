@@ -119,6 +119,11 @@ body {
     height: 100%;
 }
 
+.content {
+    width: 10rem !important;
+    margin: 0 auto !important;
+}
+
 .start_screen {
     margin: 0 auto;
     width: 100%;

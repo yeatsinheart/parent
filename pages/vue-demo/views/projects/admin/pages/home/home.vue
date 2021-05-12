@@ -1,86 +1,52 @@
 <template>
-  <div id="content" class="box-size">
-    <div style="width: 100%">
-      <div id="left">
-        <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
-          <el-radio-button :label="false">展开</el-radio-button>
-          <el-radio-button :label="true">收起</el-radio-button>
-        </el-radio-group>
-        <el-menu :collapse="isCollapse" active-text-color="#ffd04b" background-color="#545c64"
-                 class="el-menu-vertical-demo"
-                 default-active="1"
-                 text-color="#fff"
-                 unique-opened="true"
-                 @close="handleClose"
-                 @open="handleOpen">
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span slot="title">导航一</span>
-            </template>
-            <el-menu-item-group>
-              <span slot="title">分组一</span>
-              <el-menu-item index="1-1">选项1</el-menu-item>
-              <el-menu-item index="1-2">选项2</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <span slot="title">选项4</span>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>
-          </el-submenu>
-          <el-menu-item index="2">
-            <i class="el-icon-menu"></i>
-            <span slot="title">导航二</span>
-          </el-menu-item>
-          <el-menu-item disabled index="3">
-            <i class="el-icon-document"></i>
-            <span slot="title">导航三</span>
-          </el-menu-item>
-          <el-menu-item index="4">
-            <i class="el-icon-setting"></i>
-            <span slot="title">导航四</span>
-          </el-menu-item>
-        </el-menu>
-      </div>
-      <div style="border:1px solid red">
-        <div id="top"></div>
-        <div id="tags"></div>
-        <div id="view"></div>
+  <div class="wrapper">
+    <Aside class="aside-container"/>
+    <div :class="isCollapse==true?'container_collapse':''" class="main-container">
+      <Header/>
+      <div class="container">
+        <tags/>
+        <div class="contents">
+          <transition mode="out-in" name="fade-transform">
+            <router-view></router-view>
+          </transition>
+        </div>
       </div>
     </div>
   </div>
 </template>
-<style lang="scss" scoped>
-#left {
-  max-width: 300px;
-}
-</style>
 <script>
-export const langMsg = {
-  'zh-CN': {
-    'home': {
-      'msg': '欢迎光临'
-    }
-  }
-}
+import Aside from "../../layout/leftside.vue";
+import Header from "../../layout/topside.vue";
+import Tags from '../../layout/tags.vue';
+
+import {mapState} from "vuex";
+
 export default {
-  data() {
-    return {
-      isCollapse: true
-    };
+  name: "Layout",
+  components: {
+    Aside,
+    Header,
+    Tags,
   },
-  components: {},
-  computed: {},
-  methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
-    }
-  }
+  computed: {...mapState(["isCollapse"])}
 };
 </script>
+<style lang="scss" scoped>
+.wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+
+  .main-container {
+    min-height: 100%;
+    -webkit-transition: margin-left 0.28s;
+    transition: margin-left 0.28s;
+    margin-left: 180px;
+    position: relative;
+  }
+
+  .container_collapse {
+    margin-left: 64px;
+  }
+}
+</style>

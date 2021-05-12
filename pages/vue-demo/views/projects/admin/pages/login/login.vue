@@ -2,31 +2,16 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" autocomplete="on" class="login-form"
              label-position="left">
-
-      <div class="title-container">
-        <h3 class="title">Login Form</h3>
-      </div>
-
+      <div class="title-container"><h3 class="title">Login Form</h3></div>
       <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user"/>
-        </span>
-        <el-input
-            ref="username"
-            v-model="loginForm.username"
-            autocomplete="on"
-            name="username"
-            placeholder="Username"
-            tabindex="1"
-            type="text"
-        />
+        <span class="svg-container"><svg-icon icon-class="user"/></span>
+        <el-input ref="username" v-model="loginForm.username" autocomplete="on" name="username" placeholder="Username"
+                  tabindex="1" type="text"/>
       </el-form-item>
 
       <el-tooltip v-model="capsTooltip" content="Caps lock is On" manual placement="right">
         <el-form-item prop="password">
-          <span class="svg-container">
-            <svg-icon icon-class="password"/>
-          </span>
+          <span class="svg-container"><svg-icon icon-class="password"/></span>
           <el-input
               :key="passwordType"
               ref="password"

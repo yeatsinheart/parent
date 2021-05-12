@@ -7,6 +7,8 @@ import i18n from './language'
 
 Vue.prototype.$ = $
 Vue.prototype.project = 'admin'
+
+
 router.beforeEach((to, from, next) => {
     next()
 })
