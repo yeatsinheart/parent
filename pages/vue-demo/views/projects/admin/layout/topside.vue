@@ -1,17 +1,15 @@
 <template>
   <div class="head-container">
     <div class="header-left">
-      <showAside :toggle-click="toggleClick"/>
+      <showAside/>
     </div>
     <div class="header-right">
       <div class="header-user-con">
-
         <div class="btn-fullscreen" @click="handleFullScreen">
           <el-tooltip :content="fullscreen?`取消全屏`:`全屏`" effect="dark" placement="bottom">
             <i class="el-icon-rank"></i>
           </el-tooltip>
         </div>
-
         <!-- 消息中心 -->
         <div class="btn-bell">
           <el-tooltip :content="message?`有${message}条未读消息`:`消息中心`" effect="dark" placement="bottom">
@@ -71,9 +69,6 @@ export default {
     }
   },
   methods: {
-    toggleClick() {
-      this.isCollapse = !this.isCollapse;
-    },
     // 用户名下拉菜单选择事件
     logout() {
       this.$router.push("/login");

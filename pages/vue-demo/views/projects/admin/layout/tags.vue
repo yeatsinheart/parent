@@ -1,33 +1,46 @@
 <template>
   <!-- 打开标签的容器 -->
-  <div class="tags">
-    <ul>
-      <li v-for="(item,index) in tagsList" :key="index" :class="{'active': isActive(item.id)}" class="tags-li">
-        <el-dropdown>
-          <span :frameid="item.url" class="tags-li-title" @click="active(item)">{{ item.name }}</span>
-          <span class="tags-li-icon" @click="closeTags(index)"><i class="el-icon-close"></i></span>
-          <el-dropdown-menu slot="dropdown" size="small">
-            <el-dropdown-item @click.native="save(index)">关闭其他</el-dropdown-item>
-            <el-dropdown-item @click.native="closeTags()">关闭所有</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </li>
-    </ul>
-    <!--    <div class="tags-close-box">
-          <el-dropdown @command="handleCommand">
-            <el-button size="mini" type="primary">
-              标签操作
-              <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-            </el-button>
+  <div>
+    <div class="tags">
+
+      <ul>
+        <li v-for="(item,index) in tagsList" :key="index" :class="{'active': isActive(item.id)}" class="tags-li">
+          <el-dropdown>
+            <span :frameid="item.url" class="tags-li-title" @click="active(item)">{{ item.name }}</span>
+            <span class="tags-li-icon" @click="closeTags(index)"><i class="el-icon-close"></i></span>
             <el-dropdown-menu slot="dropdown" size="small">
-              <el-dropdown-item command="closeOther">关闭其他</el-dropdown-item>
-              <el-dropdown-item command="all">关闭所有</el-dropdown-item>
+              <el-dropdown-item @click.native="save(index)">关闭其他</el-dropdown-item>
+              <el-dropdown-item @click.native="closeTags()">关闭所有</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-        </div>-->
+        </li>
+      </ul>
+      <!--    <div class="tags-close-box">
+            <el-dropdown @command="handleCommand">
+              <el-button size="mini" type="primary">
+                标签操作
+                <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown" size="small">
+                <el-dropdown-item command="closeOther">关闭其他</el-dropdown-item>
+                <el-dropdown-item command="all">关闭所有</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>-->
+    </div>
+    <div class="frame">
+      <template v-for="(item,index) in tagsList">
+        <div :key="index" :class="isActive(item.id)?'active':'hidden'" class="page">
+          <iframe :src="item.url" border="0" height="100%" scrolling="no" width="100%"/>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 <script>
+
+import adminTabService from "@/core/service/AdminTabService";
+
 export default {
   created() {
     //判断标签里面是否有值 有的话直接加载
@@ -41,104 +54,24 @@ export default {
     tagsList: {
       get: function () {
         return this.$store.state.tagsList;
-      },
-      set: function (newValue) {
-        this.$store.commit("TAGES_LIST", newValue);
-        // this.$store.state.tagsList = newValue;
       }
     }
   },
   watch: {
-    //监听路由变化
-    $route(newValue, oldValue) {
-      console.log(oldValue)
-      this.setTags(newValue);
-    }
   },
   methods: {
     //选中的高亮
     isActive(id) {
-      if (this.$store.state.tagActive) {
-        return id === this.$store.state.tagActive.id;
-      }
-      return false;
+      return adminTabService.isActive(id);
     },
-    active(item) {
-      this.$store.commit('activeTag', item)
-    },
-    handleCommand(command) {
-      console.log(command)
-      if (command === "closeOther") {
-        if (this.$store.state.tagActive) {
-          //let title = this.$store.state.tagActive.title;
-          // 关闭其他标签
-          this.tagsList.splice(0, 1)
-
-        } else {
-          this.tagsList.splice(0)
-        }
-      } else {
-        this.tagsList.splice(0)
-      }
-    },
-    //添加标签
-    setTags(route) {
-      let isIn = this.tagsList.some(item => {
-        //判断标签是否存在
-        return item.url === route.url;
-      });
-      //不存在
-      if (!isIn) {
-        // 判断当前的标签个数
-        if (this.tagsList.length >= 10) {
-          // messages("warning", "当标签大于10个，请关闭后再打开");
-        } else {
-          this.tagsList.push({
-            title: route.title,
-            url: route.url
-          });
-          //存到vuex
-          //this.$store.commit("TAGES_LIST", this.tagsList);
-        }
-      }
+    active(tab) {
+      adminTabService.activeTab(tab)
     },
     save(index) {
-      let total = this.tagsList.length - 1;
-      if (index !== total) {
-        if (index !== 0) {
-          this.tagsList.splice(0, index + 1);
-        }
-        this.tagsList.splice(index + 1);
-      } else {
-        this.tagsList.splice(0, index);
-      }
-      this.active(this.tagsList[0])
+      adminTabService.onlyKeepThis(index)
     },
     closeTags(index) {
-      // 关闭所有
-      if (!index) {
-        this.tagsList.splice(0);
-        return;
-      }
-      // 操作后会导致所有的tags重新刷一遍
-      let tags = this.tagsList.splice(index, 1);
-      console.log("当前激活", this.$store.state.tagActive.id, tags[0], this.isActive(tags[0].title))
-      if (!this.isActive(tags[0].id)) {
-        return;
-      }
-      let total = this.tagsList.length;
-      if (total === 0) {
-        return;
-      }
-      console.log("剩下", total, index)
-      if (index < total) {
-        console.log("激活这个", this.tagsList[index])
-        this.active(this.tagsList[index])
-      } else {
-        console.log("激活这个", this.tagsList[total - 1])
-        this.active(this.tagsList[total - 1])
-      }
-      console.log(tags)
+      adminTabService.closeTabs(index)
     }
   }
 };
@@ -211,6 +144,26 @@ export default {
   height: 30px;
   box-shadow: -3px 0 15px 3px rgba(0, 0, 0, 0.1);
   z-index: 10;
+}
+
+.frame {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 30px);
+
+  .page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .active {
+    display: block;
+  }
+
+  .hidden {
+    display: none;
+  }
 }
 </style>
 <style>

@@ -10,40 +10,16 @@ export default new Vuex.Store({
         user: null,
         tagsList: [], //打开的标签页个数,
         tagActive: null, //打开的标签页个数,
-        isCollapse: false, //侧边导航是否折叠
+        menuShow: true, //侧边导航是否展示
     }, mutations: {
         changeTheme: function (state, theme) {
             state.choosedTheme = theme
             localStorage.setItem('choosed-theme', theme)
         }, changeLanguage: function (state, language) {
             state.choosedLanguage = language
-        }, toogleSide: function (state) {
-            state.isCollapse = !state.isCollapse
-        }, taglist: function (state, tag) {
-            console.log("新增标签", tag)
-            let isIn = state.tagsList.some(item => {
-                //判断标签是否存在
-                return item.id === tag.id;
-            });
-            state.tagActive = tag;
-            //不存在
-            if (!isIn) {
-                // 判断当前的标签个数
-                if (state.tagsList.length >= 10) {
-                    // messages("warning", "当标签大于10个，请关闭后再打开");
-                } else {
-                    state.tagsList.push({
-                        id: tag.id,
-                        name: tag.name,
-                        url: tag.url
-                    });
-
-                }
-            }
-        },
-        activeTag(state, tag) {
-            console.log("激活标签", tag)
-            state.tagActive = tag;
+        }, menuShowToggle: function (state) {
+            state.menuShow = !state.menuShow
         }
+
     }, actions: {}, modules: {}
 })
