@@ -18,7 +18,6 @@ import java.util.List;
 @Log4j2
 public class JacksonDesensitize extends JsonSerializer<String> implements ContextualSerializer, DesensitizeService {
     private DesensitionType type;
-
     @Override
     public void serialize(String value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
             throws IOException {

@@ -10,9 +10,9 @@ public enum DesensitionType {
     IDENTITYNO("identityNo", "15或者18身份证号", "(\\w{4})\\w{7,10}(\\w{4})", "$1****$2"),
     BANKCARDNO("bankCardNo", "银行卡号", "(\\d{4})\\d*(\\d{4})", "$1****$2"),
     REALNAME("realname", "真实姓名Json类型", "(.{1})(.*)(.{0})", "$1玩家"),
-    ACCOUNT("realname", "真实姓名toString类型", "(.{1})(.*)(.{0})", "$1**$2"),
+    ACCOUNT("account", "长度在6位以上", "(.{2})(.*)(.{2})", "$1**$3"),
     CUSTOM("custom", "自定义正则处理", ""),
-    TRUNCATE("truncate", "字符串截取处理", ""),
+    TRUNCATE("truncate", "字符串截取处理，前后各保留多少位", "2", "2"),
     ;
     String type;
     String describe;
