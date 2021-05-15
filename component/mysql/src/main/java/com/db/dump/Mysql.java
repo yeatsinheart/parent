@@ -24,7 +24,7 @@ public class Mysql {
             if (!fileSql.exists()) {
                 fileSql.createNewFile();
             }
-            String mysql = "mysqldump -u" + root + " -p" + rootPass + " " + dbName + " ";
+            String mysql = "mysqldump -u" + root + " -p" + rootPass + " --databases  " + dbName + " ";
             for (String string : tableName) {
                 mysql = mysql + string + " ";
             }
@@ -92,9 +92,9 @@ public class Mysql {
     public static void main(String[] args) {
         String user = "root";
         //String pwd = "zane";
-        //String pwd = "zdc1991";
+        String pwd = "zdc1991";
         String db = "code";
-        //dbBackUp(user,pwd,db, new String[]{});
+        dbBackUp(user,pwd,db);
         //recovery(user, pwd, db);
     }
 }

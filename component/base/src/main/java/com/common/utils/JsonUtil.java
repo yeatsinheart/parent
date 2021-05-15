@@ -156,6 +156,10 @@ public class JsonUtil {
         map.put("dctime", new Date());
         Map<String, Object> rtnMap = toMap(toJsonStr(map));
         System.out.println(rtnMap);
+        String test = "{\"data\":[{\"t\":1}]}";
+        Map<String,List> map1  =  JsonUtil.toMap(test,List.class);
+        List obs = map1.get("data").toArray();
+        System.out.println(obs.toArray());
     }
 
 }

@@ -101,7 +101,7 @@ class AdminMenuService {
             {
                 "id": 3,
                 "icon": "el-icon-edit-outline",
-                "name": "角色管理",
+                "name": "岗位管理",
                 "url": "https://www.baidu.com",
                 "path": "0->1"
             },

@@ -13,16 +13,15 @@
     <artifactId>business</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>gate</module>
-        <module>router</module>
     
+        <module>global</module>
         <module>tenant</module>
         <module>user</module>
-        <module>cms</module>
-        <module>bus</module>
         <module>cost</module>
-        <module>pay</module>
+        <module>money</module>
         <module>game</module>
+        <module>chat</module>
+        <module>bus</module>
         <module>report</module>
         <module>all</module>
     </modules>

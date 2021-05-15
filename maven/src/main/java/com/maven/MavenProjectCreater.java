@@ -22,11 +22,13 @@ public class MavenProjectCreater {
     }
 
     public static void casino() {
-        create(Arrays.asList("tenant", "user", "cms",
+        List<String> modules = Arrays.asList(
+                "global","tenant", "user",
+                "cost","money","game","chat",
                 "bus",
-                "cost","pay","game",
                 "report"
-        ), "business");
+        );
+        create(modules, "business");
     }
 
     public static void create(List<String> modules, String business) {

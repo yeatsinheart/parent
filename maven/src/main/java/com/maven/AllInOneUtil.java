@@ -8,9 +8,10 @@ import java.util.List;
 
 public class AllInOneUtil {
     public static void main(String[] args) {
-        List<String> modules = Arrays.asList("tenant", "user", "cms",
+        List<String> modules = Arrays.asList(
+                "global","tenant", "user",
+                "cost","money","game","chat",
                 "bus",
-                "cost", "pay", "game",
                 "report"
         );
         String base = "business";
@@ -130,8 +131,6 @@ public class AllInOneUtil {
                 "    <artifactId>business</artifactId>\n" +
                 "    <version>1.0-SNAPSHOT</version>\n" +
                 "    <modules>\n" +
-                "        <module>gate</module>\n" +
-                "        <module>router</module>\n" +
                 modules(modules, base) +
                 "        <module>all</module>\n" +
                 "    </modules>\n" +

@@ -13,6 +13,12 @@ class AdminResourceService {
     getMenu() {
     }
 
+    getResource() {
+    }
+    addResource(){}
+    deleteResource(){}
+    updateResource(){}
+
     getButton() {
     }
 

@@ -12,6 +12,11 @@
     <dependencies>
         <dependency>
             <groupId>code.business</groupId>
+            <artifactId>global-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>code.business</groupId>
             <artifactId>tenant-service</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -22,27 +27,27 @@
         </dependency>
         <dependency>
             <groupId>code.business</groupId>
-            <artifactId>cms-service</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>code.business</groupId>
-            <artifactId>bus-service</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>code.business</groupId>
             <artifactId>cost-service</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>code.business</groupId>
-            <artifactId>pay-service</artifactId>
+            <artifactId>money-service</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>code.business</groupId>
             <artifactId>game-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>code.business</groupId>
+            <artifactId>chat-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>code.business</groupId>
+            <artifactId>bus-service</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
