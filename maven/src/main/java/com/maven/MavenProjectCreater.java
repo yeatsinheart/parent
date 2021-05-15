@@ -56,6 +56,23 @@ public class MavenProjectCreater {
 
         DbPom.init(business, basePath + File.separator + project + "-db", project);
         DbFile.init(basePath + File.separator + project + "-db", project);
+
+        FileUtil.write(".idea/misc.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<project version=\"4\">\n" +
+                "  <component name=\"FrameworkDetectionExcludesConfiguration\">\n" +
+                "    <type id=\"Spring\" />\n" +
+                "  </component>\n" +
+                "  <component name=\"MavenProjectsManager\">\n" +
+                "    <option name=\"originalFiles\">\n" +
+                "      <list>\n" +
+                "        <option value=\"$PROJECT_DIR$/pom.xml\" />\n" +
+                "        <option value=\"$PROJECT_DIR$/router/pom.xml\" />\n" +
+                "        <option value=\"$PROJECT_DIR$/gate/pom.xml\" />\n" +
+                "      </list>\n" +
+                "    </option>\n" +
+                "  </component>\n" +
+                "  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_15\" default=\"true\" project-jdk-name=\"15\" project-jdk-type=\"JavaSDK\" />\n" +
+                "</project>", true);
     }
 
 }
