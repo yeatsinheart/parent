@@ -17,7 +17,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.net.InetAddress;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("ALL")
@@ -44,25 +43,8 @@ public class UDPNettyServer {
     @PostConstruct
     public void start() {
         bootstrap = new ServerBootstrap();
-        serverStartor = Executors.newSingleThreadExecutor(new NamingThreadFactory("p-" + port));
-        serverStartor.execute(() -> {
-            init();
-            try {
-                InetAddress address = InetAddress.getLocalHost();
-                ChannelFuture f = bootstrap.bind("0.0.0.0", port).sync();
-                log.info("🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉 NettyServer udp{} started nc -u 127.0.0.1 7901 🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉", port);
-                f.channel().closeFuture().sync();
-                log.info("NettyServer {} closed", port);
-            } catch (Exception e) {
-                log.error("😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭 NettyServer udp{} start failed 😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭", port, e);
-            } finally {
-                destroy();
-            }
-        });
-
-    }
-
-    private void init() {
+        //serverStartor = Executors.newSingleThreadExecutor(new NamingThreadFactory("p-" + port));
+        //serverStartor.execute(() -> {
         bossGroup = new NioEventLoopGroup(new NamingThreadFactory(port + "-p"));
         workerGroup = new DefaultEventLoopGroup(new NamingThreadFactory(port + "-c"));
         bootstrap.group(bossGroup, workerGroup)
@@ -71,6 +53,35 @@ public class UDPNettyServer {
         //bootstrap.option(ChannelOption.SO_BACKLOG, 5000).option(ChannelOption.SO_REUSEADDR, true);
 //        bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true)
 //                .childOption(ChannelOption.TCP_NODELAY, true);
+        try {
+            InetAddress address = InetAddress.getLocalHost();
+
+            /**
+             *  绑定100个端口号
+             */
+            ChannelFuture f = null;
+            for (int i = 0; i < 100; i++) {
+                int targetport = port + i;
+                //ChannelFuture f = bootstrap.bind("0.0.0.0", targetport).sync();
+                f = bootstrap.bind("0.0.0.0", targetport).addListener((ChannelFutureListener) future -> {
+                    System.out.println("bind success in port: " + port);
+                });
+            }
+
+            log.info("🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉 NettyServer udp{} started nc -u 127.0.0.1 7901 🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉", port);
+            f.channel().closeFuture().sync();
+            log.info("NettyServer {} closed", port);
+        } catch (Exception e) {
+            log.error("😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭 NettyServer udp{} start failed 😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭", port, e);
+        } finally {
+            destroy();
+        }
+        //});
+
+    }
+
+    private void init() {
+
 
     }
 
