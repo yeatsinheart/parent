@@ -1,5 +1,6 @@
 package com.gateway.server;
 
+import com.common.utils.NamingThreadFactory;
 import com.gateway.server.handler.HttpDispatcher;
 import com.gateway.server.handler.HttpHandler;
 import com.gateway.server.handler.WebSocketHandler;
@@ -11,6 +12,7 @@ import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.ServerSocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import lombok.extern.slf4j.Slf4j;
@@ -41,13 +43,13 @@ public class HttpServer extends AbstractNettyServer<ServerSocketChannel> {
     @Override
     public void initThread() {
         bootstrap = new ServerBootstrap();
-        bossGroup = Epoll.isAvailable() ? new EpollEventLoopGroup(bossNum) : new NioEventLoopGroup(bossNum);
-        workerGroup = Epoll.isAvailable() ? new EpollEventLoopGroup(workerNum) : new NioEventLoopGroup(workerNum);
+        bossGroup = Epoll.isAvailable() ? new EpollEventLoopGroup(bossNum) : new NioEventLoopGroup(bossNum,new NamingThreadFactory("hb"));
+        workerGroup = Epoll.isAvailable() ? new EpollEventLoopGroup(workerNum) : new NioEventLoopGroup(workerNum,new NamingThreadFactory("hw"));
     }
 
     @Override
     public void assignChannel() {
-        bootstrap.channel(Epoll.isAvailable() ? EpollServerSocketChannel.class : ServerSocketChannel.class);
+        bootstrap.channel(Epoll.isAvailable() ? EpollServerSocketChannel.class : NioServerSocketChannel.class);
     }
 
     @Override

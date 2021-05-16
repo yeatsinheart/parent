@@ -51,6 +51,6 @@ public class SessionHolder {
     }
 
     public static String getsession(Channel session) {
-        return "[" + getProto(session) + "][" + getIP(session) + "]" + session.id().asShortText();
+        return "[" + getProto(session) + "][" + getIP(session) + "]" + session.id().asShortText()+"=>"+getUri(session);
     }
 }
