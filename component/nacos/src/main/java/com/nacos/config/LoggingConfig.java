@@ -11,7 +11,7 @@ import java.util.Properties;
 @Slf4j
 @Component
 public class LoggingConfig extends AbstractNacosConfig {
-    public final static String DATA_ID = "logging-config";
+    public final static String DATA_ID = "spring";
     @Resource
     private LoggingSystem loggingSystem;
 

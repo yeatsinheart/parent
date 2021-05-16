@@ -30,7 +30,6 @@ public class NacosUtil {
         params.put("content", urlencode(content));
         params.put("type", type);
         String putted = HttpUtils.postByForm("http://" + url + "/nacos/v1/cs/configs" + "", params, null);
-        System.out.println(putted);
         return "true".equals(putted);
     }
 

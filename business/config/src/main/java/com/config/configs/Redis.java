@@ -1,4 +1,4 @@
-package com.nacos.properties;
+package com.config.configs;
 
 public class Redis {
     public static final String properties = "# Redis服务器地址\n" +

@@ -1,56 +1,36 @@
 package com.gateway.dubbo;
 
-import com.alibaba.nacos.api.NacosFactory;
-import com.alibaba.nacos.api.config.ConfigService;
 import com.common.utils.JsonUtil;
+import com.nacos.util.NacosUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.dubbo.common.URL;
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.metadata.definition.model.FullServiceDefinition;
 import org.apache.dubbo.metadata.definition.model.MethodDefinition;
-import org.apache.dubbo.metadata.report.identifier.KeyTypeEnum;
-import org.apache.dubbo.metadata.report.identifier.MetadataIdentifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Properties;
-
-import static com.alibaba.nacos.api.PropertyKeyConst.SERVER_ADDR;
 
 @Slf4j
 @Component
 public class NacosMetadataCollector implements MetadataCollector {
-    private final static String DEFAULT_ROOT = "dubbo";
-    private ConfigService configService;
-    @Value("${dubbo.registry.group:register-group}")
+    @Value("${dubbo.registry.group:dev}")
     private String group;
     @Value("${nacos.config.server-addr:localhost:8848}")
-    private URL url;
+    private String url;
+    @Value("${nacos.config.namespace:public}")
+    private String namespace;
 
-    @PostConstruct
-    public void init() {
-        group = url.getParameter(CommonConstants.GROUP_KEY, DEFAULT_ROOT);
-        Properties nacosProperties = new Properties();
-        String serverAddr = url.getHost() + ":" + url.getPort();
-        nacosProperties.put(SERVER_ADDR, serverAddr);
-        try {
-            configService = NacosFactory.createConfigService(nacosProperties);
-        } catch (Exception e) {
-            log.error("nacos配置中心连接失败", e);
-        }
-    }
-
-    public String getProviderMetaData(MetadataIdentifier key) {
+    public String getProviderMetaData(String module, String interfaze, String group, String version) {
         try {
             //每2秒更新一次？
             //api.user.services.TestService:::consumer:user-web
             //api.user.services.TestService:::provider:netty-gateway
-            String dataid = key.getServiceInterface();
-            return configService.getConfig(key.getUniqueKey(KeyTypeEnum.UNIQUE_KEY), group, 1000 * 2);
+            //String dataid = key.getServiceInterface();
+            return NacosUtil.get(interfaze + ":" + version + ":" + group + ":" + CommonConstants.PROVIDER_SIDE + ":" + module, group, namespace, url);
+            // return configService.getConfig(key.getUniqueKey(KeyTypeEnum.UNIQUE_KEY), group, 1000 * 2);
         } catch (Exception e) {
-            log.warn("Failed to get " + key + " from nacos, cause: " + e.getMessage(), e);
+            log.warn("Failed to get  from nacos, cause: {}", e);
         }
         return null;
     }
@@ -58,8 +38,8 @@ public class NacosMetadataCollector implements MetadataCollector {
     @Override
     public String[] getParamsTypes(String module, String interfaze, String group, String version, String methodName, int paramLen) {
 
-        MetadataIdentifier identifier = new MetadataIdentifier(interfaze, version, group, CommonConstants.PROVIDER_SIDE, module);
-        String metadata = getProviderMetaData(identifier);
+        //MetadataIdentifier identifier = new MetadataIdentifier(interfaze, version, group, CommonConstants.PROVIDER_SIDE, module);
+        String metadata = getProviderMetaData(module, interfaze, group, version);
         FullServiceDefinition serviceDefinition = JsonUtil.toObj(metadata, FullServiceDefinition.class);
         if (serviceDefinition == null) {
             return null;

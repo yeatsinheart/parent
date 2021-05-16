@@ -25,5 +25,6 @@
         <module>bus</module>
         <module>report</module>
         <module>all</module>
+        <module>config</module>
     </modules>
 </project>

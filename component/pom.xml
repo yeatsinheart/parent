@@ -14,7 +14,6 @@
     <modules>
         <module>base</module>
         <module>redis</module>
-        <module>properties</module>
         <module>nacos</module>
         <module>dubbo</module>
         <module>mysql</module>

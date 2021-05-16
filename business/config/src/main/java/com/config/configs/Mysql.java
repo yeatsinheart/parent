@@ -1,4 +1,4 @@
-package com.nacos.properties;
+package com.config.configs;
 
 public class Mysql {
     public static final String properties = "\n" +
