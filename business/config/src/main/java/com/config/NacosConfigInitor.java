@@ -1,6 +1,6 @@
 package com.config;
 
-import com.config.configs.*;
+import com.config.properties.*;
 import com.nacos.util.NacosUtil;
 import lombok.extern.slf4j.Slf4j;
 

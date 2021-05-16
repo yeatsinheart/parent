@@ -1,4 +1,4 @@
-package com.config.configs;
+package com.config.properties;
 
 public class Redis {
     public static final String properties = "# Redis服务器地址\n" +

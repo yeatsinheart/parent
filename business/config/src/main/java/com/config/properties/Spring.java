@@ -1,4 +1,4 @@
-package com.config.configs;
+package com.config.properties;
 
 public class Spring {
     public static String get() {

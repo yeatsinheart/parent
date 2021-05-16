@@ -1,4 +1,4 @@
-package com.config.configs;
+package com.config.properties;
 
 public class Mysql {
     public static final String properties = "\n" +

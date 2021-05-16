@@ -1,4 +1,4 @@
-package com.config.configs;
+package com.config.properties;
 
 public class Gateway {
     public static String get() {
