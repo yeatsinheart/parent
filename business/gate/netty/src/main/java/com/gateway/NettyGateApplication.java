@@ -33,6 +33,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
         "db.bus.daos.impls",
         "service.report.services",
         "db.report.daos.impls",
+        "com.nacos.config",
         "com.db.config",
         "com.redis",
         "com.common.pool",

@@ -16,6 +16,8 @@
             <groupId>code</groupId>
             <artifactId>base</artifactId>
             <version>${project.version}</version>
+            <!-- 打包时不打包这个 -->
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>redis.clients</groupId>

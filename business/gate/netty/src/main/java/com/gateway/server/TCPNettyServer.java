@@ -24,6 +24,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -40,7 +41,7 @@ public class TCPNettyServer {
     //Runtime.getRuntime().availableProcessors() * 2,
     public EventLoopGroup workerGroup;
     @Value("${net.tcp.port}")
-    public int port = 7901;
+    public int port;
 
     @Autowired
     HttpDispatcher httpDispatcher;
@@ -58,29 +59,29 @@ public class TCPNettyServer {
     @PostConstruct
     public void start() {
         bootstrap = new ServerBootstrap();
-        //serverStartor = Executors.newSingleThreadExecutor(new NamingThreadFactory("p-" + port));
-        //serverStartor.execute(() -> {
-        int coreNum = Runtime.getRuntime().availableProcessors();
-        bossGroup = new NioEventLoopGroup(new NamingThreadFactory(port + "-p"));
-        workerGroup = new NioEventLoopGroup(new NamingThreadFactory(port + "-c"));
-        bootstrap.group(bossGroup, workerGroup)
-                .channel(NioServerSocketChannel.class)
-                .childHandler(initChildChannelHandler());
-        bootstrap.option(ChannelOption.SO_BACKLOG, 5000)
-                .option(ChannelOption.SO_REUSEADDR, true);
-        bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true)
-                .childOption(ChannelOption.TCP_NODELAY, true);
-        try {
-            ChannelFuture f = bootstrap.bind("0.0.0.0", port).sync();
-            log.info("🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉 NettyServer tcp{} started   telnet 127.0.0.1:8901 🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉", port);
-            f.channel().closeFuture().sync();
-            log.info("NettyServer {} closed", port);
-        } catch (Exception e) {
-            log.error("😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭 NettyServer tcp{} start failed 😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭", port, e);
-        } finally {
-            destroy();
-        }
-        // });
+        serverStartor = Executors.newSingleThreadExecutor(new NamingThreadFactory("p-" + port));
+        serverStartor.execute(() -> {
+            int coreNum = Runtime.getRuntime().availableProcessors();
+            bossGroup = new NioEventLoopGroup(new NamingThreadFactory(port + "-p"));
+            workerGroup = new NioEventLoopGroup(new NamingThreadFactory(port + "-c"));
+            bootstrap.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(initChildChannelHandler());
+            bootstrap.option(ChannelOption.SO_BACKLOG, 5000)
+                    .option(ChannelOption.SO_REUSEADDR, true);
+            bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true)
+                    .childOption(ChannelOption.TCP_NODELAY, true);
+            try {
+                ChannelFuture f = bootstrap.bind("0.0.0.0", port).sync();
+                log.info("🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉 NettyServer tcp{} started   telnet 127.0.0.1:8901 🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉", port);
+                f.channel().closeFuture().sync();
+                log.info("NettyServer {} closed", port);
+            } catch (Exception e) {
+                log.error("😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭 NettyServer tcp{} start failed 😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭", port, e);
+            } finally {
+                destroy();
+            }
+        });
 
     }
 

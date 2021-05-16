@@ -12,6 +12,20 @@
     <artifactId>bus-web</artifactId>
     <version>1.0-SNAPSHOT</version>
     <dependencies>
+        <dependency>
+           <groupId>code</groupId>
+           <artifactId>base</artifactId>
+           <version>${project.version}</version>
+            <!--提供编译而不参与打包-->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>code</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>${project.version}</version>
+            <!--提供编译而不参与打包-->
+            <scope>provided</scope>
+        </dependency>
        <dependency>
            <groupId>code.business</groupId>
            <artifactId>bus-service</artifactId>

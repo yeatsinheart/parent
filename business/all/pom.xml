@@ -11,6 +11,20 @@
     <artifactId>all</artifactId>
     <dependencies>
         <dependency>
+            <groupId>code</groupId>
+            <artifactId>base</artifactId>
+            <version>${project.version}</version>
+            <!--提供编译而不参与打包-->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>code</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>${project.version}</version>
+            <!--提供编译而不参与打包-->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>code.business</groupId>
             <artifactId>global-service</artifactId>
             <version>${project.version}</version>

@@ -1,12 +1,12 @@
 package service.report.services.impls;
+import com.common.constant.Language;
+import com.common.result.ResultGenerator;
 
 import api.report.services.TestService;
 import com.alibaba.nacos.api.config.annotation.NacosValue;
-import com.common.constant.Language;
-import com.common.result.Result;
-import com.common.result.ResultGenerator;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
+import lombok.extern.slf4j.Slf4j;
+import com.common.result.Result;
 @Slf4j
 @DubboService
 public class TestServiceImpl implements TestService {

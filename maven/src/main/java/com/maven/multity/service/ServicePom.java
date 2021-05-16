@@ -30,9 +30,18 @@ public class ServicePom {
                 "    <version>1.0-SNAPSHOT</version>\n" +
                 "    <dependencies>\n" +
                 "        <dependency>\n" +
+                "           <groupId>code</groupId>\n" +
+                "           <artifactId>base</artifactId>\n" +
+                "           <version>${project.version}</version>\n" +
+                "            <!--提供编译而不参与打包-->\n" +
+                "            <scope>provided</scope>\n" +
+                "        </dependency>\n" +
+                "        <dependency>\n" +
                 "            <groupId>code</groupId>\n" +
                 "            <artifactId>dubbo</artifactId>\n" +
                 "            <version>${project.version}</version>\n" +
+                "            <!--提供编译而不参与打包-->\n" +
+                "            <scope>provided</scope>\n" +
                 "        </dependency>\n" +
                 "        <dependency>\n" +
                 "           <groupId>code." + business + "</groupId>\n" +

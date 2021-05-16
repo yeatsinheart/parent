@@ -35,6 +35,7 @@ public class AllInOneUtil {
                 "nacos.config.server-addr=192.168.15.100:8848\n" +
                 "#nacos.config.context-path=nacos\n" +
                 "nacos.config.data-ids=application\n" +
+                "nacos.config.namespace=\n" +
                 "nacos.config.group=DEFAULT_GROUP\n" +
                 "nacos.config.type=properties\n" +
                 "nacos.config.max-retry=10\n" +
@@ -65,6 +66,7 @@ public class AllInOneUtil {
             sb.append("        \"service." + m + ".services\",\n");
             sb.append("        \"db." + m + ".daos.impls\",\n");
         }
+        sb.append("        \"com.nacos.config\",\n");
         sb.append("        \"com.db.config\",\n");
         sb.append("        \"com.redis\",\n");
         sb.append("        \"com.common.pool\",\n");
@@ -157,9 +159,25 @@ public class AllInOneUtil {
 
     public static String dependencies(List<String> modules, String base) {
         StringBuffer sb = new StringBuffer("    <dependencies>\n");
+            String g = "code." + base;
+        sb.append(
+                "        <dependency>\n" +
+                        "            <groupId>code</groupId>\n" +
+                        "            <artifactId>base</artifactId>\n" +
+                        "            <version>${project.version}</version>\n" +
+                        "            <!--提供编译而不参与打包-->\n" +
+                        "            <scope>provided</scope>\n" +
+                        "        </dependency>\n");
+        sb.append(
+                "        <dependency>\n" +
+                        "            <groupId>code</groupId>\n" +
+                        "            <artifactId>dubbo</artifactId>\n" +
+                        "            <version>${project.version}</version>\n" +
+                        "            <!--提供编译而不参与打包-->\n" +
+                        "            <scope>provided</scope>\n" +
+                        "        </dependency>\n");
         for (String m : modules) {
             String a = m + "-service";
-            String g = "code." + base;
             sb.append(
                     "        <dependency>\n" +
                             "            <groupId>" + g + "</groupId>\n" +

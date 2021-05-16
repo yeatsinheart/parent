@@ -3,6 +3,7 @@ package com.gateway.server.handler;
 import com.gateway.server.parameter.WebSocketRequestDTO;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
@@ -19,10 +20,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @ChannelHandler.Sharable
 @Service
-public class HttpDispatcher extends AbstractRequestHandler<Object> {
-
+public class HttpDispatcher extends SimpleChannelInboundHandler<Object> {
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, Object msg) {
         if (msg instanceof FullHttpRequest) {
             FullHttpRequest request = (FullHttpRequest) msg;
             if (isWebSocketHandShake(request)) {
@@ -31,7 +31,7 @@ public class HttpDispatcher extends AbstractRequestHandler<Object> {
                 ctx.fireChannelRead(webSocketRequest);
                 webSocketRequest.release();
             } else if (isFileUpload(request)) {
-                //文件上传处理器
+                //文件上传处理器,网关没必要文件上传
                 ctx.fireChannelRead(new FileUploadRequestVo(request));
             } else {
                 //Http请求处理器
@@ -43,21 +43,25 @@ public class HttpDispatcher extends AbstractRequestHandler<Object> {
             ctx.fireChannelRead(webSocketRequest);
             webSocketRequest.release();
         } else {
-            log.error("什么鬼消息");
+            log.error("什么鬼消息" + msg);
             //ctx.fireChannelRead((ByteBuf) msg);
         }
     }
 
     //判断是否为websocket握手请求
     private boolean isWebSocketHandShake(FullHttpRequest request) {
-        //1、判断是否为get 2、判断Upgrade头是否包含websocket 3、Connection头是否包含upgrade
+        //1、判断是否为get
+        if (!request.method().equals(HttpMethod.GET)) {
+            return false;
+        }
+        //2、判断Upgrade头是否包含websocket
         String upgrade = request.headers().get(HttpHeaderNames.UPGRADE);
+        if (StringUtils.isEmpty(upgrade) || !upgrade.toLowerCase().contains(HttpHeaderValues.WEBSOCKET)) {
+            return false;
+        }
+        //3、Connection头是否包含upgrade
         String connection = request.headers().get(HttpHeaderNames.CONNECTION);
-        return StringUtils.isNotEmpty(upgrade)
-                && StringUtils.isNotEmpty(connection)
-                && request.method().equals(HttpMethod.GET)
-                && upgrade.toLowerCase().contains(HttpHeaderValues.WEBSOCKET)
-                && connection.toLowerCase().contains(HttpHeaderValues.UPGRADE);
+        return StringUtils.isNotEmpty(connection) && connection.toLowerCase().contains(HttpHeaderValues.UPGRADE);
     }
 
     //判断是否为文件上传
@@ -80,7 +84,6 @@ public class HttpDispatcher extends AbstractRequestHandler<Object> {
     @EqualsAndHashCode(callSuper = false)
     public class FileUploadRequestVo {
         private FullHttpRequest request;
-
         public FileUploadRequestVo(FullHttpRequest request) {
             this.request = request;
         }

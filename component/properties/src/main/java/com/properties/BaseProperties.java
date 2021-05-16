@@ -13,6 +13,7 @@ public class BaseProperties {
             "#nacos.config.context-path=nacos\n" +
             "nacos.config.data-ids=application\n" +
             "nacos.config.group=DEFAULT_GROUP\n" +
+            "nacos.config.namespace=\n" +
             "nacos.config.type=properties\n" +
             "nacos.config.max-retry=10\n" +
             "# 主配置 开启自动刷新\n" +

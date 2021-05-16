@@ -1,18 +1,18 @@
 package web.cost.controller;
 
 import api.cost.services.TestService;
+import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.ui.Model;
+import reactor.core.publisher.Mono;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.dubbo.config.annotation.DubboReference;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import reactor.core.publisher.Mono;
 @Tag(name = "TestController")
 @Controller
 public class TestController {

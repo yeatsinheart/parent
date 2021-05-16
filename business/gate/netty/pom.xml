@@ -17,6 +17,21 @@
             <artifactId>router</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>code</groupId>
+            <artifactId>base</artifactId>
+            <version>${project.version}</version>
+            <!--提供编译而不参与打包-->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>code</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>${project.version}</version>
+            <!--提供编译而不参与打包-->
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
