@@ -31,10 +31,7 @@ public class NacosUtil {
         params.put("type", type);
         String putted = HttpUtils.postByForm("http://" + url + "/nacos/v1/cs/configs" + "", params, null);
         System.out.println(putted);
-        if ("true\n".equals(putted)) {
-            return true;
-        }
-        return false;
+        return "true".equals(putted);
     }
 
     public static String namespace(String url, String namespaceId) {

@@ -43,8 +43,8 @@ public class HttpServer extends AbstractNettyServer<ServerSocketChannel> {
     @Override
     public void initThread() {
         bootstrap = new ServerBootstrap();
-        bossGroup = Epoll.isAvailable() ? new EpollEventLoopGroup(bossNum) : new NioEventLoopGroup(bossNum,new NamingThreadFactory("hb"));
-        workerGroup = Epoll.isAvailable() ? new EpollEventLoopGroup(workerNum) : new NioEventLoopGroup(workerNum,new NamingThreadFactory("hw"));
+        bossGroup = Epoll.isAvailable() ? new EpollEventLoopGroup(bossNum, new NamingThreadFactory("hb")) : new NioEventLoopGroup(bossNum, new NamingThreadFactory("hb"));
+        workerGroup = Epoll.isAvailable() ? new EpollEventLoopGroup(workerNum, new NamingThreadFactory("hw")) : new NioEventLoopGroup(workerNum, new NamingThreadFactory("hw"));
     }
 
     @Override

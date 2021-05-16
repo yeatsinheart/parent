@@ -24,11 +24,11 @@ public abstract class AbstractNacosConfig {
 
     @PostConstruct
     public void start() {
-        log.error(DATA_ID + "配置，启动检查，初始化本地相关配置");
         // 校验是否存在该配置
         String config = NacosUtil.get(DATA_ID, DEFAULT_GROUP, namespace, nacosUrl);
+        log.warn(DATA_ID + "配置，启动检查，初始化本地相关配置 nacos中配置信息{}", config);
         if (StringUtils.isEmpty(config)) {
-            if(!updateToNacos(config)){
+            if (!updateToNacos(null)) {
                 log.error(DATA_ID + "Nacos生成配置文件失败");
             }
         }
@@ -44,11 +44,13 @@ public abstract class AbstractNacosConfig {
         } catch (Exception e) {
             log.error(DATA_ID + " 配置信息{}加载失败",value);
         }
+        log.info(DATA_ID + "转换出来的properties信息{}", properties);
         return properties;
     }
 
     @NacosConfigListener(dataId = DATA_ID)
     public void onChange(String value) {
+        log.warn(DATA_ID + " 收到配置变更通知 " + value);
         try {
             if (!initByValue(string2Properties(value))) {
                 log.error(DATA_ID + "本地变更时失败，{}",value);
@@ -61,6 +63,7 @@ public abstract class AbstractNacosConfig {
 
     //监听到配置修改后进行操作
     public boolean updateToNacos(String config) {
+        log.warn(DATA_ID + " nacos中创建或更新配置信息" + config);
         if (StringUtils.isEmpty(config)) {
             return NacosUtil.put(defaultProperties(), "properties", DATA_ID, DEFAULT_GROUP, namespace, nacosUrl);
         } else {
@@ -74,7 +77,7 @@ public abstract class AbstractNacosConfig {
     public abstract boolean initByValue(Properties properties);
 
     /**
-     * 默认写入nacos中的String内容
+     * 默认写入nacos中的String内容，考虑本地还是从数据库中读取出来再写入nacos，但是只是nacos中没有值的时候才会这样搞
      */
     public abstract String defaultProperties();
 

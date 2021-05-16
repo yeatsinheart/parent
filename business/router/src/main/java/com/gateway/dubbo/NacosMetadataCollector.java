@@ -2,7 +2,6 @@ package com.gateway.dubbo;
 
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
-import com.alibaba.nacos.api.exception.NacosException;
 import com.common.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.common.URL;
@@ -46,8 +45,11 @@ public class NacosMetadataCollector implements MetadataCollector {
     public String getProviderMetaData(MetadataIdentifier key) {
         try {
             //每2秒更新一次？
+            //api.user.services.TestService:::consumer:user-web
+            //api.user.services.TestService:::provider:netty-gateway
+            String dataid = key.getServiceInterface();
             return configService.getConfig(key.getUniqueKey(KeyTypeEnum.UNIQUE_KEY), group, 1000 * 2);
-        } catch (NacosException e) {
+        } catch (Exception e) {
             log.warn("Failed to get " + key + " from nacos, cause: " + e.getMessage(), e);
         }
         return null;

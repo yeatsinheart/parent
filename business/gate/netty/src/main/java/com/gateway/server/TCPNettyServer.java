@@ -18,7 +18,6 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -28,7 +27,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-@Component("tcpServer")
+//@Component("tcpServer")
 public class TCPNettyServer {
     public static int TCP_FRAME_FIXED_HEADER_LENGTH = 4;     // 4 bytes
     public static int TCP_FRAME_MAX_BODY_LENGTH = 6 * 1024; // 6K bytes

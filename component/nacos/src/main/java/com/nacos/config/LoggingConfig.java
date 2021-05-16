@@ -21,7 +21,7 @@ public class LoggingConfig extends AbstractNacosConfig {
     @Override
     public boolean initByValue(Properties properties) {
         String name = (String) properties.getOrDefault("logging.level.name", "logging.level.name");
-        String level = (String) properties.getOrDefault("logging.level","info");
+        String level = (String) properties.getOrDefault("logging.level", "info");
         LogLevel logLevel = LogLevel.INFO;
         try {
             logLevel = LogLevel.valueOf(level.toUpperCase());
@@ -29,16 +29,17 @@ public class LoggingConfig extends AbstractNacosConfig {
             log.error(DATA_ID + "配置存在问题{},{}", properties, e);
         }
         loggingSystem.setLogLevel(name, logLevel);
-        log.error("设置日志级别{},{}", name, logLevel);
+        log.warn("设置日志级别{},{}", name, logLevel);
         return true;
     }
 
+    /**
+     * 默认写入nacos中的String内容，考虑本地还是从数据库中读取出来再写入nacos，但是只是nacos中没有值的时候才会这样搞
+     */
     @Override
     public String defaultProperties() {
-        Properties properties = new Properties();
-        properties.put("logging.level.name", "root");
-        properties.put("logging.level", "info");
-        return properties.toString();
+        return "logging.level.name=root\n" +
+                "logging.level=info";
     }
 
 }

@@ -81,18 +81,19 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `global_api`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `global_api`(
-                             `id`       int                                                    NOT NULL COMMENT '主键',
-                             `name`     varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '接口说明',
-                             `module`   varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '模块',
-                             `service`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '服务类',
-                             `method`   varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '方法',
-                             `descript` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '接口说明',
-                             `logined`  tinyint                                                NOT NULL DEFAULT '0' COMMENT '是否登陆',
-                             `authed`   tinyint                                                NOT NULL DEFAULT '0' COMMENT '是否权限',
-                             `request`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '请求参数样例',
-                             `response` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '响应参数样例',
-                             PRIMARY KEY (`id`)
+CREATE TABLE `global_api`
+(
+    `id`       int                                                    NOT NULL COMMENT '主键',
+    `name`     varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '接口说明',
+    `module`   varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '模块',
+    `service`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '服务类',
+    `method`   varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '方法',
+    `descript` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '接口说明',
+    `logined`  tinyint                                                NOT NULL DEFAULT '0' COMMENT '是否登陆',
+    `authed`   tinyint                                                NOT NULL DEFAULT '0' COMMENT '是否权限',
+    `request`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '请求参数样例',
+    `response` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '响应参数样例',
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='接口';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -634,4 +635,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-15 23:43:33
+-- Dump completed on 2021-05-16  0:51:40
