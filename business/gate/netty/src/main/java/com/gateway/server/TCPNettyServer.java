@@ -40,7 +40,7 @@ public class TCPNettyServer {
     public EventLoopGroup bossGroup;
     //Runtime.getRuntime().availableProcessors() * 2,
     public EventLoopGroup workerGroup;
-    @Value("${net.tcp.port}")
+    @Value("${net.tcp.ports}")
     public int port;
 
     @Autowired

@@ -37,7 +37,7 @@ public class UDPNettyServer {
     ;
     //Runtime.getRuntime().availableProcessors() * 2,
     private EventLoopGroup workerGroup;
-    @Value("${net.udp.port}")
+    @Value("${net.udp.ports}")
     private int port;
 
 
