@@ -66,8 +66,6 @@ public class MavenProjectCreater {
                 "    <option name=\"originalFiles\">\n" +
                 "      <list>\n" +
                 "        <option value=\"$PROJECT_DIR$/pom.xml\" />\n" +
-                "        <option value=\"$PROJECT_DIR$/router/pom.xml\" />\n" +
-                "        <option value=\"$PROJECT_DIR$/gate/pom.xml\" />\n" +
                 "      </list>\n" +
                 "    </option>\n" +
                 "  </component>\n" +
