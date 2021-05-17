@@ -3,7 +3,6 @@ package com.gateway.dubbo;
 import com.common.utils.JsonUtil;
 import com.nacos.util.NacosUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.metadata.definition.model.FullServiceDefinition;
 import org.apache.dubbo.metadata.definition.model.MethodDefinition;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +26,7 @@ public class NacosMetadataCollector implements MetadataCollector {
             //api.user.services.TestService:::consumer:user-web
             //api.user.services.TestService:::provider:netty-gateway
             //String dataid = key.getServiceInterface();
-            return NacosUtil.get(interfaze + ":" + version + ":" + group + ":" + CommonConstants.PROVIDER_SIDE + ":" + module, group, namespace, url);
+            return NacosUtil.getService(interfaze, group, namespace, url);
             // return configService.getConfig(key.getUniqueKey(KeyTypeEnum.UNIQUE_KEY), group, 1000 * 2);
         } catch (Exception e) {
             log.warn("Failed to get  from nacos, cause: {}", e);

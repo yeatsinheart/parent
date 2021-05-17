@@ -25,7 +25,7 @@ public abstract class AbstractNacosConfig {
     @PostConstruct
     public void start() {
         // 校验是否存在该配置
-        String config = NacosUtil.get(DATA_ID, DEFAULT_GROUP, namespace, nacosUrl);
+        String config = NacosUtil.getConfig(DATA_ID, DEFAULT_GROUP, namespace, nacosUrl);
         log.warn(DATA_ID + "配置，启动检查，初始化本地相关配置 nacos中配置信息{}", config);
         if (StringUtils.isEmpty(config)) {
             if (!updateToNacos(null)) {
@@ -65,9 +65,9 @@ public abstract class AbstractNacosConfig {
     public boolean updateToNacos(String config) {
         log.warn(DATA_ID + " nacos中创建或更新配置信息" + config);
         if (StringUtils.isEmpty(config)) {
-            return NacosUtil.put(defaultProperties(), "properties", DATA_ID, DEFAULT_GROUP, namespace, nacosUrl);
+            return NacosUtil.putConfig(defaultProperties(), "properties", DATA_ID, DEFAULT_GROUP, namespace, nacosUrl);
         } else {
-            return NacosUtil.put(config, "properties", DATA_ID, DEFAULT_GROUP, namespace, nacosUrl);
+            return NacosUtil.putConfig(config, "properties", DATA_ID, DEFAULT_GROUP, namespace, nacosUrl);
         }
     }
 

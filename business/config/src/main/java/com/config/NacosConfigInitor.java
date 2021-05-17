@@ -17,52 +17,56 @@ public class NacosConfigInitor {
      */
     public static String GROUP = "DEFAULT_GROUP";
     public static String NAME_SPACE = "public";
+    public static String nacosServerUrl = "localhost:8848";
     //public static String serverAddr = "172.20.10.4:8848";
     //public static String serverAddr = "192.168.15.100:8848";
-    public static String serverAddr = "localhost:8848";
 
     public static void main(String[] args) {
         //get("app", GROUP, null, serverAddr);
         //put("test=test", "properties", "app", GROUP, "test", serverAddr);
-        NacosUtil.put(
+        NacosUtil.putConfig(
                 Spring.get(),
                 "properties",
                 "spring",
-                "DEFAULT_GROUP",
-                "",
-                "localhost:8848"
+                GROUP,
+                NAME_SPACE,
+                nacosServerUrl
         );
-        NacosUtil.put(
+        NacosUtil.putConfig(
                 Gateway.get(),
                 "properties",
                 "gateway",
-                "DEFAULT_GROUP",
-                "",
-                "localhost:8848"
+                GROUP,
+                NAME_SPACE,
+                nacosServerUrl
         );
-        NacosUtil.put(
-                Dubbo.get("localhost:8848", "dev", "1.0.0"),
+        NacosUtil.putConfig(
+                Dubbo.get(nacosServerUrl, "dev", "1.0.0"),
                 "properties",
                 "dubbo",
-                "DEFAULT_GROUP",
-                "",
-                "localhost:8848"
+                GROUP,
+                NAME_SPACE,
+                nacosServerUrl
         );
-        NacosUtil.put(
+        NacosUtil.namespace(nacosServerUrl, "" + NAME_SPACE + "-dubbo-service");
+        NacosUtil.namespace(nacosServerUrl, "" + NAME_SPACE + "-dubbo-parameter");
+        NacosUtil.namespace(nacosServerUrl, "" + NAME_SPACE + "-dubbo-monitor");
+
+        NacosUtil.putConfig(
                 Redis.get("47.242.219.77", "6379", "1WKaajAB1Qd3Jro8"),
                 "properties",
                 "redis",
-                "DEFAULT_GROUP",
-                "",
-                "localhost:8848"
+                GROUP,
+                NAME_SPACE,
+                nacosServerUrl
         );
-        NacosUtil.put(
+        NacosUtil.putConfig(
                 Mysql.get("localhost:3306/code", "root", "zdc1991"),
                 "properties",
                 "mysql",
-                "DEFAULT_GROUP",
-                "",
-                "localhost:8848"
+                GROUP,
+                NAME_SPACE,
+                nacosServerUrl
         );
 
     }

@@ -4,13 +4,19 @@ public class Dubbo {
 
     public static String get(String connect, String group, String version) {
         return "dubbo.scan.base-packages=com.gateway.Notify,service.user.services.impls\n" +
-                "dubbo.registry.address=nacos://" + connect + "\n" +
+                "#dubbo.registry.address=nacos://" + connect + "\n" +
                 "#dubbo.monitor.address=" + connect + "\n" +
+                "##如果要使用自己创建的命名空间可以使用下面2种方式\n" +
+                "dubbo.registry.address = nacos://" + connect + "?namespace=${nacos.config.namespace}-dubbo-service\n" +
+                "dubbo.monitor.address = nacos://" + connect + "?namespace=${nacos.config.namespace}-dubbo-monitor\n" +
+                "dubbo.registry.parameters.namespace=${nacos.config.namespace}-dubbo-parameter\n" +
+
+                "## Dubbo Registry ?backup=\n" +
+                "dubbo.registry.file=${spring.application.name}.dubbo.cache.log\n" +
 
                 "dubbo.protocol.name=dubbo\n" +
                 "dubbo.protocol.port=-1\n" +
-                "## Dubbo Registry ?backup=\n" +
-                "dubbo.registry.file=${spring.application.name}.dubbo.cache.log\n" +
+
                 "# group,version\n" +
                 "dubbo.registry.group=" + group + "\n" +
                 "dubbo.provider.group=${dubbo.registry.group}\n" +

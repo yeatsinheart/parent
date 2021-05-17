@@ -13,7 +13,16 @@ import java.util.Map;
 @Slf4j
 public class NacosUtil {
     // 获取配置
-    public static String get(String dataId, String group, String namespaceId, String url) {
+    public static String getService(String serviceName, String group, String namespaceId, String url) {
+        String service = HttpUtils.get("http://" + url + "/nacos/v1/ns/service?serviceName=" + serviceName + "&groupName=" + group + "&namespaceId=" + namespaceId + "", null);
+        if ("config data not exist\n".equals(service)) {
+            return null;
+        }
+        return service;
+    }
+
+    // 获取配置
+    public static String getConfig(String dataId, String group, String namespaceId, String url) {
         String config = HttpUtils.get("http://" + url + "/nacos/v1/cs/configs?dataId=" + dataId + "&group=" + group + "&tenant=" + namespaceId + "", null);
         System.out.println(config);
         if ("config data not exist\n".equals(config)) {
@@ -22,7 +31,7 @@ public class NacosUtil {
         return config;
     }
 
-    public static boolean put(String content, String type, String dataId, String group, String namespaceId, String url) {
+    public static boolean putConfig(String content, String type, String dataId, String group, String namespaceId, String url) {
         Map<String, Object> params = new HashMap<>();
         params.put("tenant", namespaceId);
         params.put("dataId", dataId);
