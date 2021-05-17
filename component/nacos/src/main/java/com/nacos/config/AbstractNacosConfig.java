@@ -1,7 +1,7 @@
 package com.nacos.config;
 
 import com.alibaba.nacos.api.config.annotation.NacosConfigListener;
-import com.nacos.util.NacosUtil;
+import com.base.utils.NacosUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +15,7 @@ import static com.alibaba.nacos.api.common.Constants.DEFAULT_GROUP;
 @Slf4j
 public abstract class AbstractNacosConfig {
 
-    public final static String DATA_ID = "logging-config";
+    public  static final String DATA_ID = "logging-config";
     @Value("${nacos.config.server-addr:127.0.0.1:8848}")
     public String nacosUrl;
     @Value("${nacos.config.namespace:public}")
@@ -47,6 +47,7 @@ public abstract class AbstractNacosConfig {
         log.info(DATA_ID + "转换出来的properties信息{}", properties);
         return properties;
     }
+
 
     @NacosConfigListener(dataId = DATA_ID)
     public void onChange(String value) {

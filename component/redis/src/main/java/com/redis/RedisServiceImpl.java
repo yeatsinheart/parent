@@ -1,6 +1,6 @@
 package com.redis;
 
-import com.common.utils.JsonUtil;
+import com.base.utils.JsonUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

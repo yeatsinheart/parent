@@ -1,9 +1,9 @@
 package com.gen.utils;
 
-import com.common.constant.Language;
-import com.common.result.Result;
-import com.common.result.ResultCode;
-import com.common.utils.JsonUtil;
+import com.base.constant.Language;
+import com.base.result.Result;
+import com.base.result.ResultCode;
+import com.base.utils.JsonUtil;
 
 public class ObjectUtil {
     public static void main(String[] args) {

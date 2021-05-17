@@ -1,7 +1,7 @@
 package ${pto.packageName};
 import ${dto.fullName};
 import java.io.Serializable;
-import com.common.dto.BaseRequest;
+import com.base.dto.BaseRequest;
 import org.apache.commons.lang3.StringUtils;
 
 <#list table.columns as column>

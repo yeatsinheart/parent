@@ -9,9 +9,9 @@ import javax.annotation.Resource;
 import java.util.Properties;
 
 @Slf4j
-@Component
+//@Component
 public class LoggingConfig extends AbstractNacosConfig {
-    public final static String DATA_ID = "spring";
+    public  static String DATA_ID = "logging-config";
     @Resource
     private LoggingSystem loggingSystem;
 

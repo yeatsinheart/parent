@@ -12,7 +12,6 @@
     <artifactId>component</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>base</module>
         <module>redis</module>
         <module>nacos</module>
         <module>dubbo</module>

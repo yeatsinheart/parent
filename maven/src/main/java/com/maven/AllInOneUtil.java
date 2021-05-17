@@ -1,6 +1,7 @@
 package com.maven;
 
-import com.common.utils.FileUtil;
+import com.base.utils.FileUtil;
+import com.maven.multity.BaseProperties;
 
 import java.io.File;
 import java.util.Arrays;
@@ -9,52 +10,42 @@ import java.util.List;
 public class AllInOneUtil {
     public static void main(String[] args) {
         List<String> modules = Arrays.asList(
-                "global","tenant", "user",
-                "cost","money","game","chat",
+                "global", "tenant", "user",
+                "cost", "money", "game", "chat",
                 "bus",
                 "report"
         );
         String base = "business";
+
+        all(modules, base);
+        FileUtil.remove(".idea");
+    }
+
+    public static void all(List<String> modules, String base) {
+        System.out.println("dubbo 扫描");
         System.out.println(dubboScan(modules, base));
+
+        System.out.println("spring 扫描");
+        StringBuffer sb = new StringBuffer("    \n");
+        for (String m : modules) {
+            sb.append("\"service." + m + ".services.impls\",\n");
+            sb.append("\"db." + m + ".daos.impls\",\n");
+        }
+        System.out.println(sb.toString());
+
+
         FileUtil.write(base + File.separator + "all" + File.separator + "pom.xml", writetoAll(modules, base), true);
         FileUtil.write(base + File.separator + "pom.xml", writetoBase(modules, base), true);
         FileUtil.write(base + File.separator + "all" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + "com" + File.separator + "all" + File.separator + "AllApplication.java", componentScan(modules, base), true);
-        FileUtil.write(base + File.separator + "all" + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "application.properties", resources(modules, base), true);
+        FileUtil.write(base + File.separator + "all" + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "application.properties", BaseProperties.genProperties("all", 0), true);
     }
 
-    public static String resources(List<String> modules, String base) {
-        return "spring.application.name=all\n" +
-                "server.port=0\n" +
-                "# 日志颜色\n" +
-                "spring.output.ansi.enabled=always\n" +
-                "#logging.level.root=debug\n" +
-                "logging.pattern.console=%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint}%clr(${LOG_LEVEL_PATTERN:%5p}) %clr(${PID}){magenta}%clr([%t]){faint} %clr(%-40.40logger{39}){cyan}[line:%line]%clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}\n" +
-                "#开启配置预加载功能\n" +
-                "nacos.config.bootstrap.enable=true\n" +
-                "# 主配置服务器地址\n" +
-                "nacos.config.server-addr=192.168.15.100:8848\n" +
-                "#nacos.config.context-path=nacos\n" +
-                "nacos.config.data-ids=application\n" +
-                "nacos.config.namespace=\n" +
-                "nacos.config.group=DEFAULT_GROUP\n" +
-                "nacos.config.type=properties\n" +
-                "nacos.config.max-retry=10\n" +
-                "# 主配置 开启自动刷新\n" +
-                "nacos.config.auto-refresh=true\n" +
-                "# 主配置 重试时间\n" +
-                "nacos.config.config-retry-time=2333\n" +
-                "# 主配置 配置监听长轮询超时时间\n" +
-                "nacos.config.config-long-poll-timeout=46000\n" +
-                "# 主配置 开启注册监听器预加载配置服务（除非特殊业务需求，否则不推荐打开该参数）\n" +
-                "nacos.config.enable-remote-sync-config=true\n";
-    }
 
     public static String dubboScan(List<String> modules, String base) {
         StringBuffer sb = new StringBuffer();
         for (String m : modules) {
             sb.append("service.");
-            sb.append(m);
-            sb.append("services.impls");
+            sb.append(m+".services.impls");
             sb.append(",");
         }
         return sb.toString();
@@ -69,11 +60,12 @@ public class AllInOneUtil {
         sb.append("        \"com.nacos.config\",\n");
         sb.append("        \"com.db.config\",\n");
         sb.append("        \"com.redis\",\n");
-        sb.append("        \"com.common.pool\",\n");
-        sb.append("        \"com.common.annotation\",\n");
-        sb.append("        \"com.common.event\",\n");
+        sb.append("        \"com.base.pool\",\n");
+        sb.append("        \"com.base.annotation\",\n");
+        sb.append("        \"com.base.event\",\n");
+        sb.append("        \"com.config.refresh\",\n");
         String content = "package com.all;\n" +
-                "import com.common.utils.ShutDown;\n" +
+                "import com.base.utils.ShutDown;\n" +
                 "import org.springframework.boot.SpringApplication;\n" +
                 "import org.springframework.boot.autoconfigure.SpringBootApplication;\n" +
                 "import org.springframework.context.ConfigurableApplicationContext;\n" +
@@ -159,7 +151,7 @@ public class AllInOneUtil {
 
     public static String dependencies(List<String> modules, String base) {
         StringBuffer sb = new StringBuffer("    <dependencies>\n");
-            String g = "code." + base;
+        String g = "code." + base;
         sb.append(
                 "        <dependency>\n" +
                         "            <groupId>code</groupId>\n" +
@@ -175,7 +167,14 @@ public class AllInOneUtil {
                         "            <version>${project.version}</version>\n" +
                         "            <!--提供编译而不参与打包-->\n" +
                         "            <scope>provided</scope>\n" +
-                        "        </dependency>\n");
+                        "        </dependency>\n" +
+                        "        <dependency>\n" +
+                        "            <groupId>code</groupId>\n" +
+                        "            <artifactId>config</artifactId>\n" +
+                        "            <version>${project.version}</version>\n" +
+                        "            <!--提供编译而不参与打包-->\n" +
+                        "            <scope>provided</scope>\n" +
+                        "        </dependency>");
         for (String m : modules) {
             String a = m + "-service";
             sb.append(

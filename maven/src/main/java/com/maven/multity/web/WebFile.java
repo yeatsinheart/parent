@@ -1,8 +1,9 @@
 package com.maven.multity.web;
 
-import com.common.utils.FileUtil;
-import com.common.utils.StringUtil;
-import com.properties.BaseProperties;
+import com.base.utils.FileUtil;
+import com.base.utils.StringUtil;
+import com.maven.multity.BaseProperties;
+import com.maven.multity.BaseRunner;
 
 import java.io.File;
 
@@ -17,8 +18,8 @@ public class WebFile {
         String base = src + File.separator + "main";
 
         String basePackage = base + File.separator + "java" + File.separator + level + File.separator + project;
-        String starter = basePackage + File.separator + StringUtil.firstUpper(project) + StringUtil.firstUpper(level) + "WebApplication.java";
-        FileUtil.write(starter, starter(project), true);
+        String starter = basePackage + File.separator + StringUtil.firstUpper(project) + StringUtil.firstUpper(level) + "Application.java";
+        FileUtil.write(starter, BaseRunner.starter(level,project), true);
 
         String pto = basePackage + File.separator + "ptos";
         FileUtil.mkdir(pto);
@@ -32,7 +33,9 @@ public class WebFile {
         FileUtil.mkdir(baseResource);
 
         String resources = baseResource + File.separator + "application.properties";
-        FileUtil.write(resources, resource(project), true);
+        FileUtil.write(resources, BaseProperties.genProperties(project + "-" + level, 0) +
+                "springdoc.swagger-ui.path=/api.html\n" +
+                "spring.resources.static-locations=classpath:/static/\n", true);
         String helloHtml = baseResource + File.separator + "templates" + File.separator + "hello.html";
         String cityList = baseResource + File.separator + "templates" + File.separator + "cityList.html";
         String staticFile = baseResource + File.separator + "static" + File.separator + "index.html";
@@ -139,61 +142,4 @@ public class WebFile {
                 "}\n";
     }
 
-    public static String resource(String project) {
-        return BaseProperties.genProperties(project + "-" + level, 0) +
-                "springdoc.swagger-ui.path=/api.html\n" +
-                "spring.resources.static-locations=classpath:/static/\n"
-                ;
-    }
-
-    public static String starter(String project) {
-        return "package " + level + "." + project + ";\n" +
-                "\n" +
-                "import com.common.utils.ShutDown;\n" +
-                "import org.springframework.boot.SpringApplication;\n" +
-                "import org.springframework.boot.autoconfigure.SpringBootApplication;\n" +
-                "import org.springframework.context.ConfigurableApplicationContext;\n" +
-                "import org.springframework.context.annotation.ComponentScan;\n" +
-                "import javax.sql.DataSource;\n" +
-                "import java.sql.Connection;\n" +
-
-                "\n" +
-                "@ComponentScan(basePackages={\n" +
-                "        \"" + level + "." + project + ".controller\",\n" +
-                "        \"service." + project + ".services\",\n" +
-                "        \"com.db.config\",\n" +
-                "        \"db." + project + ".daos.impls\",\n" +
-                "        \"com.redis\",\n" +
-                "        \"com.common.pool\",\n" +
-                "        \"com.common.annotation\"\n" +
-                "})\n" +
-                "@SpringBootApplication\n" +
-                "public class " + StringUtil.firstUpper(project) + StringUtil.firstUpper(level) + "WebApplication {\n" +
-                "\n" +
-                "    public static void main(String[] args) {\n" +
-                "        Runtime.getRuntime().addShutdownHook(new ShutDown());\n" +
-                "        ConfigurableApplicationContext applicationContext = SpringApplication.run(" + StringUtil.firstUpper(project) + StringUtil.firstUpper(level) + "WebApplication.class, args);\n" +
-                "        try {\n" +
-                "            /*String[] beans = applicationContext\n" +
-                "                    .getBeanDefinitionNames();\n" +
-                "            for (String beanName : beans) {\n" +
-                "                Class<?> beanType = applicationContext\n" +
-                "                        .getType(beanName);\n" +
-                "                System.out.println(\"BeanName:\" + beanName);\n" +
-                "                System.out.println(\"Bean的类型：\" + beanType);\n" +
-                "                System.out.println(\"Bean所在的包：\" + beanType.getPackage());\n" +
-                "                System.out.println(\"Bean：\" + applicationContext.getBean(\n" +
-                "                        beanName));\n" +
-                "            }*/\n" +
-                "            // ===== 在项目初始化bean后检验数据库连接是否\n" +
-                "            DataSource dataSource = (DataSource) applicationContext.getBean(\"shardingDataSource\");\n" +
-                "            Connection connection = dataSource.getConnection();\n" +
-                "            connection.close();\n" +
-                "        } catch (Exception e) {\n" +
-                "            System.exit(-1);\n" +
-                "        }\n" +
-                "    }\n" +
-                "\n" +
-                "}\n";
-    }
 }

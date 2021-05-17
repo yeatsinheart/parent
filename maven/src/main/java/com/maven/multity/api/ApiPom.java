@@ -1,6 +1,6 @@
 package com.maven.multity.api;
 
-import com.common.utils.FileUtil;
+import com.base.utils.FileUtil;
 
 import java.io.File;
 

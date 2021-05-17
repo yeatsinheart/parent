@@ -1,6 +1,6 @@
 package com.maven.multity.service;
 
-import com.common.utils.FileUtil;
+import com.base.utils.FileUtil;
 
 import java.io.File;
 
@@ -43,6 +43,13 @@ public class ServicePom {
                 "            <!--提供编译而不参与打包-->\n" +
                 "            <scope>provided</scope>\n" +
                 "        </dependency>\n" +
+                "        <dependency>\n" +
+                "            <groupId>code</groupId>\n" +
+                "            <artifactId>config</artifactId>\n" +
+                "            <version>${project.version}</version>\n" +
+                "            <!--提供编译而不参与打包-->\n" +
+                "            <scope>provided</scope>\n" +
+                "        </dependency>" +
                 "        <dependency>\n" +
                 "           <groupId>code." + business + "</groupId>\n" +
                 "           <artifactId>" + project + "-db</artifactId>\n" +

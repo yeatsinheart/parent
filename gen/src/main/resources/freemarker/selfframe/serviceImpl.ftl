@@ -3,9 +3,9 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import java.util.List;
 import java.lang.Integer;
-import com.common.result.ResultGenerator;
+import com.base.result.ResultGenerator;
 
-import com.common.constant.Language;
+import com.base.constant.Language;
 import java.util.ArrayList;
 import ${entity.fullName};
 import ${dto.fullName};
@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.util.CollectionUtils;
-import com.common.result.PageResult;
-import com.common.result.Result;
+import com.base.result.PageResult;
+import com.base.result.Result;
 import org.apache.dubbo.config.annotation.DubboService;
 import java.util.Set;
 <#if cacheable >

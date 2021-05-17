@@ -1,6 +1,6 @@
 package com.maven.multity.api;
 
-import com.common.utils.FileUtil;
+import com.base.utils.FileUtil;
 
 import java.io.File;
 
@@ -27,7 +27,7 @@ public class ApiFile {
 
     public static String testService(String project) {
         return "package " + level + "." + project + ".services;\n" +
-                "import com.common.result.Result;\n\n" +
+                "import com.base.result.Result;\n\n" +
                 "public interface TestService {\n" +
                 "    Result<String> test(String test);\n" +
                 "}\n";

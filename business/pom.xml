@@ -13,8 +13,7 @@
     <artifactId>business</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>gate</module>
-        <module>router</module>
+    
         <module>global</module>
         <module>tenant</module>
         <module>user</module>
@@ -25,6 +24,5 @@
         <module>bus</module>
         <module>report</module>
         <module>all</module>
-        <module>config</module>
     </modules>
 </project>

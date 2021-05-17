@@ -1,6 +1,6 @@
 package com.db.sharding.strategy;
 
-import com.common.utils.JsonUtil;
+import com.base.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingAlgorithm;
 import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingValue;

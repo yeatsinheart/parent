@@ -5,8 +5,8 @@ import java.lang.Boolean;
 import ${dto.fullName};
 import org.springframework.beans.factory.annotation.*;
 import java.math.BigDecimal;
-import com.common.result.Result;
-import com.common.result.PageResult;
+import com.base.result.Result;
+import com.base.result.PageResult;
 /**
 * ${table.comment!}
 * @author ${author}
