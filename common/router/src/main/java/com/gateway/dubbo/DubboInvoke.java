@@ -33,27 +33,22 @@ public class DubboInvoke {
         // 接口定义
         DubboRemoteService service = getApi(api);
         Auth.auth(params);
-
         // 接口参数定义
-        String[] paramTypes = metadataCollector.getParamsTypes(service, group, version);
-
+        String[] paramTypes = metadataCollector.getParamsTypes(service);
         //调用缓存
-        ReferenceConfig<GenericService> apiCache = apiCallerCache.get(api, group, version);
-
+        ReferenceConfig<GenericService> invokerCache = apiCallerCache.get(service);
         //请求参数
-        params = JsonUtil.toMap("{\"data1\":[{}]}");
+        params = JsonUtil.toMap("{\"data\":[{}]}");
         List list = (List) params.get("data");
         Object[] arr = CollectionUtils.isEmpty(list) ? new Object[0] : list.toArray();
         try {
-
             //{data:[{}]}
-
-            GenericService caller = apiCache.get();
+            GenericService invoker = invokerCache.get();
             // 方法有，接口有，version指定调试类型，group指定调用的应用集群
             // 方法
             // new String[]{"com.xxx.Person"}  参数类型
             // Map<String, Object> 请求参数
-            Object result = caller.$invoke(service.getMethodName(), paramTypes, arr);
+            Object result = invoker.$invoke(service.getMethodName(), paramTypes, arr);
             return JsonUtil.toJsonStr(result);
         } catch (RpcException e1) {
             if (e1.isTimeout()) {

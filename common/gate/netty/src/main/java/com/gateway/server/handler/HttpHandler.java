@@ -34,7 +34,6 @@ public class HttpHandler extends AbstractRequestHandler<FullHttpRequest> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest httpRequest) {
         SessionHolder.setProto(ctx.channel(), "http");
-        SessionHolder.setIP(ctx.channel());
         SessionHolder.setKeeplive(ctx.channel(),
                 !httpRequest.headers()
                         .containsValue(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE, true)

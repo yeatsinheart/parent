@@ -1,6 +1,5 @@
 package com.gateway.server;
 
-import com.base.utils.NamingThreadFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
@@ -13,8 +12,8 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("ALL")
@@ -33,46 +32,47 @@ public abstract class AbstractNettyServer<C extends Channel> {
     protected int bossNum;
     @Value("${netty.worker.num:0}")
     protected int workerNum;
-
-
     protected ServerBootstrap bootstrap;
     protected EventLoopGroup bossGroup;
     protected EventLoopGroup workerGroup;
-    protected ExecutorService serverStartor = Executors.newSingleThreadExecutor(new NamingThreadFactory("p"));
+
 
     @PostConstruct
     public void startServer() {
-        serverStartor.execute(() -> {
-            initThread();
-            assignChannel();
-            if (Epoll.isAvailable()) {
-                bootstrap.option(EpollChannelOption.SO_REUSEPORT, true);
-            }
-            bootstrap.option(ChannelOption.SO_BACKLOG, 5000)
-                    .option(ChannelOption.SO_REUSEADDR, true);
-            assignOption();
-            // worker线程使用
-            bootstrap.childHandler(new ChannelInitializer<C>() {
-                @Override
-                protected void initChannel(C channel) throws Exception {
-                    ChannelPipeline pipeline = channel.pipeline();
-                    pipeline.addLast(new IdleStateHandler(readIdleTime, writeIdleTime, readWriteIdleTime, TimeUnit.SECONDS));
-                    addHandler(pipeline);
-                }
-            });
-            bootstrap.group(bossGroup, workerGroup);
 
-            bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true)
-                    .childOption(ChannelOption.TCP_NODELAY, true);
-            List<Integer> p = ports();
-            if (CollectionUtils.isEmpty(p)) {
-                throw new RuntimeException("没有端口怎么启动");
+        initThread();
+        assignChannel();
+        if (Epoll.isAvailable()) {
+            bootstrap.option(EpollChannelOption.SO_REUSEPORT, true);
+        }
+
+        assignOption();
+        // worker线程使用
+        bootstrap.childHandler(new ChannelInitializer<C>() {
+            @Override
+            protected void initChannel(C channel) throws Exception {
+                ChannelPipeline pipeline = channel.pipeline();
+                pipeline.addLast(new IdleStateHandler(readIdleTime, writeIdleTime, readWriteIdleTime, TimeUnit.SECONDS));
+                addHandler(pipeline);
             }
-            p.forEach(port -> {
+        });
+        bootstrap.group(bossGroup, workerGroup);
+
+        bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true)
+                .childOption(ChannelOption.TCP_NODELAY, true);
+        List<Integer> p = ports();
+        log.info("哈哈" + p);
+        if (CollectionUtils.isEmpty(p)) {
+            throw new RuntimeException("没有端口怎么启动");
+        }
+        p.forEach(port -> {
+            new ThreadPoolExecutor(0, Integer.MAX_VALUE, 1L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>()).execute(() -> {
+                log.info("现在开" + port + "端口");
                 startPort(port);
             });
-
         });
+
+
     }
 
     protected void startPort(int port) {
@@ -82,7 +82,7 @@ public abstract class AbstractNettyServer<C extends Channel> {
             //nc -u 127.0.0.1:7901
             log.info("🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉 NettyServer {} started 🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉", port);
             f.channel().closeFuture().sync();
-            log.info("NettyServer {} closed", port);
+            log.error("NettyServer {} closed", port);
         } catch (Exception e) {
             log.error("😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭 NettyServer {} failed 😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭", port, e);
         } finally {
@@ -124,6 +124,6 @@ public abstract class AbstractNettyServer<C extends Channel> {
         if (bossGroup != null) {
             bossGroup.shutdownGracefully();
         }
-        serverStartor.shutdown();
+        //threadPool.unLimitedExecutor.shutdown();
     }
 }

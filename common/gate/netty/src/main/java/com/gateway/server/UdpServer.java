@@ -4,7 +4,6 @@ import com.base.utils.NamingThreadFactory;
 import com.gateway.server.handler.UDPHandler;
 import com.gateway.server.udp.UDPServerChannel;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.DefaultEventLoopGroup;
 import io.netty.channel.epoll.Epoll;
@@ -83,9 +82,9 @@ public class UdpServer extends AbstractNettyServer<ServerSocketChannel> {
 
     @Override
     public void assignOption() {
-        bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true)
-                .option(ChannelOption.SO_BROADCAST,true)
-                .childOption(ChannelOption.TCP_NODELAY, true);
+        //bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true)
+        //.option(ChannelOption.SO_BROADCAST,true)
+        //      .childOption(ChannelOption.TCP_NODELAY, true);
     }
 
     @Override

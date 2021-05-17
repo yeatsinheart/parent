@@ -12,10 +12,6 @@
     <artifactId>config</artifactId>
 
     <dependencies>
-        <!--<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-quartz</artifactId>
-        </dependency>-->
         <dependency>
             <groupId>code</groupId>
             <artifactId>base</artifactId>

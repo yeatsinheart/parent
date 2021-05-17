@@ -23,15 +23,17 @@ public class NacosMetadataCollector implements MetadataCollector {
     @Value("${nacos.config.namespace:public}")
     private String namespace;
 
-    public String getProviderMetaData(DubboRemoteService service,String group, String version) {
-        String dataId = service.getInterfaceName() + ":" + version + ":" + group + ":" + CommonConstants.PROVIDER_SIDE + ":" + service.getModule();
+    public String getProviderMetaData(DubboRemoteService service) {
+        String dataId = service.getInterfaceName() + ":" + service.getVersion() + ":" + service.getGroup() + ":" + CommonConstants.PROVIDER_SIDE + ":" + service.getModule();
         try {
             //每2秒更新一次？
             //api.user.services.TestService:::consumer:user-web
             //api.user.services.TestService:::provider:netty-gateway
             //String dataid = key.getServiceInterface();
             log.info("nacos服务器获取" + dataId);
-            String config = NacosUtil.getConfig(dataId, group, namespace + "-dubbo-parameter", url);
+            // todo 做缓存吧，缓存动态更新也可以啊。
+            // 或者通过监听吧
+            String config = NacosUtil.getConfig(dataId, service.getGroup(), namespace + "-dubbo-parameter", url);
             if (StringUtils.isEmpty(config)) {
                 return null;
             }
@@ -44,10 +46,10 @@ public class NacosMetadataCollector implements MetadataCollector {
     }
 
     @Override
-    public String[] getParamsTypes(DubboRemoteService service, String group, String version) {
+    public String[] getParamsTypes(DubboRemoteService service) {
 
         //MetadataIdentifier identifier = new MetadataIdentifier(interfaze, version, group, CommonConstants.PROVIDER_SIDE, module);
-        String metadata = getProviderMetaData(service, group, version);
+        String metadata = getProviderMetaData(service);
         FullServiceDefinition serviceDefinition = JsonUtil.toObj(metadata, FullServiceDefinition.class);
         if (serviceDefinition == null) {
             return null;

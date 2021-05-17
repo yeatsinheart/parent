@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class ApiCallerCache {
     // 缓存调用关系
-    private final ConcurrentHashMap<Integer, DubboRemoteService> cachedService = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, ReferenceConfig<GenericService>> cachedService = new ConcurrentHashMap<>();
     @Value("${dubbo.registry.group:register-group}")
     private String group;
     @Value("${nacos.config.server-addr}")
@@ -30,9 +30,7 @@ public class ApiCallerCache {
 
     @PostConstruct
     public void init() {
-        log.info(address + "===" + group);
         URL url = URL.valueOf("nacos://" + address);
-        log.error(url.toString());
         if (StringUtils.isNotEmpty(group)) {
             url = url.addParameter(CommonConstants.GROUP_KEY, group);
         }
@@ -40,40 +38,36 @@ public class ApiCallerCache {
         Registry registry = registryFactory.getRegistry(url);
         RegistryConfig registryConfig = new RegistryConfig();
         registryConfig.setAddress(registry.getUrl().getProtocol() + "://" + registry.getUrl().getAddress());
-        registryConfig.setGroup(registry.getUrl().getParameter(CommonConstants.GROUP_KEY));
+        registryConfig.setGroup(group);
         applicationConfig = new ApplicationConfig();
         applicationConfig.setName("netty-gateway");
         applicationConfig.setRegistry(registryConfig);
     }
 
 
-    public DubboRemoteService get(Integer api, String group, String version) {
-        DubboRemoteService service;
-        service = cachedService.get(api);
-        log.info("缓存的服务信息{},本次查找{},找到的为{}", cachedService, api, service);
-        if (service == null) {
-            DubboRemoteService newService = initCaller(api, group, version);
-            DubboRemoteService oldService = cachedService.putIfAbsent(api, newService);
+    public ReferenceConfig<GenericService> get(DubboRemoteService service) {
+        ReferenceConfig<GenericService> invokerCache;
+        invokerCache = cachedService.get(service);
+        if (invokerCache == null) {
+            ReferenceConfig<GenericService> newService = initCaller(service);
+            ReferenceConfig<GenericService> oldService = cachedService.putIfAbsent(service.toString(), newService);
             if (oldService != null) {
-                service = oldService;
+                invokerCache = oldService;
             } else {
-                service = newService;
+                invokerCache = newService;
             }
         }
-        return service;
+        return invokerCache;
     }
 
-    public DubboRemoteService initCaller(Integer api, String group, String version) {
-        DubboRemoteService service = new DubboRemoteService();
-        ApiCache.get(api);
-        ReferenceConfig<GenericService> invoker = new ReferenceConfig<>();
-        invoker.setGeneric("raw.return");
-        invoker.setApplication(applicationConfig);
-        invoker.setGroup(group);
-        invoker.setVersion(version);
-        invoker.setInterface(interfaceName);
-        service.setInvoker(invoker);
-        return service;
+    public ReferenceConfig<GenericService> initCaller(DubboRemoteService service) {
+        ReferenceConfig<GenericService> referenceConfig = new ReferenceConfig<>();
+        referenceConfig.setGeneric("raw.return");
+        referenceConfig.setApplication(applicationConfig);
+        referenceConfig.setGroup(service.getGroup());
+        referenceConfig.setVersion(service.getVersion());
+        referenceConfig.setInterface(service.getInterfaceName());
+        return referenceConfig;
     }
 
 }

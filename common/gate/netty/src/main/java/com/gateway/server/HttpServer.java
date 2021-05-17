@@ -54,6 +54,8 @@ public class HttpServer extends AbstractNettyServer<ServerSocketChannel> {
 
     @Override
     public void assignOption() {
+        bootstrap.option(ChannelOption.SO_BACKLOG, 5000)
+                .option(ChannelOption.SO_REUSEADDR, true);
         bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true)
                 .childOption(ChannelOption.TCP_NODELAY, true);
     }

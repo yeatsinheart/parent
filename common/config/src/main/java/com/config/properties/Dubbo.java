@@ -3,7 +3,7 @@ package com.config.properties;
 public class Dubbo {
 
     public static String get(String connect, String group, String version) {
-        return "dubbo.scan.base-packages=service.global.impls,service.tenant.impls,service.user.impls,service.cost.impls,service.money.impls,service.game.impls,service.chat.impls,service.bus.impls,service.report.impls\n" +
+        return "dubbo.scan.base-packages=service.global.services.impls,service.tenant.services.impls,service.user.services.impls,service.cost.services.impls,service.money.services.impls,service.game.services.impls,service.chat.services.impls,service.bus.services.impls,service.report.services.impls\n" +
                 "#dubbo.registry.address=nacos://" + connect + "\n" +
                 "#dubbo.monitor.address=" + connect + "\n" +
                 "##如果要使用自己创建的命名空间可以使用下面2种方式\n" +
