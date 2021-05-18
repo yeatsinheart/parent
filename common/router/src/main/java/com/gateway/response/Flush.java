@@ -1,5 +1,6 @@
 package com.gateway.response;
 
+import com.base.i18n.I18nContext;
 import com.gateway.request.SessionHolder;
 import com.gateway.router.RouterRequest;
 import io.netty.buffer.ByteBuf;
@@ -8,7 +9,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +78,9 @@ public class Flush {
             //如果直接关闭通道并且内部队列中仍有数据，则会出现异常。
             future.addListener(ChannelFutureListener.CLOSE);
         }
-        log.info("{}耗时{}响应{}，是否[{}]中断请求", System.currentTimeMillis()-routerRequest.getCreateTime(),SessionHolder.getsession(routerRequest.getCtx().channel()), result, closeNow);
+        routerRequest.setResponse(result);
+        routerRequest.setResponseTime(System.currentTimeMillis()-routerRequest.getCreateTime());
+        log.info("{}是否[{}]中断请求", routerRequest, closeNow);
     }
 
 }

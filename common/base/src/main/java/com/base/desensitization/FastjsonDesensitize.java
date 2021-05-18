@@ -1,13 +1,8 @@
 //package com.base.desensitization;
 //
 //import com.alibaba.fastjson.serializer.ValueFilter;
-//import com.murphy.springmvc.annotation.Desensitization;
-//import com.murphy.springmvc.enums.DesensitionType;
 //import lombok.extern.log4j.Log4j2;
-//
 //import java.lang.reflect.Field;
-//import java.util.ArrayList;
-//import java.util.Arrays;
 //import java.util.List;
 //
 ///**
@@ -26,7 +21,6 @@
 //            if (String.class != field.getType() || (desensitization = field.getAnnotation(Desensitization.class)) == null) {
 //                return value;
 //            }
-//            ;
 //            DesensitionType type = desensitization.type();
 //            List<String> regular=this.desensitize(type,desensitization);
 //            if (regular.size() > 1) {

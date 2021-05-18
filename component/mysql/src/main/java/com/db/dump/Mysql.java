@@ -91,8 +91,8 @@ public class Mysql {
 
     public static void main(String[] args) {
         String user = "root";
-        //String pwd = "zane";
-        String pwd = "zdc1991";
+        String pwd = "zane";
+       // String pwd = "zdc1991";
         String db = "code";
         dbBackUp(user,pwd,db);
         //recovery(user, pwd, db);

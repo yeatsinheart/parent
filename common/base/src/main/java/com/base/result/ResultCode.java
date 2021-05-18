@@ -1,8 +1,5 @@
 package com.base.result;
 
-import com.base.utils.I18nUtil;
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * 响应码枚举，参考HTTP状态码的语义
  * 解决不同业务返回需要跳转不同页面的需求
@@ -28,9 +25,7 @@ public enum ResultCode {
         return code;
     }
 
-    public String getMessage(String language) {
-        return StringUtils.isEmpty(I18nUtil.getString("common", message, language)) ?
-                message :
-                I18nUtil.getString("common", message, language);
+    public String getMessage() {
+        return message;
     }
 }

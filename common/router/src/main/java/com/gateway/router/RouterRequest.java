@@ -12,4 +12,6 @@ public class RouterRequest {
     private Map<String, Object> headers;
     // 请求时间
     private Long createTime = System.currentTimeMillis();
+    private Long responseTime;
+    private String response;
 }

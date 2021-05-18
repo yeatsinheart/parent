@@ -1,5 +1,6 @@
 package com.gateway.router.impl;
 
+import com.base.i18n.I18nContext;
 import com.base.result.ResultGenerator;
 import com.base.utils.JsonUtil;
 import com.base.utils.NamingThreadFactory;
@@ -53,6 +54,8 @@ public class DefaultRouter implements Router {
         //{data:[{}]}
         //ioworker.execute(new RequestWorker(ctx, router, map));
         String language = (String) routerRequest.getHeaders().get("language");
+        //初始化线程语言
+        new I18nContext(language);
         String currency = (String) routerRequest.getHeaders().get("currency");
         String group = (String) routerRequest.getHeaders().get("group");
         String version = (String) routerRequest.getHeaders().get("version");
@@ -75,6 +78,8 @@ public class DefaultRouter implements Router {
             dubboRequest.setData(dubboParam);
             //请求参数处理
             if (1 == service.getMulti()) {
+                // 子线程初始化线程语言  dubbo请求对象初始化时，如果有语言参数也会进行初始化
+                new I18nContext(language);
                 ioworker.execute(() -> {
                     Object result1 = dubboInvoke.invoke(service, dubboRequest);
                     Flush.flush(routerRequest, JsonUtil.toJsonStr(result1), false);

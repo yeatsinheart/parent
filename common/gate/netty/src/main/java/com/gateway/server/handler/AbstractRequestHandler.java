@@ -35,7 +35,6 @@ public abstract class AbstractRequestHandler<T extends ReferenceCounted> extends
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        log.info("激活channel:"+SessionHolder.getsession(ctx.channel()));
         super.channelActive(ctx);
     }
     @Override
@@ -68,8 +67,6 @@ public abstract class AbstractRequestHandler<T extends ReferenceCounted> extends
         }
     }
     public void doBytebuf(ChannelHandlerContext ctx, ByteBuf bytebuf) {
-        lossConnectCount = 0;
-        int nowRef = bytebuf.refCnt();
         byte[] req = new byte[bytebuf.readableBytes()];
         bytebuf.readBytes(req);
         String reqStr = null;
@@ -87,22 +84,18 @@ public abstract class AbstractRequestHandler<T extends ReferenceCounted> extends
             log.warn("Exception:", e);
             Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult(language)), true);
         }
-        if (bytebuf.refCnt() != nowRef) {
-            log.error("http,引用计数不正常{}", bytebuf.refCnt());
-        }
-
     }
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
-            if (event.state().equals(IdleState.READER_IDLE) && ++lossConnectCount > 2) {
+            if (event.state().equals(IdleState.READER_IDLE) ) {
                 //未进行读操作 请求
             } else if (event.state().equals(IdleState.WRITER_IDLE)) {
                 //未写   回传
             } else if (event.state().equals(IdleState.ALL_IDLE)) {
             }
-            log.info("懒得心跳了。直接挂掉" + SessionHolder.getsession(ctx.channel()));
+            //log.info("懒得心跳了。直接挂掉" + SessionHolder.getsession(ctx.channel()));
             ctx.close();
             //Flush.flush(ctx, "{\"code\":886,\"message\":\"bye bye\"}", true);
         }

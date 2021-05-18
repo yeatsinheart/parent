@@ -1,5 +1,7 @@
 package com.base.dto;
 
+import com.base.i18n.I18n;
+import com.base.i18n.I18nContext;
 import com.base.utils.JsonUtil;
 import com.base.utils.LocalDateTimeUtil;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -83,6 +85,11 @@ public class BaseRequest implements Serializable {
     private Integer requestPageSize = 10;
     @Parameter(description = "请求时间,时间戳", example = "1111111111111", required = false, hidden = true)
     private Long requestTime = System.currentTimeMillis();
+
+    public void setRequestLanguage(String requestLanguage) {
+        this.requestLanguage = requestLanguage;
+        new I18nContext(requestLanguage);
+    }
 
     public BaseRequest(String domain, Integer appId, Integer requestUserId, String requestUserName, String op, String requestCode, String requestClient, String requestIp, String requestLanguage, String requestCurrency, Integer requestPageNum, Integer requestPageSize) {
         this.domain = domain;
