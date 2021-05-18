@@ -11,14 +11,13 @@ import java.io.Serializable;
  */
 public class PageResult<T> implements Serializable {
     private int code;
-    private String message;
     private T data;
     private final long total;
     private final long size;
     private final long current;
     private final long pages;
 
-    public PageResult(long size, long current, long total, long pages, T data, String language) {
+    public PageResult(long size, long current, long total, long pages, T data) {
         this.code = ResultCode.SUCCESS.getCode();
         this.size = size;
         this.current = current;
@@ -36,9 +35,6 @@ public class PageResult<T> implements Serializable {
         return this;
     }
 
-    public String getMessage() {
-        return message;
-    }
 
     public T getData() {
         return data;

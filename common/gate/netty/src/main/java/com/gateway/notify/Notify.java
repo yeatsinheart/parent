@@ -6,6 +6,6 @@ import com.base.result.ResultGenerator;
 
 public class Notify {
     public Result call() {
-        return ResultGenerator.genFailResult(Language.中文.getCode());
+        return ResultGenerator.genFailResult();
     }
 }

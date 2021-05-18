@@ -64,7 +64,7 @@ public class DefaultRouter implements Router {
 
         DubboRemoteService service = getApi(api);
         if (null == service) {
-            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult(language)), true);
+            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult()), true);
         }
         service.setGroup(StringUtil.isEmpty(group) ? "dev" : group);
         service.setVersion(StringUtil.isEmpty(version) ? "1.0.0" : version);
@@ -89,7 +89,7 @@ public class DefaultRouter implements Router {
                 Flush.flush(routerRequest, JsonUtil.toJsonStr(result), false);
             }
         } else {
-            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult(language)), true);
+            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult()), true);
         }
     }
 }

@@ -24,7 +24,7 @@ public class RequestHandler {
     public void dispatch(RouterRequest routerRequest) {
         Router router = getRouter(routerRequest.getUri());
         if (null == router) {
-            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult(null)), false);
+            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult()), false);
             return;
         }
         // Xss 攻击  &&  sql 注入
@@ -33,7 +33,7 @@ public class RequestHandler {
             router.handle(routerRequest);
         } catch (Exception e) {
             log.error("请求逻辑中出错{}", e);
-            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult(null)), false);
+            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult()), false);
         }
     }
 

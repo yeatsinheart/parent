@@ -40,10 +40,10 @@ public class DubboInvoke {
             } else {
                 log.error("RPC failed request :\n{}, \n{},\n{},\n", service, request, e1);
             }
-            return ResultGenerator.genFailResult(request.getLanguage());
+            return ResultGenerator.genFailResult();
         } catch (Exception e1) {
             log.error("服务调用异常 : \n{},\n{},\n{},\n", service, request, e1);
-            return ResultGenerator.genFailResult(request.getLanguage());
+            return ResultGenerator.genFailResult();
         }
     }
 

@@ -71,7 +71,7 @@ public class GlobalAopAdvice {
         } catch (Throwable throwable) {
             log.error("role 拦截 ERR:{}", throwable);
         }
-        return ResultGenerator.genFailResult(Language.中文.getCode());
+        return ResultGenerator.genFailResult();
     }
 
 }

@@ -82,7 +82,7 @@ public abstract class AbstractRequestHandler<T extends ReferenceCounted> extends
             requestHandler.dispatch(routerRequest);
         } catch (Exception e) {
             log.warn("Exception:", e);
-            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult(language)), true);
+            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult()), true);
         }
     }
     @Override

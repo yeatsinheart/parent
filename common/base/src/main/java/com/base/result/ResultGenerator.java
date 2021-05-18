@@ -5,23 +5,23 @@ package com.base.result;
  */
 public class ResultGenerator<T> {
 
-    public static Result genSuccessResult(String language) {
-        return new Result(ResultCode.SUCCESS, language);
+    public static Result genSuccessResult() {
+        return new Result(ResultCode.SUCCESS);
     }
 
-    public static Result genSuccessResult(Object data, String language) {
-        return new Result(ResultCode.SUCCESS, data, language);
+    public static Result genSuccessResult(Object data) {
+        return new Result(ResultCode.SUCCESS, data);
     }
 
-    public static PageResult genPageResult(long size, long current, long total, long pages, Object data, String language) {
-        return new PageResult(size, current, total, pages, data, language);
+    public static PageResult genPageResult(long size, long current, long total, long pages, Object data) {
+        return new PageResult(size, current, total, pages, data);
     }
 
-    public static Result genFailResult(String language) {
-        return new Result(ResultCode.FAIL, language);
+    public static Result genFailResult() {
+        return new Result(ResultCode.FAIL);
     }
 
-    public static Result genResult(ResultCode resultCode, String language) {
-        return new Result(resultCode, language);
+    public static Result genResult(ResultCode resultCode) {
+        return new Result(resultCode);
     }
 }
