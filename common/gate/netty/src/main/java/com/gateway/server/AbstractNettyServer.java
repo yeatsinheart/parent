@@ -1,5 +1,6 @@
 package com.gateway.server;
 
+import com.base.utils.NamingThreadFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
@@ -28,9 +29,9 @@ public abstract class AbstractNettyServer<C extends Channel> {
     protected int readIdleTime;
     @Value("${netty.wirte.idle.time:15}")
     protected int writeIdleTime;
-    @Value("${netty.boss.num:0}")
+    @Value("${netty.boss.num:1}")
     protected int bossNum;
-    @Value("${netty.worker.num:0}")
+    @Value("${netty.worker.num:1}")
     protected int workerNum;
     protected ServerBootstrap bootstrap;
     protected EventLoopGroup bossGroup;
@@ -61,18 +62,15 @@ public abstract class AbstractNettyServer<C extends Channel> {
         bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true)
                 .childOption(ChannelOption.TCP_NODELAY, true);
         List<Integer> p = ports();
-        log.info("哈哈" + p);
         if (CollectionUtils.isEmpty(p)) {
             throw new RuntimeException("没有端口怎么启动");
         }
         p.forEach(port -> {
-            new ThreadPoolExecutor(0, Integer.MAX_VALUE, 1L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>()).execute(() -> {
+            new ThreadPoolExecutor(1, 1, 0L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>(), new NamingThreadFactory(this.getClass().getSimpleName() + ".java")).execute(() -> {
                 log.info("现在开" + port + "端口");
                 startPort(port);
             });
         });
-
-
     }
 
     protected void startPort(int port) {

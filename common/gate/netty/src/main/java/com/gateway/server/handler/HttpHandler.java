@@ -1,8 +1,8 @@
 package com.gateway.server.handler;
 
+import com.gateway.project.GateRequest;
 import com.gateway.request.RequestParamUtil;
 import com.gateway.request.SessionHolder;
-import com.gateway.router.GateRequest;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;

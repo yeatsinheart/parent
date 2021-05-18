@@ -1,8 +1,8 @@
 package com.gateway.response;
 
 import com.base.utils.StringUtil;
+import com.gateway.project.GateRequest;
 import com.gateway.request.SessionHolder;
-import com.gateway.router.GateRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;

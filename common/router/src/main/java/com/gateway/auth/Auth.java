@@ -1,7 +1,7 @@
 package com.gateway.auth;
 
 import com.gateway.dubbo.caller.RemoteApi;
-import com.gateway.router.GateRequest;
+import com.gateway.project.GateRequest;
 
 public class Auth {
     public static boolean auth(RemoteApi remoteApi, GateRequest gateRequest) {

@@ -10,7 +10,6 @@ public class NamingThreadFactory implements ThreadFactory {
     private final boolean isDaemon;
 
     public NamingThreadFactory(String name) {
-
         this(name, false);
     }
 

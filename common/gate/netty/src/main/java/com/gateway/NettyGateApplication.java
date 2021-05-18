@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 @ComponentScan(basePackages = {
         "com.gateway.server",
-        "com.gateway.router",
+        "com.gateway.project",
         "com.gateway.request",
         "com.gateway.dubbo",
         "com.config.refresh",
@@ -51,6 +51,4 @@ public class NettyGateApplication {
         System.setProperty("java.net.preferIPv4Stack", "true");
         ConfigurableApplicationContext applicationContext = SpringApplication.run(NettyGateApplication.class, args);
     }
-
-
 }

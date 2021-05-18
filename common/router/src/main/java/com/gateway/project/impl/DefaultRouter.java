@@ -1,4 +1,4 @@
-package com.gateway.router.impl;
+package com.gateway.project.impl;
 
 import com.base.result.ResultGenerator;
 import com.base.utils.JsonUtil;
@@ -9,32 +9,42 @@ import com.gateway.dubbo.DubboInvoke;
 import com.gateway.dubbo.DubboRequest;
 import com.gateway.dubbo.caller.RemoteApi;
 import com.gateway.dubbo.meta.MetadataCollector;
+import com.gateway.project.GateRequest;
+import com.gateway.project.Router;
 import com.gateway.response.Flush;
-import com.gateway.router.GateRequest;
-import com.gateway.router.Router;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component(Router.ROUTER_KEY + "default")
 public class DefaultRouter implements Router {
     // io请求线程池
-    protected ExecutorService ioworker = Executors.newFixedThreadPool(
-            Runtime.getRuntime().availableProcessors(),
-            new NamingThreadFactory("req"));
+    protected ExecutorService ioworker;
+    @Value("${netty.call.num:1}")
+    private int callNum;
     @Autowired
     private DubboInvoke dubboInvoke;
     @Resource
     private MetadataCollector metadataCollector;
 
-    {
-
+    @PostConstruct
+    public void init() {
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(callNum, callNum,
+                0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>(),
+                new NamingThreadFactory("DefaultRouter.java"));
+        executor.prestartAllCoreThreads();
+        ioworker = executor;
     }
 
     /**

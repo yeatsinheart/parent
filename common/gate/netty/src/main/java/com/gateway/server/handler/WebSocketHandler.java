@@ -1,9 +1,9 @@
 package com.gateway.server.handler;
 
+import com.gateway.project.GateRequest;
 import com.gateway.request.RequestParamUtil;
 import com.gateway.request.SessionHolder;
 import com.gateway.response.Flush;
-import com.gateway.router.GateRequest;
 import com.gateway.server.parameter.WebSocketRequestDTO;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;

@@ -1,4 +1,4 @@
-package com.gateway.router;
+package com.gateway.project;
 
 import com.base.i18n.I18nContext;
 import io.netty.channel.ChannelHandlerContext;
