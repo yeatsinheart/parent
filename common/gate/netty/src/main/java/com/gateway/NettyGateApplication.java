@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @SpringBootApplication
@@ -43,6 +44,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
         "com.base.annotation",
         "com.base.event",
 })
+@EnableScheduling
 @Slf4j
 public class NettyGateApplication {
     public static void main(String[] args) {

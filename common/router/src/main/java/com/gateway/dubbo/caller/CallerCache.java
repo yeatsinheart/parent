@@ -32,12 +32,12 @@ public class CallerCache {
 
     public void clear() {
         cachedService.clear();
-        getAllApi();
+        initAllApi();
     }
-    public void getAllApi() {
+    public void initAllApi() {
         List<DubboRemoteService> methods = new ArrayList<>();
         methods.parallelStream().forEach(method -> {
-            cachedService.putIfAbsent(method.toString(), get(method));
+            cachedService.putIfAbsent(method.toString(), initCaller(method));
         });
     }
 
