@@ -24,19 +24,12 @@ import java.util.Map;
 public class WebSocketHandler extends AbstractRequestHandler<WebSocketRequestDTO> {
     private final WebSocketServerHandshakerFactory wsFactory =
             new WebSocketServerHandshakerFactory(null, null, true, 65536 * 5);
-
-
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    protected void doRequest(ChannelHandlerContext ctx, WebSocketRequestDTO request) {
         SessionHolder.setProto(ctx.channel(), "ws");
-        super.channelActive(ctx);
-    }
-
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, WebSocketRequestDTO request) throws Exception {
         //处理握手
-        if (request.getRequest() != null) {
-            this.handleShake(ctx, request.getRequest());
+        if (request.getWoshou() != null) {
+            this.handleShake(ctx, request.getWoshou());
         }
         //处理websocket数据
         if (request.getFrame() != null) {

@@ -81,10 +81,24 @@ public class BaseRequest implements Serializable {
      */
     @Parameter(description = "每页数量：", example = "10", required = false)
     private Integer requestPageSize = 10;
-    @Parameter(description = "请求时间", example = "2020-02-02 00:00:00.000", required = false, hidden = true)
-    private Long requestTime = LocalDateTimeUtil.timestamp13();
+    @Parameter(description = "请求时间,时间戳", example = "1111111111111", required = false, hidden = true)
+    private Long requestTime = System.currentTimeMillis();
 
-    @SneakyThrows
+    public BaseRequest(String domain, Integer appId, Integer requestUserId, String requestUserName, String op, String requestCode, String requestClient, String requestIp, String requestLanguage, String requestCurrency, Integer requestPageNum, Integer requestPageSize) {
+        this.domain = domain;
+        this.appId = appId;
+        this.requestUserId = requestUserId;
+        this.requestUserName = requestUserName;
+        this.op = op;
+        this.requestCode = requestCode;
+        this.requestClient = requestClient;
+        this.requestIp = requestIp;
+        this.requestLanguage = requestLanguage;
+        this.requestCurrency = requestCurrency;
+        this.requestPageNum = requestPageNum;
+        this.requestPageSize = requestPageSize;
+    }
+
     public String toString() {
         //return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
         return JsonUtil.toJsonStr(this);

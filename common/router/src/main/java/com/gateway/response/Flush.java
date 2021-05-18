@@ -1,6 +1,7 @@
 package com.gateway.response;
 
 import com.gateway.request.SessionHolder;
+import com.gateway.router.RouterRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -53,33 +54,33 @@ public class Flush {
         channel.writeAndFlush(result).addListener(ChannelFutureListener.CLOSE);
     }
 
-    public static void flush(ChannelHandlerContext ctx, String result, boolean closeNow) {
-        String proto = SessionHolder.getProto(ctx.channel());
+    public static void flush(RouterRequest routerRequest, String result, boolean closeNow) {
+        String proto = SessionHolder.getProto(routerRequest.getCtx().channel());
+        ChannelFuture future;
         switch (proto) {
             case "http":
                 FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.copiedBuffer(result, CharsetUtil.UTF_8));
-                if (SessionHolder.getKeeplive(ctx.channel())) {
-                    // Add 'Content-Length' header only for a keep-alive connection.
+                setCros(response);
+                if (SessionHolder.getKeeplive(routerRequest.getCtx().channel())) {
                     response.headers().setInt(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
-                    // Add keep alive header as per:
-                    // - http://www.w3.org/Protocols/HTTP/1.1/draft-ietf-http-v11-spec-01.html#Connection
                     response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
                 }
-                setCros(response);
                 response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
-                log.info("{}HTTP响应{}", SessionHolder.getsession(ctx.channel()), result);
-                ctx.writeAndFlush(response);
-                ctx.writeAndFlush(Unpooled.EMPTY_BUFFER);
+                future = routerRequest.getCtx().writeAndFlush(response);
                 break;
             default:
                 ByteBuf buf = Unpooled.buffer();
                 buf.writeBytes(result.getBytes(StandardCharsets.UTF_8));
-                ctx.channel().writeAndFlush(buf);
+                future = routerRequest.getCtx().channel().writeAndFlush(buf);
                 break;
         }
         if (closeNow) {
-            ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
+            //如果直接关闭通道并且内部队列中仍有数据，则会出现异常。
+            future.addListener(ChannelFutureListener.CLOSE);
         }
+
+        log.info("{}耗时{}响应{}，是否[{}]中断请求", System.currentTimeMillis()-routerRequest.getCreateTime(),SessionHolder.getsession(routerRequest.getCtx().channel()), result, closeNow);
+
 
     }
 

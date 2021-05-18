@@ -96,6 +96,9 @@ public class JsonUtil {
 
     @SneakyThrows
     public static <T> T toObj(String json, Class<T> type) {
+        if(StringUtil.isEmpty(json)){
+            return null;
+        }
         return getMapper().readValue(json, type);
     }
 

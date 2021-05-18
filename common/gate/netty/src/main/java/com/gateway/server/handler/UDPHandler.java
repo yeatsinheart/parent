@@ -11,13 +11,10 @@ import org.springframework.stereotype.Component;
 @ChannelHandler.Sharable
 @Component("udp")
 public class UDPHandler extends AbstractRequestHandler<ByteBuf> {
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        SessionHolder.setProto(ctx.channel(), "udp");
-        super.channelActive(ctx);
-    }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf bytebuf) {
-        doBytebuf(ctx, bytebuf);
+    protected void doRequest(ChannelHandlerContext ctx, ByteBuf reuqest) {
+        SessionHolder.setProto(ctx.channel(), "udp");
+        doBytebuf(ctx, reuqest);
     }
 }

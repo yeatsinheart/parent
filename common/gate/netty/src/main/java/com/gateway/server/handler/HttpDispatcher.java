@@ -9,25 +9,32 @@ import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import io.netty.util.ReferenceCounted;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Slf4j
 @ChannelHandler.Sharable
 @Service
-public class HttpDispatcher extends SimpleChannelInboundHandler<Object> {
+public class HttpDispatcher extends AbstractRequestHandler<ReferenceCounted> {
+    @Autowired
+    private HttpHandler http;
+    @Autowired
+    private WebSocketHandler webSocket;
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Object msg) {
+    protected void doRequest(ChannelHandlerContext ctx, ReferenceCounted msg) {
         if (msg instanceof FullHttpRequest) {
             FullHttpRequest request = (FullHttpRequest) msg;
             if (isWebSocketHandShake(request)) {
-                //websocket处理器
+                //websocket  握手处理
                 WebSocketRequestDTO webSocketRequest = new WebSocketRequestDTO(request);
+                ctx.pipeline().addLast(webSocket);
                 ctx.fireChannelRead(webSocketRequest);
                 webSocketRequest.release();
             } else if (isFileUpload(request)) {
@@ -35,11 +42,14 @@ public class HttpDispatcher extends SimpleChannelInboundHandler<Object> {
                 ctx.fireChannelRead(new FileUploadRequestVo(request));
             } else {
                 //Http请求处理器
+                ctx.pipeline().addLast(http);
                 ctx.fireChannelRead(request.retain());
             }
         } else if (msg instanceof WebSocketFrame) {
+            // websocket 消息
             WebSocketFrame frame = (WebSocketFrame) msg;
             WebSocketRequestDTO webSocketRequest = new WebSocketRequestDTO(frame);
+            ctx.pipeline().addLast(webSocket);
             ctx.fireChannelRead(webSocketRequest);
             webSocketRequest.release();
         } else {

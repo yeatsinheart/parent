@@ -5,20 +5,24 @@ import com.base.utils.JsonUtil;
 import com.gateway.request.RequestHandler;
 import com.gateway.request.SessionHolder;
 import com.gateway.response.Flush;
+import com.gateway.router.RouterRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.ReadTimeoutException;
+import io.netty.util.ReferenceCounted;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public abstract class AbstractRequestHandler<T> extends SimpleChannelInboundHandler<T> {
+public abstract class AbstractRequestHandler<T extends ReferenceCounted> extends SimpleChannelInboundHandler<T> {
     @Autowired
     RequestHandler requestHandler;
     /**
@@ -31,9 +35,18 @@ public abstract class AbstractRequestHandler<T> extends SimpleChannelInboundHand
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        log.info("激活channel:"+SessionHolder.getsession(ctx.channel()));
         super.channelActive(ctx);
     }
-
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, T reuqest) {
+        int nowRef = reuqest.refCnt();
+        doRequest(ctx,reuqest);
+        if (reuqest.refCnt() != nowRef) {
+            log.error("http,引用计数不正常{}", reuqest.refCnt());
+        }
+    }
+    protected abstract void doRequest(ChannelHandlerContext ctx, T reuqest);
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.flush();
@@ -54,7 +67,6 @@ public abstract class AbstractRequestHandler<T> extends SimpleChannelInboundHand
             ctx.close();
         }
     }
-
     public void doBytebuf(ChannelHandlerContext ctx, ByteBuf bytebuf) {
         lossConnectCount = 0;
         int nowRef = bytebuf.refCnt();
@@ -62,22 +74,24 @@ public abstract class AbstractRequestHandler<T> extends SimpleChannelInboundHand
         bytebuf.readBytes(req);
         String reqStr = null;
         String language = null;
+        RouterRequest routerRequest = new RouterRequest();
+        routerRequest.setCtx(ctx);
         try {
             reqStr = new String(req, StandardCharsets.UTF_8.name());
-            Map<String, Object> map = JsonUtil.toMap(reqStr);
-            String route = (String) map.get("uri");
-            language = (String) map.get("language");
-            requestHandler.dispatch(ctx, route, map);
+            Map<String, Object> params = JsonUtil.toMap(reqStr);
+            routerRequest.setParams(params);
+            routerRequest.setUri((String) params.get("uri"));
+            routerRequest.setHeaders(new HashMap<>());
+            requestHandler.dispatch(routerRequest);
         } catch (Exception e) {
             log.warn("Exception:", e);
-            Flush.flush(ctx, JsonUtil.toJsonStr(ResultGenerator.genFailResult(language)), true);
+            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult(language)), true);
         }
         if (bytebuf.refCnt() != nowRef) {
             log.error("http,引用计数不正常{}", bytebuf.refCnt());
         }
 
     }
-
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {

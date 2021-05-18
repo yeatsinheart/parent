@@ -11,15 +11,9 @@ import org.springframework.stereotype.Component;
 @ChannelHandler.Sharable
 @Component("tcp")
 public class TCPHandler extends AbstractRequestHandler<ByteBuf> {
-
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    protected void doRequest(ChannelHandlerContext ctx, ByteBuf reuqest) {
         SessionHolder.setProto(ctx.channel(), "tcp");
-        super.channelActive(ctx);
-    }
-
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf bytebuf) {
-        doBytebuf(ctx, bytebuf);
+        doBytebuf(ctx, reuqest);
     }
 }

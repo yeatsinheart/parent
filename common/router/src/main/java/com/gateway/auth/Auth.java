@@ -1,8 +1,10 @@
 package com.gateway.auth;
 
-import java.util.Map;
+import com.gateway.dubbo.caller.DubboRemoteService;
+import com.gateway.router.RouterRequest;
 
 public class Auth {
-    public static void auth(Map<String, Object> params) {
+    public static boolean auth(DubboRemoteService service, RouterRequest routerRequest) {
+        return true;
     }
 }

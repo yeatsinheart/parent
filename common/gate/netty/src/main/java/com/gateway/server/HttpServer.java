@@ -2,8 +2,6 @@ package com.gateway.server;
 
 import com.base.utils.NamingThreadFactory;
 import com.gateway.server.handler.HttpDispatcher;
-import com.gateway.server.handler.HttpHandler;
-import com.gateway.server.handler.WebSocketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -28,10 +26,7 @@ import java.util.List;
 public class HttpServer extends AbstractNettyServer<ServerSocketChannel> {
     @Autowired
     private HttpDispatcher httpDispatcher;
-    @Autowired
-    private HttpHandler http;
-    @Autowired
-    private WebSocketHandler webSocket;
+
     @Value("#{'${net.http.ports:80}'.split(',')}")
     private List<Integer> ports;
 
@@ -54,23 +49,24 @@ public class HttpServer extends AbstractNettyServer<ServerSocketChannel> {
 
     @Override
     public void assignOption() {
-        bootstrap.option(ChannelOption.SO_BACKLOG, 5000)
+        //用于构造服务端套接字ServerSocket对象，标识当服务器请求处理线程全满时，用于临时存放已完成三次握手的请求的队列的最大长度。
+        // 如果未设置或所设置的值小于1，Java将使用默认值50。
+        // 服务端处理客户端连接请求是顺序处理的，所以同一时间只能处理一个客户端连接，多个客户端来的时候，服务端将不能处理的客户端连接请求放在队列中等待处理，backlog参数指定了队列的大小
+        bootstrap.option(ChannelOption.SO_BACKLOG, 1024)
                 .option(ChannelOption.SO_REUSEADDR, true);
         bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true)
-                .childOption(ChannelOption.TCP_NODELAY, true);
+                //如果要求高实时性，有数据发送时就马上发送，就将该选项设置为true关闭Nagle算法；如果要减少发送次数减少网络交互，就设置为false等累积一定大小后再发送。
+                .childOption(ChannelOption.TCP_NODELAY, false);
     }
 
     @Override
     public void addHandler(ChannelPipeline pipeline) {
         //HttpServerCodec 会将多个消息对象转变为单个 FullHttpRequest 或者 FullHttpResponse
         pipeline.addLast(new HttpServerCodec());
-        //HttpObjectAggregator 会将多个消息对象转变为单个 FullHttpRequest 或者 FullHttpResponse
-        pipeline.addLast(new HttpObjectAggregator(512 * 1024 * 1024));
-        //websocket 和 http 握手请求分别处理
-        pipeline.addLast(httpDispatcher);
+        //  HttpObjectAggregator 会将多个消息对象转变为单个 FullHttpRequest 或者 FullHttpResponse
+        // body的最大长度 char长度
+        pipeline.addLast(new HttpObjectAggregator(512));
         //纯Http请求
-        pipeline.addLast(http);
-        //纯websocket通信
-        pipeline.addLast(webSocket);
+        pipeline.addLast(httpDispatcher);
     }
 }
