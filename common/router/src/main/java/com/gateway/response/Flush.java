@@ -78,25 +78,7 @@ public class Flush {
             //如果直接关闭通道并且内部队列中仍有数据，则会出现异常。
             future.addListener(ChannelFutureListener.CLOSE);
         }
-
         log.info("{}耗时{}响应{}，是否[{}]中断请求", System.currentTimeMillis()-routerRequest.getCreateTime(),SessionHolder.getsession(routerRequest.getCtx().channel()), result, closeNow);
-
-
     }
 
-    public static void flushUdp2All(ChannelGroup channels, String msg) {
-        ByteBuf buf = Unpooled.buffer();
-        buf.writeBytes(msg.getBytes(StandardCharsets.UTF_8));
-        channels.writeAndFlush(buf);
-    }
-
-    public static void flushWebSocket(Channel channel, Object result) {
-        channel.writeAndFlush(result);
-    }
-
-    public static void flushBytes(Channel channel, byte[] result) {
-        ByteBuf buf = Unpooled.buffer();
-        buf.writeBytes(result);
-        channel.writeAndFlush(buf);
-    }
 }
