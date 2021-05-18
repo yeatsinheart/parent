@@ -1,8 +1,7 @@
 package com.gateway.server.handler;
 
 import com.gateway.request.RequestHandler;
-import com.gateway.request.SessionHolder;
-import com.gateway.router.RouterRequest;
+import com.gateway.router.GateRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -10,9 +9,11 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.netty.util.ReferenceCounted;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Data
 @Slf4j
 public abstract class AbstractRequestHandler<T extends ReferenceCounted> extends SimpleChannelInboundHandler<T> {
     @Autowired
@@ -24,7 +25,6 @@ public abstract class AbstractRequestHandler<T extends ReferenceCounted> extends
      * 若客户端异常掉线了，并不能响应服务端发来的心跳包，在25s后就会触发IdleState.READER_IDLE（未读操作状态），此时服务器就会将通道关闭
      */
     private final int lossConnectCount = 0;
-    protected String protocol;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -33,19 +33,17 @@ public abstract class AbstractRequestHandler<T extends ReferenceCounted> extends
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, T reuqest) {
-        SessionHolder.setProto(ctx.channel(), protocol);
         int nowRef = reuqest.refCnt();
-        RouterRequest routerRequest = getRouterRequest(ctx, reuqest);
-        if (null != routerRequest) {
-
-            requestHandler.dispatch(routerRequest);
+        GateRequest gateRequest = getRouterRequest(ctx, reuqest);
+        if (null != gateRequest) {
+            requestHandler.dispatch(gateRequest);
         }
         if (reuqest.refCnt() != nowRef) {
             log.error("http,引用计数不正常{}", reuqest.refCnt());
         }
     }
 
-    protected abstract RouterRequest getRouterRequest(ChannelHandlerContext ctx, T reuqest);
+    protected abstract GateRequest getRouterRequest(ChannelHandlerContext ctx, T reuqest);
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {

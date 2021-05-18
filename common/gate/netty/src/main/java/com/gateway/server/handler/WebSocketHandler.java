@@ -3,7 +3,7 @@ package com.gateway.server.handler;
 import com.gateway.request.RequestParamUtil;
 import com.gateway.request.SessionHolder;
 import com.gateway.response.Flush;
-import com.gateway.router.RouterRequest;
+import com.gateway.router.GateRequest;
 import com.gateway.server.parameter.WebSocketRequestDTO;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -24,10 +24,10 @@ import java.util.Map;
 public class WebSocketHandler extends AbstractRequestHandler<WebSocketRequestDTO> {
     private final WebSocketServerHandshakerFactory wsFactory =
             new WebSocketServerHandshakerFactory(null, null, true, 65536 * 5);
-    protected String protocol = "ws";
+    String protocol = "ws";
 
     @Override
-    protected RouterRequest getRouterRequest(ChannelHandlerContext ctx, WebSocketRequestDTO request) {
+    protected GateRequest getRouterRequest(ChannelHandlerContext ctx, WebSocketRequestDTO request) {
         SessionHolder.setProto(ctx.channel(), "ws");
         //处理握手
         if (request.getHandleShake() != null) {

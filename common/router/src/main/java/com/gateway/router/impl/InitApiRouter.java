@@ -5,8 +5,8 @@ import com.base.utils.JsonUtil;
 import com.gateway.dubbo.caller.CallerCache;
 import com.gateway.dubbo.meta.MetadataCollector;
 import com.gateway.response.Flush;
+import com.gateway.router.GateRequest;
 import com.gateway.router.Router;
-import com.gateway.router.RouterRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +22,7 @@ public class InitApiRouter implements Router {
     private MetadataCollector metadataCollector;
 
     @Override
-    public void handle(RouterRequest routerRequest) {
+    public void handle(GateRequest routerRequest) {
         callerCache.clear();
         metadataCollector.clear();
         Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genSuccessResult(null)), true);

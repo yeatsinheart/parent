@@ -11,8 +11,12 @@ import java.util.Map;
  * 路由请求
  */
 @Data
-public class RouterRequest {
+public class GateRequest {
     private ChannelHandlerContext ctx;
+    /**
+     * 请求来源协议
+     */
+    private String protocal;
     /**
      * 请求路径，用来识别具体router业务路由
      */
@@ -25,6 +29,7 @@ public class RouterRequest {
     private Map<String, Object> params;
     private HttpHeaders headers;
     // 请求时间
+    private Long requestTime;
     private Long createTime = System.currentTimeMillis();
     private Long responseTime;
     private String response;

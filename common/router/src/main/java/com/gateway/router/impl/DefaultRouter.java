@@ -10,8 +10,8 @@ import com.gateway.dubbo.DubboRequest;
 import com.gateway.dubbo.caller.RemoteApi;
 import com.gateway.dubbo.meta.MetadataCollector;
 import com.gateway.response.Flush;
+import com.gateway.router.GateRequest;
 import com.gateway.router.Router;
-import com.gateway.router.RouterRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,14 +40,14 @@ public class DefaultRouter implements Router {
     /**
      * 根据api查找具体的接口定义
      */
-    public RemoteApi getApiInfo(RouterRequest routerRequest) {
-        String language = routerRequest.getHeaders().get("language");
+    public RemoteApi getApiInfo(GateRequest gateRequest) {
+        // todo 从header中获取有问题，如果tcp udp 是没有header的
+        String language = gateRequest.getHeaders().get("language");
+        String currency = gateRequest.getHeaders().get("currency");
+        String group = gateRequest.getHeaders().get("group");
+        String version = gateRequest.getHeaders().get("version");
+        Integer api = gateRequest.getHeaders().getInt("api");
 
-        String currency = routerRequest.getHeaders().get("currency");
-        String group = routerRequest.getHeaders().get("group");
-        String version = routerRequest.getHeaders().get("version");
-
-        Integer api = (Integer) routerRequest.getHeaders().get("api");
 
         RemoteApi service = new RemoteApi();
         service.setGroup(StringUtil.isEmpty(group) ? "dev" : group);
@@ -58,8 +58,8 @@ public class DefaultRouter implements Router {
     /**
      * 填充基本请求信息
      */
-    public Map<String, Object> initParam(RouterRequest routerRequest) {
-        Map<String, Object> param = routerRequest.getParams();
+    public Map<String, Object> initParam(GateRequest gateRequest) {
+        Map<String, Object> param = gateRequest.getParams();
         return param;
     }
 
@@ -68,39 +68,39 @@ public class DefaultRouter implements Router {
      */
 
     @Override
-    public void handle(RouterRequest routerRequest) {
-        RemoteApi remoteApi = getApiInfo(routerRequest);
+    public void handle(GateRequest gateRequest) {
+        RemoteApi remoteApi = getApiInfo(gateRequest);
         if (null == remoteApi) {
-            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult()), true);
+            Flush.flush(gateRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult()), true);
             return;
         }
         // 如果带有加解密，就要求所有协议只能传String进来，然后各个路由中自己去维护加解密情况
         // 加解密，维护，可用状态，鉴权
-        if (!Auth.auth(remoteApi, routerRequest)) {
-            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult()), true);
+        if (!Auth.auth(remoteApi, gateRequest)) {
+            Flush.flush(gateRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult()), true);
             return;
         }
         // 是否多线程处理，考虑具体接口的io情况，延时高的，开启多线程
         if (1 == remoteApi.getMulti()) {
             ioworker.execute(() -> {
-                invoke(remoteApi, routerRequest);
+                invoke(remoteApi, gateRequest);
             });
         } else {
-            invoke(remoteApi, routerRequest);
+            invoke(remoteApi, gateRequest);
         }
     }
 
-    private void invoke(RemoteApi remoteApi, RouterRequest routerRequest) {
-        Object result1 = dubboInvoke.invoke(remoteApi, initRemoteRequest(routerRequest));
-        Flush.flush(routerRequest, JsonUtil.toJsonStr(result1), false);
+    private void invoke(RemoteApi remoteApi, GateRequest gateRequest) {
+        Object result1 = dubboInvoke.invoke(remoteApi, initRemoteRequest(gateRequest));
+        Flush.flush(gateRequest, JsonUtil.toJsonStr(result1), false);
     }
 
-    private DubboRequest initRemoteRequest(RouterRequest routerRequest) {
+    private DubboRequest initRemoteRequest(GateRequest gateRequest) {
         DubboRequest dubboRequest = new DubboRequest();
-        dubboRequest.setLanguage(routerRequest.getLanguage());
-        dubboRequest.setCurrency(routerRequest.getCurrency());
+        dubboRequest.setLanguage(gateRequest.getLanguage());
+        dubboRequest.setCurrency(gateRequest.getCurrency());
         // 具体参数实现,约定只能使用BaseRequestDTO的实现类。
-        Object[] dubboParam = new Object[]{initParam(routerRequest)};
+        Object[] dubboParam = new Object[]{initParam(gateRequest)};
         dubboRequest.setData(dubboParam);
         return dubboRequest;
     }

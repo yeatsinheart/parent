@@ -1,8 +1,8 @@
 package com.gateway.response;
 
-import com.base.i18n.I18nContext;
+import com.base.utils.StringUtil;
 import com.gateway.request.SessionHolder;
-import com.gateway.router.RouterRequest;
+import com.gateway.router.GateRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -54,33 +54,36 @@ public class Flush {
         channel.writeAndFlush(result).addListener(ChannelFutureListener.CLOSE);
     }
 
-    public static void flush(RouterRequest routerRequest, String result, boolean closeNow) {
-        String proto = SessionHolder.getProto(routerRequest.getCtx().channel());
+    public static void flush(GateRequest gateRequest, String result, boolean closeNow) {
+        String protocol = gateRequest.getProtocal();
+        if (StringUtil.isEmpty(protocol)) {
+            log.error("没有对应的协议{}", gateRequest);
+        }
         ChannelFuture future;
-        switch (proto) {
+        switch (protocol) {
             case "http":
                 FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.copiedBuffer(result, CharsetUtil.UTF_8));
                 setCros(response);
-                if (SessionHolder.getKeeplive(routerRequest.getCtx().channel())) {
+                if (SessionHolder.getKeeplive(gateRequest.getCtx().channel())) {
                     response.headers().setInt(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
                     response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
                 }
                 response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
-                future = routerRequest.getCtx().writeAndFlush(response);
+                future = gateRequest.getCtx().writeAndFlush(response);
                 break;
             default:
                 ByteBuf buf = Unpooled.buffer();
                 buf.writeBytes(result.getBytes(StandardCharsets.UTF_8));
-                future = routerRequest.getCtx().channel().writeAndFlush(buf);
+                future = gateRequest.getCtx().channel().writeAndFlush(buf);
                 break;
         }
         if (closeNow) {
             //如果直接关闭通道并且内部队列中仍有数据，则会出现异常。
             future.addListener(ChannelFutureListener.CLOSE);
         }
-        routerRequest.setResponse(result);
-        routerRequest.setResponseTime(System.currentTimeMillis()-routerRequest.getCreateTime());
-        log.info("{}是否[{}]中断请求", routerRequest, closeNow);
+        gateRequest.setResponse(result);
+        gateRequest.setResponseTime(System.currentTimeMillis() - gateRequest.getCreateTime());
+        log.info("{}是否[{}]中断请求", gateRequest, closeNow);
     }
 
 }

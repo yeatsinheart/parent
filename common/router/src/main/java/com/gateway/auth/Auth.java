@@ -1,10 +1,10 @@
 package com.gateway.auth;
 
 import com.gateway.dubbo.caller.RemoteApi;
-import com.gateway.router.RouterRequest;
+import com.gateway.router.GateRequest;
 
 public class Auth {
-    public static boolean auth(RemoteApi remoteApi, RouterRequest routerRequest) {
+    public static boolean auth(RemoteApi remoteApi, GateRequest gateRequest) {
         // 全站信息，
         // 维护时间记录如果有多条，且若有重叠部分
         // 是否在全站维护时间
@@ -18,11 +18,11 @@ public class Auth {
         return true;
     }
 
-    public boolean inMainten(RouterRequest routerRequest) {
+    public boolean inMainten(GateRequest gateRequest) {
         long start = 0;
         long end = 0;
         // 在维护时间内
-        return routerRequest.getCreateTime() < start
-                && routerRequest.getCreateTime() > end;
+        return gateRequest.getCreateTime() < start
+                && gateRequest.getCreateTime() > end;
     }
 }

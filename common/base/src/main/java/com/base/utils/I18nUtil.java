@@ -8,7 +8,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -24,15 +23,15 @@ public class I18nUtil {
 
     public static Properties loadI18nProp(String module, String languageCode) {
         Properties prop = null;
+        String i18n = languageCode;
+        i18n = Language.getFileCodeByCode(i18n);
+        String i18nFile = MessageFormat.format("i18n/{0}_message_{1}.properties", module, i18n);
         try {
-            String i18n = languageCode;
-            i18n = Language.getFileCodeByCode(i18n);
-            String i18nFile = MessageFormat.format("i18n/{0}_message_{1}.properties", module, i18n);
             Resource resource = new ClassPathResource(i18nFile);
             EncodedResource encodedResource = new EncodedResource(resource, StandardCharsets.UTF_8.name());
             prop = PropertiesLoaderUtils.loadProperties(encodedResource);
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("语言文件问题{}", i18nFile);
         }
         return prop;
     }

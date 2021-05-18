@@ -1,7 +1,7 @@
 package com.gateway.server.handler;
 
 import com.gateway.request.RequestParamUtil;
-import com.gateway.router.RouterRequest;
+import com.gateway.router.GateRequest;
 import com.gateway.server.parameter.WebSocketRequestDTO;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -28,7 +28,7 @@ public class HttpDispatcher extends AbstractRequestHandler<ReferenceCounted> {
     private WebSocketHandler webSocket;
 
     @Override
-    protected RouterRequest getRouterRequest(ChannelHandlerContext ctx, ReferenceCounted msg) {
+    protected GateRequest getRouterRequest(ChannelHandlerContext ctx, ReferenceCounted msg) {
         // 分发请求，自动引用计数，到具体Handler前需要手动retain,否则会多减一次,直接报错
         if (msg instanceof FullHttpRequest) {
             FullHttpRequest request = (FullHttpRequest) msg;

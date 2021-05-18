@@ -1,7 +1,7 @@
 package com.gateway.server.handler;
 
 import com.gateway.request.RequestParamUtil;
-import com.gateway.router.RouterRequest;
+import com.gateway.router.GateRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -14,17 +14,18 @@ import java.util.Map;
 @ChannelHandler.Sharable
 @Component("tcp")
 public class TcpHandler extends AbstractRequestHandler<ByteBuf> {
-    protected String protocol = "tcp";
+    String protocol = "tcp";
 
     @Override
-    protected RouterRequest getRouterRequest(ChannelHandlerContext ctx, ByteBuf reuqest) {
-        RouterRequest routerRequest = new RouterRequest();
-        routerRequest.setCtx(ctx);
+    protected GateRequest getRouterRequest(ChannelHandlerContext ctx, ByteBuf reuqest) {
+        GateRequest gateRequest = new GateRequest();
+        gateRequest.setProtocal(protocol);
+        gateRequest.setCtx(ctx);
         Map<String, Object> params = RequestParamUtil.getRequestParams(reuqest);
-        routerRequest.setParams(params);
-        routerRequest.setUri((String) params.get("uri"));
-        routerRequest.setLanguage((String) params.get("language"));
-        return routerRequest;
+        gateRequest.setParams(params);
+        gateRequest.setUri((String) params.get("uri"));
+        gateRequest.setLanguage((String) params.get("language"));
+        return gateRequest;
 
     }
 }

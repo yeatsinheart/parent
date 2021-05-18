@@ -3,7 +3,6 @@ package com.base.constant;
 public enum Language {
     /**
      * 程序种的语言编码，文件后缀编码
-     * <p>
      * ISO639-1编码-语言变体
      */
     中文("zh-CN"),

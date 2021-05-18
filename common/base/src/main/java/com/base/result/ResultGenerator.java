@@ -13,6 +13,10 @@ public class ResultGenerator<T> {
         return new Result(ResultCode.SUCCESS, data);
     }
 
+    public static Result genSuccessResult(Object data, String language) {
+        return new Result(ResultCode.SUCCESS, data);
+    }
+
     public static PageResult genPageResult(long size, long current, long total, long pages, Object data) {
         return new PageResult(size, current, total, pages, data);
     }
