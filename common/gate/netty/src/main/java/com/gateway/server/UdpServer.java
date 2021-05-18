@@ -1,7 +1,7 @@
 package com.gateway.server;
 
 import com.base.utils.NamingThreadFactory;
-import com.gateway.server.handler.UDPHandler;
+import com.gateway.server.handler.UdpHandler;
 import com.gateway.server.udp.UDPServerChannel;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelPipeline;
@@ -22,11 +22,8 @@ import java.util.List;
 @Slf4j
 @Component("udpServer")
 public class UdpServer extends AbstractNettyServer<ServerSocketChannel> {
-
-
     @Autowired
-    UDPHandler udp;
-
+    UdpHandler udp;
     @Value("#{'${net.udp.ports:7901}'.split(',')}")
     private List<Integer> ports;
 //组播地址

@@ -12,12 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 @EqualsAndHashCode(callSuper = false)
 public class WebSocketRequestDTO implements ReferenceCounted {
     //握手请求
-    private FullHttpRequest woshou;
+    private FullHttpRequest handleShake;
     //websocket请求
     private WebSocketFrame frame;
 
     public WebSocketRequestDTO(FullHttpRequest request) {
-        this.woshou = request;
+        this.handleShake = request;
     }
 
     public WebSocketRequestDTO(WebSocketFrame frame) {
@@ -26,49 +26,77 @@ public class WebSocketRequestDTO implements ReferenceCounted {
 
     @Override
     public int refCnt() {
-        if(null!=woshou){return  woshou.refCnt();}
-        if(null!=frame){return  frame.refCnt();}
+        if (null != handleShake) {
+            return handleShake.refCnt();
+        }
+        if (null != frame) {
+            return frame.refCnt();
+        }
         return 0;
     }
 
     @Override
     public ReferenceCounted retain() {
-        if(null!=woshou){return  woshou.retain();}
-        if(null!=frame){return  frame.retain();}
+        if (null != handleShake) {
+            return handleShake.retain();
+        }
+        if (null != frame) {
+            return frame.retain();
+        }
         return null;
     }
 
     @Override
     public ReferenceCounted retain(int i) {
-        if(null!=woshou){return  woshou.retain(i);}
-        if(null!=frame){return  frame.retain(i);}
+        if (null != handleShake) {
+            return handleShake.retain(i);
+        }
+        if (null != frame) {
+            return frame.retain(i);
+        }
         return null;
     }
 
     @Override
     public ReferenceCounted touch() {
-        if(null!=woshou){return  woshou.touch();}
-        if(null!=frame){return  frame.touch();}
+        if (null != handleShake) {
+            return handleShake.touch();
+        }
+        if (null != frame) {
+            return frame.touch();
+        }
         return null;
     }
 
     @Override
     public ReferenceCounted touch(Object o) {
-        if(null!=woshou){return  woshou.touch(o);}
-        if(null!=frame){return  frame.touch(o);}
+        if (null != handleShake) {
+            return handleShake.touch(o);
+        }
+        if (null != frame) {
+            return frame.touch(o);
+        }
         return null;
     }
 
     public boolean release() {
-        if(null!=woshou){return  woshou.release();}
-        if(null!=frame){return  frame.release();}
+        if (null != handleShake) {
+            return handleShake.release();
+        }
+        if (null != frame) {
+            return frame.release();
+        }
         return false;
     }
 
     @Override
     public boolean release(int i) {
-        if(null!=woshou){return  woshou.release(i);}
-        if(null!=frame){return  frame.release(i);}
+        if (null != handleShake) {
+            return handleShake.release(i);
+        }
+        if (null != frame) {
+            return frame.release(i);
+        }
         return false;
     }
 

@@ -1,14 +1,14 @@
 package com.gateway.router.impl;
 
-import com.base.i18n.I18nContext;
 import com.base.result.ResultGenerator;
 import com.base.utils.JsonUtil;
 import com.base.utils.NamingThreadFactory;
 import com.base.utils.StringUtil;
 import com.gateway.auth.Auth;
-import com.gateway.dubbo.*;
+import com.gateway.dubbo.DubboInvoke;
+import com.gateway.dubbo.DubboRequest;
+import com.gateway.dubbo.caller.RemoteApi;
 import com.gateway.dubbo.meta.MetadataCollector;
-import com.gateway.dubbo.caller.DubboRemoteService;
 import com.gateway.response.Flush;
 import com.gateway.router.Router;
 import com.gateway.router.RouterRequest;
@@ -33,11 +33,25 @@ public class DefaultRouter implements Router {
     @Resource
     private MetadataCollector metadataCollector;
 
+    {
+
+    }
+
     /**
      * 根据api查找具体的接口定义
      */
-    public DubboRemoteService getApi(Integer api) {
-        DubboRemoteService service = new DubboRemoteService();
+    public RemoteApi getApiInfo(RouterRequest routerRequest) {
+        String language = routerRequest.getHeaders().get("language");
+
+        String currency = routerRequest.getHeaders().get("currency");
+        String group = routerRequest.getHeaders().get("group");
+        String version = routerRequest.getHeaders().get("version");
+
+        Integer api = (Integer) routerRequest.getHeaders().get("api");
+
+        RemoteApi service = new RemoteApi();
+        service.setGroup(StringUtil.isEmpty(group) ? "dev" : group);
+        service.setVersion(StringUtil.isEmpty(version) ? "1.0.0" : version);
         return service;
     }
 
@@ -49,47 +63,45 @@ public class DefaultRouter implements Router {
         return param;
     }
 
+    /**
+     * 获取调用功能信息
+     */
+
     @Override
     public void handle(RouterRequest routerRequest) {
-        //{data:[{}]}
-        //ioworker.execute(new RequestWorker(ctx, router, map));
-        String language = (String) routerRequest.getHeaders().get("language");
-        //初始化线程语言
-        new I18nContext(language);
-        String currency = (String) routerRequest.getHeaders().get("currency");
-        String group = (String) routerRequest.getHeaders().get("group");
-        String version = (String) routerRequest.getHeaders().get("version");
-
-        Integer api = (Integer) routerRequest.getHeaders().get("api");
-
-        DubboRemoteService service = getApi(api);
-        if (null == service) {
+        RemoteApi remoteApi = getApiInfo(routerRequest);
+        if (null == remoteApi) {
             Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult()), true);
+            return;
         }
-        service.setGroup(StringUtil.isEmpty(group) ? "dev" : group);
-        service.setVersion(StringUtil.isEmpty(version) ? "1.0.0" : version);
-
-        if (Auth.auth(service, routerRequest)) {
-            DubboRequest dubboRequest = new DubboRequest();
-            dubboRequest.setLanguage(language);
-            dubboRequest.setCurrency(currency);
-            // 具体参数实现,约定只能使用BaseRequestDTO的实现类。
-            Object[] dubboParam = new Object[]{initParam(routerRequest)};
-            dubboRequest.setData(dubboParam);
-            //请求参数处理
-            if (1 == service.getMulti()) {
-                // 子线程初始化线程语言  dubbo请求对象初始化时，如果有语言参数也会进行初始化
-                new I18nContext(language);
-                ioworker.execute(() -> {
-                    Object result1 = dubboInvoke.invoke(service, dubboRequest);
-                    Flush.flush(routerRequest, JsonUtil.toJsonStr(result1), false);
-                });
-            } else {
-                Object result = dubboInvoke.invoke(service, dubboRequest);
-                Flush.flush(routerRequest, JsonUtil.toJsonStr(result), false);
-            }
+        // 如果带有加解密，就要求所有协议只能传String进来，然后各个路由中自己去维护加解密情况
+        // 加解密，维护，可用状态，鉴权
+        if (!Auth.auth(remoteApi, routerRequest)) {
+            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult()), true);
+            return;
+        }
+        // 是否多线程处理，考虑具体接口的io情况，延时高的，开启多线程
+        if (1 == remoteApi.getMulti()) {
+            ioworker.execute(() -> {
+                invoke(remoteApi, routerRequest);
+            });
         } else {
-            Flush.flush(routerRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult()), true);
+            invoke(remoteApi, routerRequest);
         }
+    }
+
+    private void invoke(RemoteApi remoteApi, RouterRequest routerRequest) {
+        Object result1 = dubboInvoke.invoke(remoteApi, initRemoteRequest(routerRequest));
+        Flush.flush(routerRequest, JsonUtil.toJsonStr(result1), false);
+    }
+
+    private DubboRequest initRemoteRequest(RouterRequest routerRequest) {
+        DubboRequest dubboRequest = new DubboRequest();
+        dubboRequest.setLanguage(routerRequest.getLanguage());
+        dubboRequest.setCurrency(routerRequest.getCurrency());
+        // 具体参数实现,约定只能使用BaseRequestDTO的实现类。
+        Object[] dubboParam = new Object[]{initParam(routerRequest)};
+        dubboRequest.setData(dubboParam);
+        return dubboRequest;
     }
 }

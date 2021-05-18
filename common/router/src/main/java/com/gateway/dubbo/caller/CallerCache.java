@@ -1,15 +1,11 @@
 package com.gateway.dubbo.caller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.dubbo.common.URL;
-import org.apache.dubbo.common.constants.CommonConstants;
-import org.apache.dubbo.common.utils.StringUtils;
 import org.apache.dubbo.config.ApplicationConfig;
 import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.rpc.service.GenericService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -35,7 +31,7 @@ public class CallerCache {
         initAllApi();
     }
     public void initAllApi() {
-        List<DubboRemoteService> methods = new ArrayList<>();
+        List<RemoteApi> methods = new ArrayList<>();
         methods.parallelStream().forEach(method -> {
             cachedService.putIfAbsent(method.toString(), initCaller(method));
         });
@@ -58,7 +54,7 @@ public class CallerCache {
     }
 
 
-    public ReferenceConfig<GenericService> get(DubboRemoteService service) {
+    public ReferenceConfig<GenericService> get(RemoteApi service) {
         ReferenceConfig<GenericService> invokerCache;
         // 本地都需要需要250ms 所以必须要缓存起来
         invokerCache = cachedService.get(service.toString());
@@ -74,7 +70,7 @@ public class CallerCache {
         return invokerCache;
     }
 
-    public ReferenceConfig<GenericService> initCaller(DubboRemoteService service) {
+    public ReferenceConfig<GenericService> initCaller(RemoteApi service) {
         ReferenceConfig<GenericService> referenceConfig = new ReferenceConfig<>();
         referenceConfig.setGeneric("raw.return");
         referenceConfig.setApplication(applicationConfig);

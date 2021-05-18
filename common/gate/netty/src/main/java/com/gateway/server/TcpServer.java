@@ -1,7 +1,7 @@
 package com.gateway.server;
 
 import com.base.utils.NamingThreadFactory;
-import com.gateway.server.handler.TCPHandler;
+import com.gateway.server.handler.TcpHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -25,7 +25,7 @@ public class TcpServer extends AbstractNettyServer<ServerSocketChannel> {
 
 
     @Autowired
-    private TCPHandler tcp;
+    private TcpHandler tcp;
     @Value("#{'${net.tcp.ports:8901}'.split(',')}")
     private List<Integer> ports;
 

@@ -11,16 +11,17 @@ import io.netty.handler.codec.http.HttpHeaderValues;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 @ChannelHandler.Sharable
 @Component("http")
 public class HttpHandler extends AbstractRequestHandler<FullHttpRequest> {
+    protected String protocol = "http";
+
     @Override
-    protected void doRequest(ChannelHandlerContext ctx, FullHttpRequest httpRequest) {
-        SessionHolder.setProto(ctx.channel(), "http");
+    protected RouterRequest getRouterRequest(ChannelHandlerContext ctx, FullHttpRequest httpRequest) {
+
         String uri = RequestParamUtil.getUri(httpRequest);
         SessionHolder.setKeeplive(ctx.channel(),
                 !httpRequest.headers()
@@ -29,13 +30,21 @@ public class HttpHandler extends AbstractRequestHandler<FullHttpRequest> {
                         httpRequest.protocolVersion().isKeepAliveDefault()
                                 || httpRequest.headers().containsValue(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE, true)));
 
-        Map<String, Object> params = RequestParamUtil.getRequestParams(httpRequest);
         RouterRequest routerRequest = new RouterRequest();
         routerRequest.setCtx(ctx);
-        routerRequest.setParams(params);
+        routerRequest.setLanguage("dev");
+
+        // http请求需要去除首位的/
         routerRequest.setUri(uri.substring(1));
-        routerRequest.setHeaders(new HashMap<>());
-        requestHandler.dispatch(routerRequest);
+        routerRequest.setHeaders(httpRequest.headers());
+
+        // 如果带有加解密，就要求所有协议只能传String进来，然后各个路由中自己去维护加解密情况
+        // GET 请求也有参数
+        // POST 可以传加密信息，或者纯文本
+        Map<String, Object> params = RequestParamUtil.getRequestParams(httpRequest);
+        routerRequest.setParams(params);
+        return routerRequest;
+
 
     }
 }

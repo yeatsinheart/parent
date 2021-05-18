@@ -4,7 +4,7 @@ import com.base.utils.JsonUtil;
 import lombok.Data;
 
 @Data
-public class DubboRemoteService {
+public class RemoteApi {
     public static final int MULTY_THREAD = 1;
     private String module = "netty-gateway1";
     private String interfaceName = "api.global.services.TestService";

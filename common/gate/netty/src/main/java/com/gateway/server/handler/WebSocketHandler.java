@@ -3,7 +3,7 @@ package com.gateway.server.handler;
 import com.gateway.request.RequestParamUtil;
 import com.gateway.request.SessionHolder;
 import com.gateway.response.Flush;
-import com.gateway.server.parameter.WebSocketMsgStringDTO;
+import com.gateway.router.RouterRequest;
 import com.gateway.server.parameter.WebSocketRequestDTO;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -24,17 +24,20 @@ import java.util.Map;
 public class WebSocketHandler extends AbstractRequestHandler<WebSocketRequestDTO> {
     private final WebSocketServerHandshakerFactory wsFactory =
             new WebSocketServerHandshakerFactory(null, null, true, 65536 * 5);
+    protected String protocol = "ws";
+
     @Override
-    protected void doRequest(ChannelHandlerContext ctx, WebSocketRequestDTO request) {
+    protected RouterRequest getRouterRequest(ChannelHandlerContext ctx, WebSocketRequestDTO request) {
         SessionHolder.setProto(ctx.channel(), "ws");
         //处理握手
-        if (request.getWoshou() != null) {
-            this.handleShake(ctx, request.getWoshou());
+        if (request.getHandleShake() != null) {
+            this.handleShake(ctx, request.getHandleShake());
         }
         //处理websocket数据
         if (request.getFrame() != null) {
             this.handleFrame(ctx, request.getFrame());
         }
+        return null;
     }
 
     //处理握手
@@ -73,7 +76,6 @@ public class WebSocketHandler extends AbstractRequestHandler<WebSocketRequestDTO
         } else if (frame instanceof PingWebSocketFrame) {
             ctx.channel().writeAndFlush(new PongWebSocketFrame(frame.content()));
         } else if (frame instanceof TextWebSocketFrame) {
-            WebSocketMsgStringDTO msg = null;
             Channel channel = ctx.channel();
             //TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
             //String request = textFrame.text();

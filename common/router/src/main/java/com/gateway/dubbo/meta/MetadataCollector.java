@@ -1,8 +1,9 @@
 package com.gateway.dubbo.meta;
 
-import com.gateway.dubbo.caller.DubboRemoteService;
+import com.gateway.dubbo.caller.RemoteApi;
 
 public interface MetadataCollector {
-    String[] getParamsTypes(DubboRemoteService service);
+    String[] getParamsTypes(RemoteApi service);
+
     boolean clear();
 }

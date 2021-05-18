@@ -2,7 +2,7 @@ package com.gateway.dubbo.meta;
 
 import com.base.utils.JsonUtil;
 import com.base.utils.NacosUtil;
-import com.gateway.dubbo.caller.DubboRemoteService;
+import com.gateway.dubbo.caller.RemoteApi;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.metadata.definition.model.FullServiceDefinition;
@@ -25,7 +25,7 @@ public class NacosMetadataCollector implements MetadataCollector {
     @Value("${nacos.config.namespace:public}")
     private String namespace;
 
-    public String getProviderMetaData(DubboRemoteService service) {
+    public String getProviderMetaData(RemoteApi service) {
         try {
             //每2秒更新一次？
             String config = NacosUtil.getConfig(service.getNacosDataId(), service.getGroup(), namespace + "-dubbo-parameter", nacosUrl);
@@ -40,9 +40,9 @@ public class NacosMetadataCollector implements MetadataCollector {
     }
 
     @Override
-    public String[] getParamsTypes(DubboRemoteService service) {
-        String[] paramsType =  cachedService.get(service.toString());
-        if(null == paramsType){
+    public String[] getParamsTypes(RemoteApi service) {
+        String[] paramsType = cachedService.get(service.toString());
+        if (null == paramsType) {
             String metadata = getProviderMetaData(service);
             FullServiceDefinition serviceDefinition = JsonUtil.toObj(metadata, FullServiceDefinition.class);
             if (serviceDefinition == null) {

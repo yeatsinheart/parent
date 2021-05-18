@@ -29,7 +29,7 @@ public class RequestHandler {
         }
         // Xss 攻击  &&  sql 注入
         try {
-            // 可能会异步处理请求咯
+            // 不同的业务处理分发
             router.handle(routerRequest);
         } catch (Exception e) {
             log.error("请求逻辑中出错{}", e);
