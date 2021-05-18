@@ -1,5 +1,6 @@
 package com.gateway.dubbo.caller;
 
+import com.base.utils.JsonUtil;
 import lombok.Data;
 
 @Data
@@ -16,19 +17,11 @@ public class DubboRemoteService {
     private Integer multi = 0;
 
     public String getNacosDataId() {
-        String dataId = this.getInterfaceName() + ":" + this.getVersion() + ":" + this.getGroup() + ":provider:" + this.getModule();
-        return dataId;
+        return this.getInterfaceName() + ":" + this.getVersion() + ":" + this.getGroup() + ":provider:" + this.getModule();
     }
 
     @Override
     public String toString() {
-        return "DubboRemoteService{" +
-                "module='" + module + '\'' +
-                ", interfaceName='" + interfaceName + '\'' +
-                ", methodName='" + methodName + '\'' +
-                ", group='" + group + '\'' +
-                ", version='" + version + '\'' +
-                ", multi=" + multi +
-                '}';
+        return JsonUtil.toJsonStr(this);
     }
 }

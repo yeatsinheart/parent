@@ -9,6 +9,7 @@ import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.rpc.service.GenericService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -33,7 +34,6 @@ public class CallerCache {
         cachedService.clear();
         getAllApi();
     }
-
     public void getAllApi() {
         List<DubboRemoteService> methods = new ArrayList<>();
         methods.parallelStream().forEach(method -> {

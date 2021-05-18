@@ -62,6 +62,9 @@ public class NacosMetadataCollector implements MetadataCollector {
         }
         return null;
     }
+    public void setCache(){
+
+    }
     @Override
     public boolean clear() {
          cachedService.clear();
