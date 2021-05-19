@@ -5,15 +5,24 @@ import com.gateway.project.GateRequest;
 
 public class Auth {
     public static boolean auth(RemoteApi remoteApi, GateRequest gateRequest) {
-        // 全站信息，
-        // 维护时间记录如果有多条，且若有重叠部分
-        // 是否在全站维护时间
-        // 站点信息
-        // 站点是否可用，
-        // 如果维护，是否在维护周期中，维护时间记录如果有多条，且若有重叠部分
-        // 是否加解密。。。。
-        // 是否需要登陆，校验请求中的登陆信息
-        // 是否拥有权限，校验用户的权限
+
+        //@DubboReference(async = true)
+        //CompletableFuture<Boolean> future = RpcContext.getContext().asyncCall(
+        //    () -> {
+        //        asyncService.sayHello("oneway call request1");
+        //    }
+        //);
+        //future.get();
+
+        // （异步）全站信息,维护时间记录如果有多条，且若有重叠部分,是否维护
+        // （异步）站点信息 站点是否可用，是否在维护周期中，维护时间记录如果有多条，且若有重叠部分
+
+        // （异步）访问限制
+        // （异步）IP黑名单
+
+        // 是否加解密。。。。，是否需要登陆是否拥有权限，
+        // （异步）校验请求中的登陆信息
+        // （异步）校验用户的权限
         // 参数是否过滤
         return true;
     }

@@ -13,6 +13,7 @@ import com.gateway.project.GateRequest;
 import com.gateway.project.Router;
 import com.gateway.response.Flush;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -36,6 +37,7 @@ public class DefaultRouter implements Router {
     private DubboInvoke dubboInvoke;
     @Resource
     private MetadataCollector metadataCollector;
+
 
     @PostConstruct
     public void init() {
@@ -85,7 +87,9 @@ public class DefaultRouter implements Router {
             return;
         }
         // 如果带有加解密，就要求所有协议只能传String进来，然后各个路由中自己去维护加解密情况
-        // 加解密，维护，可用状态，鉴权
+        // 访问限制
+        // 协议转换
+        // 加解密，维护，可用状态，iP黑名单，区域限制,鉴权
         if (!Auth.auth(remoteApi, gateRequest)) {
             Flush.flush(gateRequest, JsonUtil.toJsonStr(ResultGenerator.genFailResult()), true);
             return;
