@@ -1,4 +1,4 @@
-package com.gateway.project.impl;
+package com.gateway.uri.business;
 
 import com.base.result.ResultGenerator;
 import com.base.utils.JsonUtil;
@@ -9,11 +9,10 @@ import com.gateway.dubbo.DubboInvoke;
 import com.gateway.dubbo.DubboRequest;
 import com.gateway.dubbo.caller.RemoteApi;
 import com.gateway.dubbo.meta.MetadataCollector;
-import com.gateway.project.GateRequest;
-import com.gateway.project.Router;
+import com.gateway.request.GateRequest;
+import com.gateway.request.Router;
 import com.gateway.response.Flush;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -28,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component(Router.ROUTER_KEY + "default")
-public class DefaultRouter implements Router {
+public class DubboRouter implements Router {
     // io请求线程池
     protected ExecutorService ioworker;
     @Value("${netty.call.num:1}")

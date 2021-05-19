@@ -1,6 +1,6 @@
 package com.gateway.server.handler;
 
-import com.gateway.project.GateRequest;
+import com.gateway.request.GateRequest;
 import com.gateway.request.RequestHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -34,6 +34,7 @@ public abstract class AbstractRequestHandler<T extends ReferenceCounted> extends
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, T reuqest) {
         int nowRef = reuqest.refCnt();
+        //收集请求信息分发
         GateRequest gateRequest = getRouterRequest(ctx, reuqest);
         if (null != gateRequest) {
             requestHandler.dispatch(gateRequest);

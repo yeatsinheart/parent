@@ -67,7 +67,6 @@ public abstract class AbstractNettyServer<C extends Channel> {
         }
         p.forEach(port -> {
             new ThreadPoolExecutor(1, 1, 0L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>(), new NamingThreadFactory(this.getClass().getSimpleName() + ".java")).execute(() -> {
-                log.info("现在开" + port + "端口");
                 startPort(port);
             });
         });

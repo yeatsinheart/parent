@@ -1,4 +1,4 @@
-package com.gateway.server.parameter;
+package com.gateway.server.decode;
 
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;

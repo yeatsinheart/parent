@@ -2,7 +2,7 @@ package com.gateway.server;
 
 import com.base.utils.NamingThreadFactory;
 import com.gateway.server.handler.UdpHandler;
-import com.gateway.server.udp.UDPServerChannel;
+import com.gateway.server.channel.UDPServerChannel;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.DefaultEventLoopGroup;

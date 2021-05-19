@@ -1,4 +1,4 @@
-package com.gateway.project;
+package com.gateway.request;
 
 
 public interface Router {

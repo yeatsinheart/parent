@@ -1,6 +1,6 @@
 package com.gateway.server.handler;
 
-import com.gateway.project.GateRequest;
+import com.gateway.request.GateRequest;
 import com.gateway.request.RequestParamUtil;
 import com.gateway.request.SessionHolder;
 import io.netty.channel.ChannelHandler;

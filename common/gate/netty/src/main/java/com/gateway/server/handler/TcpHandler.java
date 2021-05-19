@@ -1,6 +1,6 @@
 package com.gateway.server.handler;
 
-import com.gateway.project.GateRequest;
+import com.gateway.request.GateRequest;
 import com.gateway.request.RequestParamUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;

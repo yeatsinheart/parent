@@ -1,11 +1,11 @@
-package com.gateway.project.impl;
+package com.gateway.uri.business;
 
 import com.base.result.ResultGenerator;
 import com.base.utils.JsonUtil;
 import com.gateway.dubbo.caller.CallerCache;
 import com.gateway.dubbo.meta.MetadataCollector;
-import com.gateway.project.GateRequest;
-import com.gateway.project.Router;
+import com.gateway.request.GateRequest;
+import com.gateway.request.Router;
 import com.gateway.response.Flush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

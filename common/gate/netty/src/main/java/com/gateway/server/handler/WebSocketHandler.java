@@ -1,10 +1,10 @@
 package com.gateway.server.handler;
 
-import com.gateway.project.GateRequest;
+import com.gateway.request.GateRequest;
 import com.gateway.request.RequestParamUtil;
 import com.gateway.request.SessionHolder;
 import com.gateway.response.Flush;
-import com.gateway.server.parameter.WebSocketRequestDTO;
+import com.gateway.server.decode.WebSocketRequestDTO;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -32,10 +32,11 @@ public class WebSocketHandler extends AbstractRequestHandler<WebSocketRequestDTO
         //处理握手
         if (request.getHandleShake() != null) {
             this.handleShake(ctx, request.getHandleShake());
+            return null;
         }
         //处理websocket数据
         if (request.getFrame() != null) {
-            this.handleFrame(ctx, request.getFrame());
+            return this.handleFrame(ctx, request.getFrame());
         }
         return null;
     }
@@ -65,7 +66,7 @@ public class WebSocketHandler extends AbstractRequestHandler<WebSocketRequestDTO
     }
 
     //处理websocket数据
-    private void handleFrame(ChannelHandlerContext ctx, WebSocketFrame frame) {
+    private GateRequest handleFrame(ChannelHandlerContext ctx, WebSocketFrame frame) {
         // 判断是否关闭链路的指令
         if (frame instanceof CloseWebSocketFrame) {
             WebSocketServerHandshaker handshaker = ctx.channel().attr(SessionHolder.HAND_SHAKE_ATTR).get();
@@ -80,6 +81,7 @@ public class WebSocketHandler extends AbstractRequestHandler<WebSocketRequestDTO
             //TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
             //String request = textFrame.text();
             doBytebuf(ctx, frame.content());
+            //.writeAndFlush(new TextWebSocketFrame(msg));
         } else if (frame instanceof BinaryWebSocketFrame) {
             /*ByteBuf binaryFrame = frame.content();
             binaryFrame.markReaderIndex();
@@ -101,6 +103,7 @@ public class WebSocketHandler extends AbstractRequestHandler<WebSocketRequestDTO
 
 
         }
+        return null;
     }
 
 }

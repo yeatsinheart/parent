@@ -1,8 +1,8 @@
 package com.gateway.server.handler;
 
-import com.gateway.project.GateRequest;
+import com.gateway.request.GateRequest;
 import com.gateway.request.RequestParamUtil;
-import com.gateway.server.parameter.WebSocketRequestDTO;
+import com.gateway.server.decode.WebSocketRequestDTO;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;

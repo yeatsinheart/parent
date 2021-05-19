@@ -2,8 +2,6 @@ package com.gateway.request;
 
 import com.base.result.ResultGenerator;
 import com.base.utils.JsonUtil;
-import com.gateway.project.GateRequest;
-import com.gateway.project.Router;
 import com.gateway.response.Flush;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -14,7 +14,7 @@
  *
  * MBUDPServerChannel.java at 2020-8-22 16:00:59, code by Jack Jiang.
  */
-package com.gateway.server.udp;
+package com.gateway.server.channel;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
