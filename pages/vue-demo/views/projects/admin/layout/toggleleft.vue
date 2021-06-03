@@ -12,6 +12,9 @@
                 </span>
             </template>-->
     </div>
+    <div class="handle-button" style="top: 250px; background-color: rgb(24, 144, 255);" @click="toogle">
+        <i :class="menuShow===true?'el-icon-s-fold':'el-icon-s-unfold'"></i>
+    </div>
 
     <el-drawer
         :before-close="toogle"
@@ -35,6 +38,7 @@
           @node-click="clickNode">
       </el-tree>
     </el-drawer>
+
   </div>
 </template>
 <script>
@@ -83,6 +87,40 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.handle-button {
+  z-index: 20003;
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  left: 0px;
+  text-align: center;
+  font-size: 24px;
+  border-radius: 0px 6px 6px 0px!important;
+  z-index: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  color: #fff;
+  line-height: 48px;
+}
+.handle-button i{
+  font-size: 24px;
+  line-height: 48px;
+}
+
+[class*=" el-icon-"], [class^=el-icon-] {
+  font-family: element-icons!important;
+  speak: none;
+  font-style: normal;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: baseline;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .clearfix {
   float: left;
 }
