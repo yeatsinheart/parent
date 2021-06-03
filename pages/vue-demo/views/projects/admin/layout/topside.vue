@@ -1,9 +1,7 @@
 <template>
   <div class="head-container">
-    <div class="header-left">
-      <showAside/>
-    </div>
-    <div class="header-right">
+
+  <div class="header-right">
       <div class="header-user-con">
         <div class="btn-fullscreen" @click="handleFullScreen">
           <el-tooltip :content="fullscreen?`取消全屏`:`全屏`" effect="dark" placement="bottom">
@@ -43,11 +41,9 @@
   </div>
 </template>
 <script>
-import showAside from "./toggleleft.vue"; //引入了一个侧边栏是否折叠的组件
 export default {
   // name:'header',
   components: {
-    showAside
   },
   data() {
     return {
@@ -114,9 +110,6 @@ export default {
   border-bottom: 1px solid #f0f0f0;
 }
 
-.header-left {
-  float: left;
-}
 
 .header-right {
   float: right;

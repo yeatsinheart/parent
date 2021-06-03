@@ -1,19 +1,21 @@
 <template>
   <div>
     <!--    @click="toggleClick"-->
-    <div class="showAside pull-left">
-      <span @click="toogle">
-        <i :class="menuShow===true?'el-icon-s-unfold':'el-icon-s-fold'"></i>
-        <span v-if="menuShow">隐藏导航栏</span>
-        <span v-if="!menuShow">显示导航栏</span>
-      </span>
-      <!--      <template v-for="(item,index) in items">
-              <span :key="index"><i :class="item.icon"></i><span slot="title">{{ item.name }}</span>
-                </span>
-            </template>-->
-    </div>
+    <!--    <div class="showAside pull-left">
+          <span @click="toogle">
+            <i :class="menuShow===true?'el-icon-s-unfold':'el-icon-s-fold'"></i>
+            <span v-if="menuShow">隐藏导航栏</span>
+            <span v-if="!menuShow">显示导航栏</span>
+          </span>
+          &lt;!&ndash;      <template v-for="(item,index) in items">
+                  <span :key="index"><i :class="item.icon"></i><span slot="title">{{ item.name }}</span>
+                    </span>
+                </template>&ndash;&gt;
+        </div>-->
     <div class="handle-button" style="top: 250px; background-color: rgb(24, 144, 255);" @click="toogle">
+      <span>
         <i :class="menuShow===true?'el-icon-s-fold':'el-icon-s-unfold'"></i>
+        </span>
     </div>
 
     <el-drawer
@@ -87,6 +89,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.container_collapse .handle-button {
+  left: 0px;
+}
+
 .handle-button {
   z-index: 20003;
   width: 48px;
@@ -95,20 +101,20 @@ export default {
   left: 0px;
   text-align: center;
   font-size: 24px;
-  border-radius: 0px 6px 6px 0px!important;
-  z-index: 0;
+  border-radius: 0px 6px 6px 0px !important;
   pointer-events: auto;
   cursor: pointer;
   color: #fff;
   line-height: 48px;
 }
-.handle-button i{
+
+.handle-button i {
   font-size: 24px;
   line-height: 48px;
 }
 
 [class*=" el-icon-"], [class^=el-icon-] {
-  font-family: element-icons!important;
+  font-family: element-icons !important;
   speak: none;
   font-style: normal;
   font-weight: 400;

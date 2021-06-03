@@ -2,6 +2,7 @@
   <div class="wrapper">
     <!--    <Aside class="aside-container"/>-->
     <div :class="menuShow===false?'container_collapse':''" class="maincontainer">
+      <showAside/>
       <Header/>
       <div class="container">
         <tags/>
@@ -13,8 +14,8 @@
     </div>
   </div>
 </template>
-<script>/*
-import Aside from "../../layout/leftside.vue";*/
+<script>
+import showAside from "../../layout/toggleleft.vue"; //引入了一个侧边栏是否折叠的组件
 import Header from "../../layout/topside.vue";
 import Tags from '../../layout/tags.vue';
 import {mapState} from "vuex";
@@ -24,6 +25,7 @@ export default {
   components: {
     Header,
     Tags,
+    showAside
   },
   computed: {
     ...mapState(["menuShow"]),
