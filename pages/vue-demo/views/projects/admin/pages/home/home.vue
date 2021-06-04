@@ -1,21 +1,17 @@
 <template>
   <div class="wrapper">
     <!--    <Aside class="aside-container"/>-->
-    <div :class="menuShow===false?'container_collapse':''" class="maincontainer">
-      <showAside/>
+    <Menu/>
+    <div :class="menuShow===false?'menu_collapse':''" class="maincontainer">
       <Header/>
       <div class="container">
         <tags/>
-        <!--        <template class="contents">
-                  <transition mode="out-in" name="fade-transform">
-                  </transition>
-                </template>-->
       </div>
     </div>
   </div>
 </template>
 <script>
-import showAside from "../../layout/toggleleft.vue"; //引入了一个侧边栏是否折叠的组件
+import Menu from "../../layout/left.vue"; //引入了一个侧边栏是否折叠的组件
 import Header from "../../layout/topside.vue";
 import Tags from '../../layout/tags.vue';
 import {mapState} from "vuex";
@@ -25,7 +21,7 @@ export default {
   components: {
     Header,
     Tags,
-    showAside
+    Menu
   },
   computed: {
     ...mapState(["menuShow"]),
@@ -37,12 +33,11 @@ export default {
   position: relative;
   height: 100%;
   width: 100%;
-
   .maincontainer {
+    margin-left: 180px;
     height: 100%;
     -webkit-transition: margin-left 0.28s;
     transition: margin-left 0.28s;
-    margin-left: 180px;
     position: relative;
 
     .container {
@@ -52,8 +47,14 @@ export default {
     }
   }
 
-  .container_collapse {
+  .menu_collapse {
     margin-left: 0;
+  }
+}
+
+@media only screen and (max-width: 470px) {
+  .maincontainer {
+    margin-left: 0 !important;
   }
 }
 </style>
