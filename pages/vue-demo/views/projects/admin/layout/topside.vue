@@ -1,7 +1,7 @@
 <template>
   <div class="head-container">
 
-  <div class="header-right">
+    <div class="header-right">
       <div class="header-user-con">
         <div class="btn-fullscreen" @click="handleFullScreen">
           <el-tooltip :content="fullscreen?`取消全屏`:`全屏`" effect="dark" placement="bottom">
@@ -43,14 +43,13 @@
 <script>
 export default {
   // name:'header',
-  components: {
-  },
+  components: {},
   data() {
     return {
       fullscreen: false,
-      name: "linxin",
-      message: 2,
-      username: "zyh"
+      name: "Admin",
+      message: 99,
+      username: "Admin"
     };
   },
   computed: {
@@ -104,6 +103,7 @@ export default {
 .head-container {
   height: 20px;
   line-height: 20px;
+  padding-left: 30px;
   -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
   0 0 3px 0 rgba(0, 0, 0, 0.04);
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);

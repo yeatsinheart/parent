@@ -88,45 +88,39 @@ class AdminMenuService {
             {
                 "id": 1,
                 "icon": "el-icon-edit-outline",
-                "name": "系统管理",
+                "name": "后台管理",
                 "path": "0"
             },
             {
                 "id": 2,
                 "icon": "el-icon-edit-outline",
-                "name": "用户管理",
-                "url": "https://www.baidu.com",
+                "name": "账号管理",
+                "url": "admin",
                 "path": "0->1"
             },
             {
                 "id": 3,
                 "icon": "el-icon-edit-outline",
                 "name": "岗位管理",
-                "url": "https://www.baidu.com",
+                "url": "role",
                 "path": "0->1"
             },
             {
                 "id": 4,
                 "icon": "el-icon-edit-outline",
                 "name": "菜单管理",
-                "url": "https://www.baidu.com",
+                "url": "resource",
                 "path": "0->1"
             },
             {
                 "id": 5,
                 "icon": "el-icon-edit-outline",
-                "name": "统计报表",
-                "url": "/login",
-                "path": "0"
-            },
-            {
-                "id": 6,
-                "icon": "el-icon-edit-outline",
-                "name": "登陆",
-                "url": "/login",
+                "name": "登陆注册",
+                "url": "login",
                 "path": "0"
             }
         ]
+
         return menuResource
     }
 

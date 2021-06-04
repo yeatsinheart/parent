@@ -2,15 +2,17 @@
   <!-- 打开标签的容器 -->
   <div>
     <div class="tags">
-
       <ul>
         <li v-for="(item,index) in tagsList" :key="index" :class="{'active': isActive(item.id)}" class="tags-li">
           <el-dropdown>
             <span :frameid="item.url" class="tags-li-title" @click="active(item)">{{ item.name }}</span>
-            <span class="tags-li-icon" @click="closeTags(index)"><i class="el-icon-close"></i></span>
+            <span class="tags-li-icon" @click="closeTags(index)">
+              <i class="el-icon-close"></i>
+            </span>
             <el-dropdown-menu slot="dropdown" size="small">
               <el-dropdown-item @click.native="save(index)">关闭其他</el-dropdown-item>
               <el-dropdown-item @click.native="closeTags()">关闭所有</el-dropdown-item>
+              <el-dropdown-item @click.native="refresh(index,item.url)">刷新</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </li>
@@ -31,7 +33,7 @@
     <div class="frame">
       <template v-for="(item,index) in tagsList">
         <div :key="index" :class="isActive(item.id)?'active':'hidden'" class="page">
-          <iframe :src="item.url" border="0" height="100%" scrolling="no" width="100%"/>
+          <iframe :src="item.url" :id="'ifrmname'+index" height="100%" scrolling="no" width="100%" style="border:0;"/>
         </div>
       </template>
     </div>
@@ -72,6 +74,10 @@ export default {
     },
     closeTags(index) {
       adminTabService.closeTabs(index)
+    },
+    refresh(index,url) {
+      document.getElementById('ifrmname'+index).src=url;
+      document.getElementById('ifrmname'+index).contentWindow.location.reload(true);
     }
   }
 };
@@ -80,12 +86,14 @@ export default {
 .tags {
   position: relative;
   width: 100%;
-  height: 30px;
   overflow: hidden;
   background: #ffffff;
-  padding-right: 100px;
-  box-shadow: 0 5px 10px #ddd;
+  padding-left: 30px;
+  margin-bottom: 2px;
   z-index: 10;
+  -webkit-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 12%), 0 0 3px 0 rgb(0 0 0 / 4%);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 12%), 0 0 3px 0 rgb(0 0 0 / 4%);
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .tags ul {
@@ -96,20 +104,17 @@ export default {
 
 .tags-li {
   float: left;
-  margin: 3px 5px 2px 3px;
   border-radius: 3px;
   font-size: 12px;
   overflow: hidden;
   cursor: pointer;
-  height: 23px;
-  line-height: 23px;
   border: 1px solid #e9eaec;
   background: #fff;
-  padding: 0 5px 0 12px;
   vertical-align: middle;
   -webkit-transition: all 0.3s ease-in;
   -moz-transition: all 0.3s ease-in;
   transition: all 0.3s ease-in;
+  margin-left: 5px;
 }
 
 .tags-li:not(.active):hover {
@@ -123,14 +128,19 @@ export default {
 
 .tags-li-title {
   float: left;
+  color:black;
+  padding-left: 5px;
   max-width: 80px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   margin-right: 5px;
 }
-
+.tags-li-icon{
+  line-height: 20px;
+}
 .tags-li.active .tags-li-title {
+  color:white;
 }
 
 .tags-close-box {
@@ -166,7 +176,7 @@ export default {
   }
 }
 </style>
-<style>
+<style lang="scss" scoped>
 .tags .el-scrollbar .scrollbar-wrapper .el-scrollbar__view {
   overflow: initial !important;
 }

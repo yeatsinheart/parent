@@ -12,7 +12,7 @@
                     </span>
                 </template>&ndash;&gt;
         </div>-->
-    <div class="handle-button" style="top: 250px; background-color: rgb(24, 144, 255);" @click="toogle">
+    <div class="handle-button" style="top: 5px; background-color: rgb(24, 144, 255);" @click="toogle">
       <span>
         <i :class="menuShow===true?'el-icon-s-fold':'el-icon-s-unfold'"></i>
         </span>
@@ -79,6 +79,10 @@ export default {
     },
 
     clickNode(clickNode) {
+      // 有子菜单的不打开tab页
+      if(clickNode['subs'] && clickNode['subs'].length>0){
+        return;
+      }
       adminTabService.open(clickNode.name, clickNode.url)
     }
   }, watch: {
@@ -95,8 +99,8 @@ export default {
 
 .handle-button {
   z-index: 20003;
-  width: 48px;
-  height: 48px;
+  width: 30px;
+  height: 30px;
   position: absolute;
   left: 0px;
   text-align: center;
@@ -105,12 +109,12 @@ export default {
   pointer-events: auto;
   cursor: pointer;
   color: #fff;
-  line-height: 48px;
+  line-height: 30px;
 }
 
 .handle-button i {
   font-size: 24px;
-  line-height: 48px;
+  line-height: 30px;
 }
 
 [class*=" el-icon-"], [class^=el-icon-] {

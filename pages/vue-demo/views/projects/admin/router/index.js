@@ -11,6 +11,18 @@ const url = {
     "/login": {
         "page": {"default": "login/login.vue"},
         "meta": {"needLogin": false, "withHeader": false, "withFooter": false}
+    },
+    "/resource": {
+        "page": {"default": "sys/resource/resource.vue"},
+        "meta": {"needLogin": false, "withHeader": false, "withFooter": false}
+    },
+    "/role": {
+        "page": {"default": "sys/role/role.vue"},
+        "meta": {"needLogin": false, "withHeader": false, "withFooter": false}
+    },
+    "/admin": {
+        "page": {"default": "sys/admin/admin.vue"},
+        "meta": {"needLogin": false, "withHeader": false, "withFooter": false}
     }
 }
 
