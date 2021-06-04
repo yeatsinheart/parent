@@ -9,69 +9,45 @@ class AdminMenuService {
 
     tabid = 0;
 
+     insertMenu(menu,node){
+         if (node['parent']===0) {
+             menu.push(node);
+             return;
+             //this.pushResource(tmp, o);
+         }
+         for(let i =0;i<menu.length;i++){
+             let menuNode = menu[i];
+             if(menuNode['id']===node['parent']){
+                 if (!menuNode["subs"]) {
+                     menuNode["subs"] = []
+                 }
+                 menuNode["subs"].push(node);
+             }else{
+                 if (!menuNode["subs"]) {
+                     // 没有下级直接跳过
+                     continue;
+                 }
+                 this.insertMenu(menuNode['subs'],node)
+             }
+         }
+    }
     async getMenu() {
+        // 节点的父节点ID必然更小
+        // 节点的父节点肯定已经放入menu中
         let menu = [];
         this.getMenuResource().then(response => {
-
-            response.forEach(o => {
-                let path = o.path;
-                let idpath = path.split("->");
-                let tmp = menu;
-                // 遍历族谱
-                for (let i = 0; i < idpath.length; i++) {
-                    let parentid = idpath[i];
-                    let parentNode = null;
-                    if (tmp.length === 0) {
-                        this.pushResource(tmp, o);
-                        continue;
-                    }
-                    if (parentid == 0 && idpath.length > 1) {
-                        continue;
-                    }
-                    for (let j = 0; j < tmp.length; j++) {
-                        let t = tmp[j];
-                        if (t["id"] == parentid) {
-                            parentNode = t;
-                        }
-                    }
-                    if (!parentNode) {
-                        this.pushResource(tmp, o);
-                    } else {
-                        if (i === idpath.length - 1) {
-                            if (!parentNode["subs"]) {
-                                parentNode["subs"] = []
-                            }
-                            this.pushResource(parentNode["subs"], o);
-                        } else {
-                            tmp = parentNode["subs"];
-                        }
-                    }
-
-                }
+            response.forEach(node => {
+                this.insertMenu(menu,node);
             })
         })
         return menu;
     }
+/*
 
-    async pushResource(menu, resource) {
-        let contained = false;
-        if (!menu) {
-            menu = [];
-        }
-        menu.forEach(o => {
-            if (o["id"] === resource["id"]) {
-                contained = true;
-            }
-        })
-        if (!contained) {
-            menu.push(resource);
-        }
-    }
-
-    findNode(arr, path) {
+    findNode(menu, path) {
         let copypath = JSON.parse(JSON.stringify(path));
-        for (let i = 0; i < arr.length; i++) {
-            let node = arr[i];
+        for (let i = 0; i < menu.length; i++) {
+            let node = menu[i];
             if (node["id"] == path[0]) {
                 if (path.length === 1) {
                     return node;
@@ -82,42 +58,69 @@ class AdminMenuService {
             }
         }
     }
+*/
 
     async getMenuResource() {
         let menuResource = [
             {
                 "id": 1,
-                "icon": "el-icon-edit-outline",
                 "name": "后台管理",
-                "path": "0"
+                "parent": 0
             },
             {
                 "id": 2,
-                "icon": "el-icon-edit-outline",
                 "name": "账号管理",
                 "url": "admin",
-                "path": "0->1"
+                "parent": 1
             },
             {
                 "id": 3,
-                "icon": "el-icon-edit-outline",
                 "name": "岗位管理",
                 "url": "role",
-                "path": "0->1"
+                "parent": 1
             },
             {
                 "id": 4,
-                "icon": "el-icon-edit-outline",
-                "name": "菜单管理",
+                "name": "资源管理",
                 "url": "resource",
-                "path": "0->1"
+                "parent": 1
+
             },
             {
                 "id": 5,
-                "icon": "el-icon-edit-outline",
                 "name": "登陆注册",
                 "url": "login",
-                "path": "0"
+                "parent": 0
+            },
+            {
+                "id": 6,
+                "name": "语言翻译",
+                "url": "login",
+                "parent": 0
+            },
+            {
+                "id": 7,
+                "name": "租户管理",
+                "url": "login",
+                "parent": 0
+            },
+            {
+                "id": 8,
+                "name": "租户列表",
+                "url": "login",
+                "parent": 7
+            },
+            {
+                "id": 9,
+                "name": "APP管理",
+                "url": "login",
+                "parent": 7
+            },
+            {
+                "id": 9,
+                "name": "域名列表",
+                "url": "login",
+                "parent": 7
             }
         ]
 

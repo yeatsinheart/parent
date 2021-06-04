@@ -18,7 +18,7 @@
         </span>
     </div>
 
-    <el-drawer
+<!--    <el-drawer
         :before-close="toogle"
         :visible.sync="menuShow"
         direction="ltr"
@@ -39,8 +39,25 @@
           default-expand-all
           @node-click="clickNode">
       </el-tree>
-    </el-drawer>
+    </el-drawer>-->
 
+
+    <div class="menu" :visible.sync="menuShow">
+      <el-input
+          v-model="filterText"
+          placeholder="输入关键字进行过滤">
+      </el-input>
+
+      <el-tree
+          ref="tree"
+          :data="items"
+          :filter-node-method="filterNode"
+          :props="defaultProps"
+          class="filter-tree"
+          default-expand-all
+          @node-click="clickNode">
+      </el-tree>
+    </div>
   </div>
 </template>
 <script>
@@ -95,6 +112,13 @@ export default {
 <style lang="scss" scoped>
 .container_collapse .handle-button {
   left: 0px;
+}
+.menu{
+  width: 180px;
+  left: -180px;
+  position: absolute;
+  height: 100%;
+  border-right: 1px dashed #b0b0b0;
 }
 
 .handle-button {
