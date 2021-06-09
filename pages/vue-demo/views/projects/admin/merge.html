@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"
+          name="viewport">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="yes" name="full-screen">
+    <meta content="true" name="x5-fullscreen">
+    <meta content="mobile" name="applicable-device">
+
+    <meta content="-1" http-equiv="Expires">
+    <meta content="no-cache" http-equiv="Pragma">
+    <meta content="no-cache" http-equiv="Cache-control">
+    <meta content="no-cache" http-equiv="Cache">
+    <title>Git快捷操作</title>
+    <style type="text/css">
+        table.hovertable {
+            font-family: verdana, arial, sans-serif;
+            font-size: 11px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #999999;
+            border-collapse: collapse;
+        }
+
+        table.hovertable th {
+            background-color: #c3dde0;
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #a9c6c9;
+        }
+
+        table.hovertable tr {
+            background-color: #d4e3e5;
+        }
+
+        table.hovertable td {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #a9c6c9;
+            text-align: center;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        a:active {
+            color: red;
+        }
+    </style>
+    <base target="_blank"></base>
+</head>
+<body>
+<div onclick=active(this,"http://47.52.90.110/groups/lottery2.0/-/merge_requests")> 所有合并请求</div>
+指定功能/修复分支
+<input type="text" id="sourcebranch" style="width: 250px" onkeyup="sourcebranchOpt()"
+       onchange="sourcebranchOpt()"
+       value="请输入新分支名字"
+/>
+
+<table class="hovertable">
+    <tr>
+        <th>新建分支</th>
+        <th>项目</th>
+        <th>新建分支</th>
+        <th>所有分支</th>
+        <th>提交记录</th>
+        <th>合并到develop</th>
+        <th>合并到release</th>
+        <th>合并到master</th>
+        <th>待合并请求</th>
+    </tr>
+    <tbody id="project_table"></tbody>
+</table>
+新建分支命令
+<div id="newBranchSh">
+</div>
+<script>
+    let projects = [
+        'lottery2.0/lottery-admin',
+        'lottery2.0/lottery-api',
+        'lottery2.0/lottery-common',
+        'lottery2.0/lottery-domain',
+        'lottery2.0/lottery-parent',
+        'lottery2.0/lottery-protocol',
+        'lottery2.0/lottery-service',
+        'lottery2.0/lottery-task',
+    ]
+    let gitBase = 'http://47.52.90.110/';
+    //指派审核人
+    let assigner = 62;
+
+    function sourcebranchOpt() {
+        document.querySelector('#newBranchSh').innerHTML = macosNewBranch(newBranchArr)
+        let sourceBranch = document.getElementById('sourcebranch').value;
+        document.querySelector('#project_table').innerHTML = "";
+        projects.forEach((project, index) => {
+            let baseUrl = gitBase + project;
+            let branchesUrl = baseUrl + '/branches';
+            let mergeRequestUrl = baseUrl + '/merge_requests';
+            let brancheNewUrl = baseUrl + '/branches/new?branch_name=' + sourceBranch;
+            let commitsUrl = baseUrl + '/commits/' + sourceBranch;
+            let mergeUrl = baseUrl + '/merge_requests/new/diffs?merge_request%5Bassignee_id%5D='+assigner+'&merge_request%5Bsource_branch%5D=' + sourceBranch + '&merge_request%5Btarget_branch%5D=';
+            let trHtml = '<tr onmouseover="this.style.backgroundColor=\'#ffff66\';" onmouseout="this.style.backgroundColor=\'#d4e3e5\';">\n' +
+                '        <td><input id="project_' + index + '" name="newBranchProject" value="' + project + '" onchange="choose(this)" type="checkbox" /></td>' +
+                '        <td>' + project + '</td>' +
+                '           <td onclick=active(this,"' + brancheNewUrl + '")> 新建</td>' +
+                '           <td onclick=active(this,"' + branchesUrl + '")>查看</td>' +
+                '           <td onclick=active(this,"' + commitsUrl + '")>查看</td>' +
+                '           <td onclick=active(this,"' + mergeUrl + 'develop")>申请合并develop</td>' +
+                '           <td onclick=active(this,"' + mergeUrl + 'release")>申请合并release</td>' +
+                '           <td onclick=active(this,"' + mergeUrl + 'master")>申请合并master</td>' +
+                '           <td onclick=active(this,"' + mergeRequestUrl + '")>审核合并请求</td>' +
+                '    </tr>';
+            document.querySelector('#project_table').innerHTML += trHtml;
+        })
+    }
+
+    let newBranchArr = new Array();
+
+    function choose(choosearea) {
+        newBranchArr = new Array();
+        let newbranchProjects = document.getElementsByName(choosearea.name);
+        for (let i = 0; i < newbranchProjects.length; i++) {
+            if (newbranchProjects[i].checked)
+                newBranchArr.push(newbranchProjects[i].value);
+        }
+        document.querySelector('#newBranchSh').innerHTML = macosNewBranch(newBranchArr)
+
+    }
+
+    function active(tdarea, url) {
+        tdarea.style.color = 'red';
+        let jump = document.createElement("a");
+        document.body.appendChild(jump);
+        jump.href = url; //url 是你得到的连接
+        jump.click();
+        document.body.removeChild(jump);
+    }
+
+    function macosNewBranch(arr) {
+        let newBranch = document.getElementById('sourcebranch').value;
+        if (!newBranch) {
+            newBranch = '输入指定功能/修复分支';
+        }
+        let gitsh = 'rm -rf code <br/>' +
+            'mkdir -p code <br/>' +
+            'cd code  <br/> <br/>';
+        arr.forEach((project, index) => {
+            //在当前分支下创建my-test的本地分支分支
+            gitsh += 'git clone ' + gitBase + project + ' <br/>' +
+                'git checkout -b ' + newBranch + ' <br/>' +
+                //将my-test分支推送到远程
+                'git push origin ' + newBranch + '  <br/>' +
+                //将本地分支my-test关联到远程分支my-test上
+                'git branch --set-upstream-to=origin/' + newBranch + '  <br/><br/>';
+        });
+        return gitsh;
+
+    }
+
+    sourcebranchOpt();
+</script>
+</body>
+</html>
