@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="font-size: 64px;">
+
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"
+          name="viewport">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="yes" name="full-screen">
+    <meta content="true" name="x5-fullscreen">
+    <meta content="mobile" name="applicable-device">
+
+    <meta content="-1" http-equiv="Expires">
+    <meta content="no-cache" http-equiv="Pragma">
+    <meta content="no-cache" http-equiv="Cache-control">
+    <meta content="no-cache" http-equiv="Cache">
+
+    <link rel='stylesheet' href='normal.css'>
+
+    <script src="init.js"></script>
+    <style>
+        .flexarea {
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-wrap: nowrap;
+            height: 100%;
+        }
+
+        .hiden {
+            display: none;
+        }
+
+        #chat_area_chose {
+            width: 50px;
+            flex-direction: column;
+            background: #1e2f41;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        #chat_where {
+            width: 200px;
+            /*background: rgba(0, 0, 0, 0.2);*/
+            overflow: hidden;
+            overflow-y: auto;
+            border-right: 1px solid rgba(0, 0, 0, 0.2);
+
+            flex-shrink: 0;
+        }
+
+        #chat_msg {
+            flex-grow: 1;
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: column;
+        }
+
+        .chat_title {
+            display: none;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            background: #fff;
+        }
+
+        #chat_easy {
+            background: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: none;
+        }
+
+        #chat_easy div {
+            width: 100%;
+            text-align: center;
+        }
+
+        @media only screen and (max-width: 600px) {
+            #chat_area_chose {
+                display: none;
+            }
+
+            #chat_where {
+                flex-grow: 1;
+                padding-top: 50px;
+                padding-bottom: 100px;
+            }
+
+            #chat_msg {
+                display: none;
+            }
+
+            .chat_title {
+                display: block;
+            }
+
+            #chat_easy {
+                display: -webkit-flex; /* Safari */
+                display: flex;
+            }
+        }
+
+        .goback {
+            position: absolute;
+            top: 15px;
+            border: 10px solid transparent;
+            border-right: 10px solid #ccc;
+        }
+
+        .goback:hover {
+            /*border-right: 10px solid #808080;*/
+        }
+
+        .goback:after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -7px;
+            border: 10px solid transparent;
+            border-right: 10px solid #fff;
+        }
+
+        .contactor {
+            padding: 5px 18px;
+        }
+
+        .contactor:hover {
+            background-color: rgba(0, 0, 0, .05);
+        }
+
+        .contactor:active {
+            background-color: rgba(0, 0, 0, .05);
+        }
+
+        .contactor img {
+            width: 46px;
+            height: 46px;
+            border-radius: 100%;
+            vertical-align: middle;
+        }
+
+        .historyarea {
+            flex-grow: 1;
+            padding: 18px 18px;
+        }
+
+        .sendarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .input {
+            flex-grow: 1;
+            font-size: 14px;
+            width: 100%;
+            padding: 5px 8px;
+            border: 1px solid #ddd;
+            overflow-x: hidden;
+            overflow-y: auto;
+            user-modify: read-write-plaintext-only;
+            -webkit-user-modify: read-write-plaintext-only;
+            max-height: 100px;
+        }
+
+        .input:empty::before {
+            content: attr(placeholder);
+        }
+
+
+        .speaker, .me {
+
+            margin-top: 14px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .me {
+            justify-content: flex-end;
+        }
+
+
+        .photo {
+            flex-shrink: 0;
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            vertical-align: bottom;
+        }
+
+        .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 80% 90% 100% 20%;
+        }
+
+        .detail {
+            display: inline-block;
+            background-color: aquamarine;
+            border-radius: 14px;
+            position: relative;
+            padding-left: 12px;
+            padding-right: 12px;
+            max-width: calc(90% - 33px);
+
+            overflow: hidden;
+            overflow-y: auto;
+            word-break: break-all;
+        }
+
+        .me .detail {
+            background: #3399CC;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 面板+消息-->
+<div class=" flexarea" id="chat-pane">
+    <div id="chat_area_chose" class=" flexarea">
+        <div>联系人</div>
+        <div>对话</div>
+        <div>设置</div>
+    </div>
+    <div id="chat_where" class="">
+        <div class="chat_title">
+            <div class="goback"></div>
+            <span style="padding-left: 28px">对话</span></div>
+    </div>
+    <div id="chat_msg" class="">
+
+    </div>
+    <div id="chat_easy">
+        <div>联系人</div>
+        <div>对话</div>
+        <div>设置</div>
+    </div>
+</div>
+<script>
+    function renderContacotors() {
+        let contianer = document.querySelector('#chat_where');
+        let list = getContactors();
+        for (let i = 0; i < list.length; i++) {
+            let who = list[i];
+            let div = document.createElement("div");
+            div.setAttribute("id", "who-" + who['name']);
+            div.setAttribute("class", "contactor");
+            div.innerHTML = '<img src="' + who['img'] + '"><span>' + who['name'] + '</span>';
+            div.addEventListener("click", function (e) {
+                openMsg(who);
+            })
+            contianer.appendChild(div);
+        }
+    }
+
+    function getContactors() {
+        let list = [];
+        for (let i = 0; i < 100; i++) {
+            let who = {"img": "who.jpg", "name": "聊天对象" + i};
+            list.push(who);
+        }
+        return list;
+    }
+
+    function openMsg(who) {
+        let msg = document.querySelector('#chat_msg');
+        msg.innerHTML = '<div id="chat_msg_who" style="border-bottom: 1px solid rgba(0,0,0,0.2);">\n' +
+            '               <div class="goback"></div>\n <img style="padding-left: 18px;width: 64px;\n' +
+            '            height: 46px;\n' +
+            '            border-radius: 100%;\n' +
+            '            vertical-align: middle;" src="' + who['img'] + '"><span style="padding-left: 28px">' + who['name'] + '</span>\n' +
+            '        </div>';
+        msg.innerHTML += '' +
+            '<div class="historyarea">' +
+            '<div class="speaker">\n' +
+            '                    <div class="photo"><img src="who.jpg"></div>\n' +
+            '                    <div class="detail">\n' +
+            '                        <div class="name">nick 16:32:30</div>\n' +
+            '                        <br> 123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123\n' +
+            '                    </div>\n' +
+            '                </div>\n' +
+            '                <div class="me">\n' +
+            '                    <div class="detail">\n' +
+            '                        <div style="text-align: right">16:32:31 我</div>\n' +
+            '                        <br> 123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123\n' +
+            '                    </div>\n' +
+            '                </div>' +
+            '<div class="claer"></div>' +
+            '<div style="text-align: center;margin-top: 14px;">系统提示</div>' +
+            '</div>';
+        msg.innerHTML += '<div class="sendarea">\n' +
+            '            <div class=\'input\' contenteditable id="messageId" name="message" placeholder=\'输入消息\'></div>\n' +
+            '            <div>\n' +
+            '                <button id="sendButton" onClick="javascript:SendMsg()" style="line-height: 100%">Send</button>\n' +
+            '            </div>\n' +
+            '        </div>'
+    }
+
+    function history(who) {
+
+    }
+
+    function msgtype() {
+        return ''
+    }
+
+    function goToMsg() {
+
+    }
+
+    renderContacotors();
+</script>
+</body>
+</html>

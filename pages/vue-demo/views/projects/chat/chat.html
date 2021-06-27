@@ -169,6 +169,9 @@
             overflow-y: auto;
             word-break: break-all;
         }
+        .hiden{
+            display: none;
+        }
 
 
         .name,
@@ -195,7 +198,7 @@ position:absolute;bottom:20px;right:20px;
 </div>
 
 <!-- 聊天面板（只显示联系人） -->
-<div class="example" style="width:260px;height:520px; border-radius:5px;
+<div class="example hiden" style="width:260px;height:520px; border-radius:5px;
         z-index: 10000;
         background-image: url(chat-back.jpg);
         border: 1px solid rgba(0, 0, 0, .05);
@@ -227,7 +230,7 @@ position:absolute;bottom:20px;right:20px;
 </div>
 <div class="example" id="chat-pane"></div>
 <!-- 消息 -->
-<div class="example" id="chat-msg">
+<div class="example hiden" id="chat-msg">
     <div class="char-area" id="chat" style="width: 360px;height: 520px;
         z-index: 10000;
         background-image: url(chat-back.jpg);
@@ -359,11 +362,6 @@ position:absolute;bottom:20px;right:20px;
 
 </div>
 </body>
-<!--
-消息通知
-消息网关->业务网关->广播📢->回传客户端
--->
-
 <script>
     let head = document.head || document.getElementsByTagName('head')[0];
     let style = document.createElement('style');
