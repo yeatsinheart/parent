@@ -123,10 +123,6 @@
             border-right: 10px solid #fff;
         }
 
-        .contactor {
-            padding: 5px 18px;
-        }
-
         .contactor:hover {
             background-color: rgba(0, 0, 0, .05);
         }
@@ -249,8 +245,9 @@
             let who = list[i];
             let div = document.createElement("div");
             div.setAttribute("id", "who-" + who['name']);
+            div.setAttribute("style", 'display: -webkit-flex;display: flex;flex-wrap: nowrap;');
             div.setAttribute("class", "contactor");
-            div.innerHTML = '<img src="' + who['img'] + '"><span>' + who['name'] + '</span>';
+            div.innerHTML = '<img style="width: 46px;height: 46px;border-radius: 100%;vertical-align: middle;" src="' + who['img'] + '"><span style="flex-grow: 1">' + who['name'] + '</span>';
             div.addEventListener("click", function (e) {
                 openMsg(who);
             })
