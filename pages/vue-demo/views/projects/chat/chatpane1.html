@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" style="font-size: 64px;">
+<html lang="zh-CN" style="font-size: 14px;">
 
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
@@ -17,8 +17,8 @@
     <meta content="no-cache" http-equiv="Cache">
 
     <link rel='stylesheet' href='normal.css'>
-
-    <script src="init.js"></script>
+<!--
+    <script src="init.js"></script>-->
     <style>
         .flexarea {
             display: -webkit-flex; /* Safari */
@@ -45,7 +45,6 @@
             overflow: hidden;
             overflow-y: auto;
             border-right: 1px solid rgba(0, 0, 0, 0.2);
-
             flex-shrink: 0;
         }
 
@@ -217,25 +216,25 @@
 <body>
 
 <!-- 面板+消息-->
-<div class=" flexarea" id="chat-pane">
-    <div id="chat_area_chose" class=" flexarea">
+<div class=" flexarea" id="chat_pane">
+<!--    <div id="chat_area_chose" class=" flexarea">
         <div>联系人</div>
         <div>对话</div>
         <div>设置</div>
-    </div>
+    </div>-->
     <div id="chat_where" class="">
         <div class="chat_title">
-            <div class="goback"></div>
-            <span style="padding-left: 28px">对话</span></div>
+<!--            <div class="goback"></div>-->
+            <span style="padding-left: 28px ;line-height: 47px">对话</span></div>
     </div>
     <div id="chat_msg" class="">
 
     </div>
-    <div id="chat_easy">
+<!--    <div id="chat_easy">
         <div>联系人</div>
         <div>对话</div>
         <div>设置</div>
-    </div>
+    </div>-->
 </div>
 <script>
     function renderContacotors() {
@@ -245,19 +244,27 @@
             let who = list[i];
             let div = document.createElement("div");
             div.setAttribute("id", "who-" + who['name']);
-            div.setAttribute("style", 'display: -webkit-flex;display: flex;flex-wrap: nowrap;');
+            div.setAttribute("style", 'display: none;');
             div.setAttribute("class", "contactor");
-            div.innerHTML = '<img style="width: 46px;height: 46px;border-radius: 100%;vertical-align: middle;" src="' + who['img'] + '"><span style="flex-grow: 1">' + who['name'] + '</span>';
+            div.innerHTML = '<img style="width: 46px;height: 46px;border-radius: 100%;vertical-align: middle;" src="' + who['img'] + '">' +
+                '<span style="flex-grow: 1">' + who['name'] + '</span>';
             div.addEventListener("click", function (e) {
                 openMsg(who);
+                let pane = document.querySelector('#chat_pane');
+                if(pane.clientWidth<=600){
+                    contianer.setAttribute("style","display: none");
+                }
+                contianer.prepend(div);
+                //contianer.setAttribute("style","display: -webkit-flex;display: flex;");
             })
             contianer.appendChild(div);
+            div.setAttribute("style", 'display: -webkit-flex;display: flex;flex-wrap: nowrap;');
         }
     }
 
     function getContactors() {
         let list = [];
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 20; i++) {
             let who = {"img": "who.jpg", "name": "聊天对象" + i};
             list.push(who);
         }
@@ -267,14 +274,14 @@
     function openMsg(who) {
         let msg = document.querySelector('#chat_msg');
         msg.innerHTML = '<div id="chat_msg_who" style="border-bottom: 1px solid rgba(0,0,0,0.2);">\n' +
-            '               <div class="goback"></div>\n <img style="padding-left: 18px;width: 64px;\n' +
+            '               <div class="goback" onclick="backToContactor()"></div>\n <img style="padding-left: 28px;width: 74px;\n' +
             '            height: 46px;\n' +
             '            border-radius: 100%;\n' +
-            '            vertical-align: middle;" src="' + who['img'] + '"><span style="padding-left: 28px">' + who['name'] + '</span>\n' +
+            '            vertical-align: middle;" src="' + who['img'] + '"><span style="padding-left: 5px">' + who['name'] + '</span>\n' +
             '        </div>';
         msg.innerHTML += '' +
             '<div class="historyarea">' +
-            '<div class="speaker">\n' +
+            '   <div class="speaker">\n' +
             '                    <div class="photo"><img src="who.jpg"></div>\n' +
             '                    <div class="detail">\n' +
             '                        <div class="name">nick 16:32:30</div>\n' +
@@ -293,9 +300,10 @@
         msg.innerHTML += '<div class="sendarea">\n' +
             '            <div class=\'input\' contenteditable id="messageId" name="message" placeholder=\'输入消息\'></div>\n' +
             '            <div>\n' +
-            '                <button id="sendButton" onClick="javascript:SendMsg()" style="line-height: 100%">Send</button>\n' +
+            '                <button id="sendButton" onClick="javascript:SendMsg()" style="height: 30px">Send</button>\n' +
             '            </div>\n' +
             '        </div>'
+        msg.setAttribute("style"," display: -webkit-flex;display: flex;");
     }
 
     function history(who) {
@@ -305,12 +313,26 @@
     function msgtype() {
         return ''
     }
-
+    function backToContactor(){
+        let contianer = document.querySelector('#chat_where');
+        let msg = document.querySelector('#chat_msg');
+        msg.setAttribute("style"," display: none;");
+        contianer.setAttribute("style","display: block;");
+    }
     function goToMsg() {
 
     }
+    function storedContacotors() {
 
-    renderContacotors();
+    }
+    function login(){
+        storedContacotors();
+        // 根据消息数量
+        renderContacotors();
+    }
+    login();
+
+
 </script>
 </body>
 </html>
