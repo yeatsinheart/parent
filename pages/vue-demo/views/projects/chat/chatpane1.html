@@ -247,12 +247,12 @@
         let kefu = document.querySelector('#chat_customer_service');
         let list = getContactors();
         //3个客服账号
-        for (let j = 0; j < 3; j++) {
+        for (let j = 0; j < 1; j++) {
             let div = document.createElement("div");
             div.setAttribute("class", "contactor");
             div.setAttribute("style", 'display: none;');
             div.innerHTML = '<img style="width: 46px;height: 46px;border-radius: 100%;vertical-align: middle;" src="kefu.jpeg">' +
-                '<span style="flex-grow: 1">客服' + j + '</span>';
+                '<span style="flex-grow: 1">客服</span>';
             div.addEventListener("click", function (e) {
                 openMsg({"img": "kefu.jpeg", "name": "客服" + j});
                 let pane = document.querySelector('#chat_pane');
@@ -286,11 +286,11 @@
             div.setAttribute("style", 'display: -webkit-flex;display: flex;flex-wrap: nowrap;');
         }
     }
-
+    /**默认会话*/
     function getContactors() {
         let list = [];
-        for (let i = 0; i < 20; i++) {
-            let who = {"img": "who.jpg", "name": "群" + i};
+        for (let i = 0; i < 1; i++) {
+            let who = {"img": "who.jpg", "name": "默认群","id":"default_system_group" };
             list.push(who);
         }
         return list;
@@ -298,45 +298,45 @@
 
     function openMsg(who) {
         let msg = document.querySelector('#chat_msg');
-        msg.innerHTML = '<div id="chat_msg_who" style="border-bottom: 1px solid rgba(0,0,0,0.2);">\n' +
-            '               <div class="goback" onclick="backToContactor()"></div>\n <img style="padding-left: 28px;width: 74px;\n' +
-            '            height: 46px;\n' +
-            '            border-radius: 100%;\n' +
-            '            vertical-align: middle;" src="' + who['img'] + '"><span style="padding-left: 5px">' + who['name'] + '</span>\n' +
+        msg.innerHTML = '<div id="chat_msg_who" style="border-bottom: 1px solid rgba(0,0,0,0.2);">' +
+            '               <div class="goback" onclick="backToContactor()"></div> <img style="padding-left: 28px;width: 74px;' +
+            '            height: 46px;' +
+            '            border-radius: 100%;' +
+            '            vertical-align: middle;" src="' + who['img'] + '"><span style="padding-left: 5px">' + who['name'] + '</span>' +
             '        </div>';
         msg.innerHTML += '' +
             '<div class="historyarea">' +
-            '   <div class="speaker">\n' +
-            '                    <div class="photo"><img src="who.jpg"></div>\n' +
-            '                    <div class="detail">\n' +
-            '                        <div class="name">nick 16:32:30</div>\n' +
+            '   <div class="speaker">' +
+            '                    <div class="photo"><img src="who.jpg"></div>' +
+            '                    <div class="detail">' +
+            '                        <div class="name">nick 16:32:30</div>' +
             '                        总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊' +
             '                        总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊' +
             '                        总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊' +
             '                        总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊' +
             '                        总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊' +
-            '\n' +
-            '                    </div>\n' +
-            '                </div>\n' +
-            '                <div class="me">\n' +
-            '                    <div class="detail">\n' +
-            '                        <div style="text-align: right">16:32:31 我</div>\n' +
+            '' +
+            '                    </div>' +
+            '                </div>' +
+            '                <div class="me">' +
+            '                    <div class="detail">' +
+            '                        <div style="text-align: right">16:32:31 我</div>' +
             '                        总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊' +
             '                        总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊' +
             '                        总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊' +
             '                        总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊' +
             '                        总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊总共150字啊' +
-            '\n' +
-            '                    </div>\n' +
+            '' +
+            '                    </div>' +
             '                </div>' +
             '<div class="claer"></div>' +
             '<div style="text-align: center;margin-top: 14px;">系统提示</div>' +
             '</div>';
-        msg.innerHTML += '<div class="sendarea">\n' +
-            '            <div class=\'input\' contenteditable id="messageId" name="message" placeholder=\'输入消息\'></div>\n' +
-            '            <div>\n' +
-            '                <button id="sendButton" onClick="javascript:SendMsg()" style="height: 30px">Send</button>\n' +
-            '            </div>\n' +
+        msg.innerHTML += '<div class="sendarea">' +
+            '            <div class="input" contenteditable id="messageId" name="message" placeholder="输入消息"></div>' +
+            '            <div>' +
+            '                <button id="sendButton" onClick=javascript:SendMsg("'+who['id']+'") style="height: 30px">Send</button>' +
+            '            </div>' +
             '        </div>'
         msg.setAttribute("style"," display: -webkit-flex;display: flex;");
     }
@@ -366,7 +366,7 @@
         renderContacotors();
     }
     login();
-    function SendMsg(){
+    function SendMsg(placeId){
         // 文本
         let msg = document.getElementById("messageId");
         // 发送位置，发送时间，发送给谁
@@ -385,9 +385,8 @@
             //log("发送 Socket 消息: " + msg.innerText);
             let se = {
                 "action": "immsg",
-                "from": userId,
-                "where": 1,
-                "data": msg.innerText
+                "where": placeId,
+                "data": x
             };
             sendMsg(JSON.stringify(se))
         } else {
@@ -399,7 +398,7 @@
 </script>
 <script src="websocket.js"></script>
 <script>
-    var userId = Math.ceil(Math.random()*10)
+    var userId = Math.ceil(Math.random()*999999);
     CreateConnect("ws://localhost",true,userId,function(x){console.log(x)},function(x){console.log(x)});
 </script>
 </body>

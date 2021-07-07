@@ -46,6 +46,11 @@ function CreateConnect(url, startIM,userId,responsehadler, errhadler) {
                         "from": userId
                     };
                     sendMsg(JSON.stringify(joinChatMsg))
+                    let joinGroup = {
+                        "action": "joinimgroup",
+                        "data": "default_system_group"
+                    };
+                    sendMsg(JSON.stringify(joinGroup))
                 }
                 heartCheck.start();
             };
