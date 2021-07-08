@@ -17,8 +17,8 @@
     <meta content="no-cache" http-equiv="Cache">
 
     <link rel='stylesheet' href='normal.css'>
-<!--
-    <script src="init.js"></script>-->
+    <!--
+        <script src="init.js"></script>-->
     <style>
         .flexarea {
             display: -webkit-flex; /* Safari */
@@ -219,14 +219,14 @@
 
 <!-- 面板+消息-->
 <div class=" flexarea" id="chat_pane">
-<!--    <div id="chat_area_chose" class=" flexarea">
-        <div>联系人</div>
-        <div>对话</div>
-        <div>设置</div>
-    </div>-->
+    <!--    <div id="chat_area_chose" class=" flexarea">
+            <div>联系人</div>
+            <div>对话</div>
+            <div>设置</div>
+        </div>-->
     <div id="chat_where" class="">
         <div class="chat_title">
-<!--            <div class="goback"></div>-->
+            <!--            <div class="goback"></div>-->
             <span style="padding-left: 28px ;line-height: 47px">对话</span></div>
         <div id="chat_customer_service"></div>
         <div id="chat_user"></div>
@@ -234,11 +234,11 @@
     <div id="chat_msg" class="">
 
     </div>
-<!--    <div id="chat_easy">
-        <div>联系人</div>
-        <div>对话</div>
-        <div>设置</div>
-    </div>-->
+    <!--    <div id="chat_easy">
+            <div>联系人</div>
+            <div>对话</div>
+            <div>设置</div>
+        </div>-->
 </div>
 <script>
     function renderContacotors() {
@@ -256,8 +256,8 @@
             div.addEventListener("click", function (e) {
                 openMsg({"img": "kefu.jpeg", "name": "客服" + j});
                 let pane = document.querySelector('#chat_pane');
-                if(pane.clientWidth<=453){
-                    chatWhere.setAttribute("style","display: none");
+                if (pane.clientWidth <= 453) {
+                    chatWhere.setAttribute("style", "display: none");
                 }
                 kefu.prepend(div);
                 //contianer.setAttribute("style","display: -webkit-flex;display: flex;");
@@ -276,8 +276,8 @@
             div.addEventListener("click", function (e) {
                 openMsg(who);
                 let pane = document.querySelector('#chat_pane');
-                if(pane.clientWidth<=453){
-                    chatWhere.setAttribute("style","display: none");
+                if (pane.clientWidth <= 453) {
+                    chatWhere.setAttribute("style", "display: none");
                 }
                 contianer.prepend(div);
                 //contianer.setAttribute("style","display: -webkit-flex;display: flex;");
@@ -286,11 +286,12 @@
             div.setAttribute("style", 'display: -webkit-flex;display: flex;flex-wrap: nowrap;');
         }
     }
+
     /**默认会话*/
     function getContactors() {
         let list = [];
         for (let i = 0; i < 1; i++) {
-            let who = {"img": "who.jpg", "name": "默认群","id":"default_system_group" };
+            let who = {"img": "who.jpg", "name": "默认群", "id": "default_system_group"};
             list.push(who);
         }
         return list;
@@ -335,10 +336,10 @@
         msg.innerHTML += '<div class="sendarea">' +
             '            <div class="input" contenteditable id="messageId" name="message" placeholder="输入消息"></div>' +
             '            <div>' +
-            '                <button id="sendButton" onClick=javascript:SendMsg("'+who['id']+'") style="height: 30px">Send</button>' +
+            '                <button id="sendButton" onClick=javascript:SendMsg("' + who['id'] + '") style="height: 30px">Send</button>' +
             '            </div>' +
             '        </div>'
-        msg.setAttribute("style"," display: -webkit-flex;display: flex;");
+        msg.setAttribute("style", " display: -webkit-flex;display: flex;");
     }
 
     function history(who) {
@@ -348,25 +349,31 @@
     function msgtype() {
         return ''
     }
-    function backToContactor(){
+
+    function backToContactor() {
         let contianer = document.querySelector('#chat_where');
         let msg = document.querySelector('#chat_msg');
-        msg.setAttribute("style"," display: none;");
-        contianer.setAttribute("style","display: block;");
+        msg.setAttribute("style", " display: none;");
+        contianer.setAttribute("style", "display: block;");
     }
+
     function goToMsg() {
 
     }
+
     function storedContacotors() {
 
     }
-    function login(){
+
+    function login() {
         storedContacotors();
         // 根据消息数量
         renderContacotors();
     }
+
     login();
-    function SendMsg(placeId){
+
+    function SendMsg(placeId) {
         // 文本
         let msg = document.getElementById("messageId");
         // 发送位置，发送时间，发送给谁
@@ -398,8 +405,12 @@
 </script>
 <script src="websocket.js"></script>
 <script>
-    var userId = Math.ceil(Math.random()*999999);
-    CreateConnect("ws://localhost",true,userId,function(x){console.log(x)},function(x){console.log(x)});
+    var userId = Math.ceil(Math.random() * 999999);
+    CreateConnect("ws://localhost", true, userId, function (x) {
+        console.log(x)
+    }, function (x) {
+        console.log(x)
+    });
 </script>
 </body>
 </html>

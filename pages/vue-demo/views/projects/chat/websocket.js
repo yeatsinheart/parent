@@ -20,6 +20,45 @@ function reconnect(url) {
     }, 4000);
 }
 
+
+var reader = {
+    readAs: function(type,blob,cb){
+        console.log(blob)
+        var r = new FileReader();
+        r.onloadend = function(){
+            if(typeof(cb) === 'function') {
+                cb.call(r,r.result);
+            }
+        }
+        try{
+            r['readAs'+type](blob);
+        }catch(e){}
+    }
+}
+
+function parseBlob(blob){
+    var shortVar, intVar, stringVar;
+    reader.readAs('ArrayBuffer',blob.slice(0,blob.size),function(arr){
+        shortVar = (new Int8Array(arr));
+        for(let i=0;i<shortVar.length;i++){
+            shortVar[i]=~shortVar[i];
+        }
+        var string = new TextDecoder().decode(shortVar);
+        console.log(string);
+
+    });
+
+   /* reader.readAs('ArrayBuffer',blob.slice(0,blob.size),function(arr){
+        intVar = (new Int32Array(arr));
+        console.log(intVar);
+    });
+*/
+    reader.readAs('Text',blob.slice(0,blob.size,'text/plain;charset=UTF-8'),function(result){
+        stringVar = result;
+        console.log(stringVar);
+    });
+}
+
 function CreateConnect(url, startIM,userId,responsehadler, errhadler) {
 // 验证浏览器是否支持WebSocket协议
     if (g_ws == null) {
@@ -29,7 +68,22 @@ function CreateConnect(url, startIM,userId,responsehadler, errhadler) {
             g_ws.onmessage = function (event) {
                 //valueLabel.innerHTML+ = event.data;
                 if (event.data !== "pong") {
-                    responsehadler(event.data);
+
+                    let buffer = event.data;
+                    if(buffer instanceof Blob){
+                        buffer.arrayBuffer().then(arr=>{
+                            let shortVar = (new Int8Array(arr));
+                            for(let i=0;i<shortVar.length;i++){
+                                shortVar[i]=~shortVar[i];
+                            }
+                            let string = new TextDecoder("utf-8").decode(shortVar);
+                            console.log(string);
+                            responsehadler(string);
+                        });
+                    }
+                    //let txt = new TextDecoder("utf-8").decode(new Uint8Array(buffer))
+                   /* console.log(txt)
+                    responsehadler(event.data);*/
                 } else {
                     //心跳检测重置
                     heartCheck.start();
@@ -55,7 +109,6 @@ function CreateConnect(url, startIM,userId,responsehadler, errhadler) {
                 heartCheck.start();
             };
             g_ws.onerror = function (event) {
-                console.log(event)
                 errhadler("onerror(), Socket 发生错误!");
             };
         } catch (e) {
@@ -68,7 +121,8 @@ function CreateConnect(url, startIM,userId,responsehadler, errhadler) {
 function sendMsg(txtstr) {
     try {
         if (g_ws != null && g_ws.readyState === g_ws.OPEN) {
-            g_ws.send(txtstr);
+            let blob = new Blob([txtstr], { type: "text/plain" });
+            g_ws.send(blob);
         }
     } catch (e) {
         console.log(e)
@@ -85,7 +139,7 @@ function CloseConnect() {
 
 //心跳检测
 let heartCheck = {
-    timeout: 160000,
+    timeout: 5000,
     timeoutObj: null,
     pong: function () {
         let self = this;
