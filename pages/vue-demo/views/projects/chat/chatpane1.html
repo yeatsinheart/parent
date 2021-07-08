@@ -228,8 +228,9 @@
         <div class="chat_title">
             <!--            <div class="goback"></div>-->
             <span style="padding-left: 28px ;line-height: 47px">对话</span></div>
-        <div id="chat_customer_service"></div>
-        <div id="chat_user"></div>
+        <div id="chat_cus"></div>
+        <div id="chat_sys"></div>
+        <div id="chat_pri"></div>
     </div>
     <div id="chat_msg" class="">
 
@@ -240,33 +241,13 @@
             <div>设置</div>
         </div>-->
 </div>
+
+<script src="where.js"></script>
 <script>
-    function renderContacotors() {
-        let chatWhere = document.querySelector('#chat_where');
-        let contianer = document.querySelector('#chat_user');
-        let kefu = document.querySelector('#chat_customer_service');
-        let list = getContactors();
-        //3个客服账号
-        for (let j = 0; j < 1; j++) {
-            let div = document.createElement("div");
-            div.setAttribute("class", "contactor");
-            div.setAttribute("style", 'display: none;');
-            div.innerHTML = '<img style="width: 46px;height: 46px;border-radius: 100%;vertical-align: middle;" src="kefu.jpeg">' +
-                '<span style="flex-grow: 1">客服</span>';
-            div.addEventListener("click", function (e) {
-                openMsg({"img": "kefu.jpeg", "name": "客服" + j});
-                let pane = document.querySelector('#chat_pane');
-                if (pane.clientWidth <= 453) {
-                    chatWhere.setAttribute("style", "display: none");
-                }
-                kefu.prepend(div);
-                //contianer.setAttribute("style","display: -webkit-flex;display: flex;");
-            })
-            kefu.appendChild(div);
-            div.setAttribute("style", 'display: -webkit-flex;display: flex;flex-wrap: nowrap;');
-        }
+    function renderWhere(list){
         for (let i = 0; i < list.length; i++) {
             let who = list[i];
+            let contianer = document.querySelector('#chat_'+who['area']);
             let div = document.createElement("div");
             div.setAttribute("id", "who-" + who['name']);
             div.setAttribute("style", 'display: none;');
@@ -277,7 +258,7 @@
                 openMsg(who);
                 let pane = document.querySelector('#chat_pane');
                 if (pane.clientWidth <= 453) {
-                    chatWhere.setAttribute("style", "display: none");
+                    document.querySelector('#chat_where').setAttribute("style", "display: none");
                 }
                 contianer.prepend(div);
                 //contianer.setAttribute("style","display: -webkit-flex;display: flex;");
@@ -285,6 +266,12 @@
             contianer.appendChild(div);
             div.setAttribute("style", 'display: -webkit-flex;display: flex;flex-wrap: nowrap;');
         }
+    }
+    function renderContacotors() {
+        let list = getWhere();
+        //3个客服账号
+       renderWhere(list)
+
     }
 
     /**默认会话*/
@@ -377,7 +364,7 @@
         // 文本
         let msg = document.getElementById("messageId");
         // 发送位置，发送时间，发送给谁
-        console.log("SendMsg(), msg: " + msg.innerText);
+        //console.log("SendMsg(), msg: " + msg.innerText);
         if (!msg.innerText) {
             return;
         }
@@ -404,9 +391,10 @@
 
 </script>
 <script src="websocket.js"></script>
+<script src="nick.js"></script>
 <script>
     var userId = Math.ceil(Math.random() * 999999);
-    CreateConnect("ws://localhost", true, userId,  userId,function (x) {
+    CreateConnect("ws://localhost", true, userId,  getNick(),function (x) {
         console.log(x)
     }, function (x) {
         console.log(x)

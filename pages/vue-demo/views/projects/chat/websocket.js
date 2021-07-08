@@ -77,7 +77,6 @@ function CreateConnect(url, startIM,userId,nick,responsehadler, errhadler) {
                                 shortVar[i]=~shortVar[i];
                             }
                             let string = new TextDecoder("utf-8").decode(shortVar);
-                            console.log(string);
                             responsehadler(string);
                         });
                     }
