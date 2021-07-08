@@ -406,7 +406,7 @@
 <script src="websocket.js"></script>
 <script>
     var userId = Math.ceil(Math.random() * 999999);
-    CreateConnect("ws://localhost", true, userId, function (x) {
+    CreateConnect("ws://localhost", true, userId,  userId,function (x) {
         console.log(x)
     }, function (x) {
         console.log(x)

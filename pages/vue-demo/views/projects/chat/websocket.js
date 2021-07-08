@@ -59,7 +59,7 @@ function parseBlob(blob){
     });
 }
 
-function CreateConnect(url, startIM,userId,responsehadler, errhadler) {
+function CreateConnect(url, startIM,userId,nick,responsehadler, errhadler) {
 // 验证浏览器是否支持WebSocket协议
     if (g_ws == null) {
         try {
@@ -97,6 +97,7 @@ function CreateConnect(url, startIM,userId,responsehadler, errhadler) {
                 if(startIM){
                     let joinChatMsg = {
                         "action": "startim",
+                        "nick":nick,
                         "from": userId
                     };
                     sendMsg(JSON.stringify(joinChatMsg))
