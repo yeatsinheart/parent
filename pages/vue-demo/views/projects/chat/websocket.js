@@ -59,7 +59,7 @@ function parseBlob(blob){
     });
 }
 
-function CreateConnect(url, startIM,userId,nick,responsehadler, errhadler) {
+function CreateConnect(url, startIM,userId,nick,openHandler,responsehadler, errhadler) {
 // 验证浏览器是否支持WebSocket协议
     if (g_ws == null) {
         try {
@@ -99,12 +99,8 @@ function CreateConnect(url, startIM,userId,nick,responsehadler, errhadler) {
                         "nick":nick,
                         "from": userId
                     };
-                    sendMsg(JSON.stringify(joinChatMsg))
-                    let joinGroup = {
-                        "action": "joinimgroup",
-                        "data": "default_system_group"
-                    };
-                    sendMsg(JSON.stringify(joinGroup))
+                    sendMsg(JSON.stringify(joinChatMsg));
+                    openHandler();
                 }
                 heartCheck.start();
             };
