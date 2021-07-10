@@ -241,6 +241,9 @@
             <div>设置</div>
         </div>-->
 </div>
+<script>
+    var userId = Math.ceil(Math.random() * 999999);
+</script>
 
 <script src="msg.js"></script>
 <script src="where.js"></script>
@@ -256,7 +259,7 @@
             div.innerHTML = '<img style="width: 46px;height: 46px;border-radius: 100%;vertical-align: middle;" src="' + who['img'] + '">' +
                 '<span style="flex-grow: 1">' + who['name'] + '</span>';
             div.addEventListener("click", function (e) {
-                active(who);
+                active(who,userId);
                 let pane = document.querySelector('#chat_pane');
                 if (pane.clientWidth <= 453) {
                     document.querySelector('#chat_where').setAttribute("style", "display: none");
@@ -338,7 +341,7 @@
 <script src="websocket.js"></script>
 <script src="nick.js"></script>
 <script>
-    var userId = Math.ceil(Math.random() * 999999);
+
     CreateConnect("ws://localhost", true, userId,  getNick(),function (){
         sendMsg(JSON.stringify(listen()))
     },function (x) {

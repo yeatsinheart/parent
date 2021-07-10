@@ -27,9 +27,13 @@ function listen() {
 var activePlace;
 
 /**打开场所*/
-function active(who) {
+function active(who,userId) {
     activePlace = who['id'];
     let msg = document.querySelector('#chat_msg');
+    let place = who['id'];
+    if(who['type']==="friend" || who['type']==="customer"){
+        place=Math.min(who['id'],userId)+"@"+Math.max(who['id'],userId);
+    }
     msg.innerHTML = '<div id="chat_msg_who" style="border-bottom: 1px solid rgba(0,0,0,0.2);">' +
         '               <div class="goback" onclick="backToContactor()"></div> <img style="padding-left: 28px;width: 74px;' +
         '            height: 46px;' +
@@ -42,7 +46,7 @@ function active(who) {
     msg.innerHTML += '<div class="sendarea">' +
         '            <div class="input" contenteditable id="messageId" name="message" placeholder="输入消息"></div>' +
         '            <div>' +
-        '                <button id="sendButton" onClick=javascript:SendMsg("' + who['id'] + '") style="height: 30px">Send</button>' +
+        '                <button id="sendButton" onClick=javascript:SendMsg("' + place + '") style="height: 30px">Send</button>' +
         '            </div>' +
         '        </div>'
     msg.setAttribute("style", " display: -webkit-flex;display: flex;");
