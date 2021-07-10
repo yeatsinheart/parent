@@ -1,10 +1,10 @@
 /**获取场所*/
 function getWhere() {
     let list = [];
-    list.push({"img": "kefu.jpeg", "name": "客服", "type": "customer", "area": "cus", "id": "cus"});
-    list.push({"img": "who.jpg", "name": "系统群", "type": "group", "area": "sys", "id": "sys"});
-    for (let i = 0; i < 10; i++) {
-        list.push({"img": "who.jpg", "name": "私聊"+i, "type": "friend", "area": "pri", "id": "pri" + i});
+    list.push({"img": "kefu.jpeg", "name": "客服", "type": "customer", "area": "cus", "id": 1});
+    list.push({"img": "who.jpg", "name": "系统群", "type": "group", "area": "sys", "id": 2});
+    for (let i = 10; i < 20; i++) {
+        list.push({"img": "who.jpg", "name": "私聊"+i, "type": "friend", "area": "pri", "id":  i});
     }
     return list;
 }
@@ -14,7 +14,11 @@ function listen() {
     let list = getWhere();
     let places = "";
     for (let i = 0; i < list.length; i++) {
-        places += list[i]['id'] + ",";
+        let place = list[i]['id'];
+        if( list[i]['type']==="friend" || list[i]['type']==="customer" ){
+            place=Math.min(list[i]['id'],userId)+"@"+Math.max(list[i]['id'],userId);
+        }
+        places += place + ",";
     }
     places = places.substr(0, places.length - 1);
     let joinGroup = {
@@ -28,10 +32,11 @@ var activePlace;
 
 /**打开场所*/
 function active(who,userId) {
+    console.log(who,userId);
     activePlace = who['id'];
     let msg = document.querySelector('#chat_msg');
     let place = who['id'];
-    if(who['type']==="friend" || who['type']==="customer"){
+    if( who['type']==="friend" || who['type']==="customer" ){
         place=Math.min(who['id'],userId)+"@"+Math.max(who['id'],userId);
     }
     msg.innerHTML = '<div id="chat_msg_who" style="border-bottom: 1px solid rgba(0,0,0,0.2);">' +
