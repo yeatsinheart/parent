@@ -23,6 +23,10 @@ const url = {
     "/admin": {
         "page": {"default": "sys/admin/admin.vue"},
         "meta": {"needLogin": false, "withHeader": false, "withFooter": false}
+    },
+    "/language": {
+        "page": {"default": "sys/resource/language.vue"},
+        "meta": {"needLogin": false, "withHeader": false, "withFooter": false}
     }
 }
 

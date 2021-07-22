@@ -95,7 +95,7 @@ class AdminMenuService {
             {
                 "id": 6,
                 "name": "语言翻译",
-                "url": "login",
+                "url": "language",
                 "parent": 0
             },
             {

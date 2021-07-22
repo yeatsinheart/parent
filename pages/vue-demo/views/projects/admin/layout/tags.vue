@@ -6,9 +6,7 @@
         <li v-for="(item,index) in tagsList" :key="index" :class="{'active': isActive(item.id)}" class="tags-li">
           <el-dropdown>
             <span :frameid="item.url" class="tags-li-title" @click="active(item)">{{ item.name }}</span>
-            <span class="tags-li-icon" @click="closeTags(index)">
-              <i class="el-icon-close"></i>
-            </span>
+            <span class="tags-li-icon" @click="closeTags(index)"><i class="el-icon-close"></i></span>
             <el-dropdown-menu slot="dropdown" size="small">
               <el-dropdown-item @click.native="save(index)">关闭其他</el-dropdown-item>
               <el-dropdown-item @click.native="closeTags()">关闭所有</el-dropdown-item>
@@ -33,7 +31,7 @@
     <div class="frame">
       <template v-for="(item,index) in tagsList">
         <div :key="index" :class="isActive(item.id)?'active':'hidden'" class="page">
-          <iframe :src="item.url" :id="'ifrmname'+index" height="100%" scrolling="no" width="100%" style="border:0;"/>
+          <iframe :src="item.url" :id="'ifrmname'+index" height="100%"  width="100%" style="border:0;"/>
         </div>
       </template>
     </div>
@@ -159,7 +157,7 @@ export default {
 .frame {
   position: absolute;
   width: 100%;
-  height: calc(100% - 30px);
+  height: calc(100% - 23px);
 
   .page {
     position: absolute;

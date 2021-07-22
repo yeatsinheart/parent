@@ -1,5 +1,6 @@
 <template>
   <div :class="menuShow===false?'menu-hidden':'menu-show'" class="left">
+
     <div class="menu-tool" @click="toogle">
       <span>
         <i :class="menuShow===true?'el-icon-s-fold':'el-icon-s-unfold'"></i>
@@ -10,7 +11,6 @@
           v-model="filterText"
           placeholder="输入关键字进行过滤">
       </el-input>
-
       <el-tree
           ref="tree"
           :data="items"
@@ -79,6 +79,7 @@ export default {
   height: 100%;
   background: #fff;
   position: absolute;
+  border-right: 1px dashed #b0b0b0;
 }
 
 .menu-hidden.left {
@@ -87,9 +88,8 @@ export default {
 
 .menu {
   width: 180px;
-  height: 100%;
+  height: calc(100% - 50px);
   position: absolute;
-  border-right: 1px dashed #b0b0b0;
 }
 
 .menu-hidden .menu {
@@ -132,6 +132,9 @@ export default {
   display: inline-block;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+::v-deep .el-tree,.el-input{
+  width: calc(100% - 1px) !important;
 }
 
 </style>
